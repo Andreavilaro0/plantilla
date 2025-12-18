@@ -1,12 +1,13 @@
-# Plantilla Vite + Tailwind CSS + GSAP
+# Plantilla Vite + Tailwind CSS + GSAP + Locomotive Scroll
 
-Proyecto base configurado con Vite, Tailwind CSS y GSAP listo para empezar a desarrollar.
+Proyecto base configurado con Vite, Tailwind CSS, GSAP y Locomotive Scroll.
 
 ## 🚀 Tecnologías
 
 - **Vite** - Build tool rápido
 - **Tailwind CSS v4** - Framework CSS utility-first
 - **GSAP** - Librería de animaciones
+- **Locomotive Scroll** - Smooth scrolling
 
 ## 📦 Instalación
 
@@ -32,30 +33,16 @@ npm run build
 npm run deploy
 ```
 
-## 📁 Estructura del Proyecto
+## 📁 Estructura
 
 ```
 plantilla/
 ├── src/
-│   ├── main.js      # JavaScript principal
-│   └── style.css    # Estilos con Tailwind
-├── public/
-│   └── vite.svg     # Assets estáticos
-├── index.html       # HTML principal
+│   ├── main.js      # JavaScript + Locomotive Scroll
+│   └── style.css    # Estilos + Tailwind
+├── index.html       # HTML con data-scroll
 ├── vite.config.js   # Configuración de Vite
 └── package.json     # Dependencias
 ```
 
-## 🎨 Personalización
-
-1. Edita `index.html` para la estructura
-2. Modifica `src/style.css` para los estilos
-3. Escribe tu lógica en `src/main.js`
-
-## 📝 Notas
-
-- El proyecto está configurado para desplegar en GitHub Pages
-- Usa `base: '/plantilla/'` en `vite.config.js` - actualízalo según tu repositorio
-- GSAP ya está importado y listo para usar
-
-¡Comienza a crear! 🎉
+¡Listo para empezar! 🎉
