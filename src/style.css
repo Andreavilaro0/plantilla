@@ -1,0 +1,783 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@300;400;500;600;700&family=Space+Grotesk:wght@300;400;500;600;700&display=swap');
+@import "tailwindcss";
+
+/* 🏎️ LANDO NORRIS STYLE - Oscuro Metálico con Neón Amarillo-Verde */
+
+/* Variables de diseño - Inspirado en Lando Norris */
+:root {
+  /* Colores principales - Metálico oscuro */
+  --bg-primary: #0a0a0a;
+  --bg-secondary: #121212;
+  --bg-metallic: #1a1a1a;
+  
+  /* Neón amarillo-verde vibrante - firma de Lando */
+  --neon-primary: #c4ff0d;
+  --neon-glow: rgba(196, 255, 13, 0.5);
+  --neon-secondary: #7fff00;
+  
+  /* Acentos metálicos */
+  --metal-silver: #8b8b8b;
+  --metal-chrome: #c5c5c5;
+  --metal-dark: #2a2a2a;
+  
+  /* Gradientes de velocidad */
+  --gradient-speed: linear-gradient(90deg, #c4ff0d 0%, #7fff00 100%);
+  --gradient-metallic: linear-gradient(135deg, #1a1a1a 0%, #2a2a2a 50%, #1a1a1a 100%);
+  --gradient-neon-dark: linear-gradient(180deg, rgba(196, 255, 13, 0.1) 0%, rgba(0, 0, 0, 0) 100%);
+}
+
+/* Estilos base */
+* {
+  font-family: 'Space Grotesk', 'Rajdhani', -apple-system, BlinkMacSystemFont, sans-serif;
+  box-sizing: border-box;
+}
+
+body {
+  @apply text-white;
+  background: var(--bg-primary);
+  background-image: 
+    radial-gradient(circle at 20% 50%, rgba(196, 255, 13, 0.03) 0%, transparent 50%),
+    radial-gradient(circle at 80% 80%, rgba(127, 255, 0, 0.02) 0%, transparent 50%);
+  background-attachment: fixed;
+  min-height: 100vh;
+  position: relative;
+  overflow-x: hidden;
+}
+
+/* Grid de fondo - efecto técnico */
+body::before {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-image: 
+    linear-gradient(rgba(196, 255, 13, 0.02) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(196, 255, 13, 0.02) 1px, transparent 1px);
+  background-size: 50px 50px;
+  pointer-events: none;
+  z-index: 0;
+  opacity: 0.3;
+}
+
+/* ⚡ Animaciones de velocidad y movimiento */
+@keyframes speedLineLeft {
+  0% {
+    transform: translateX(100vw) scaleX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(-100vw) scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes speedLineRight {
+  0% {
+    transform: translateX(-100vw) scaleX(0);
+    opacity: 0;
+  }
+  50% {
+    opacity: 1;
+  }
+  100% {
+    transform: translateX(100vw) scaleX(1);
+    opacity: 0;
+  }
+}
+
+@keyframes neonPulse {
+  0%, 100% {
+    text-shadow: 
+      0 0 10px var(--neon-glow),
+      0 0 20px var(--neon-glow),
+      0 0 30px var(--neon-glow);
+    filter: brightness(1);
+  }
+  50% {
+    text-shadow: 
+      0 0 20px var(--neon-glow),
+      0 0 40px var(--neon-glow),
+      0 0 60px var(--neon-glow);
+    filter: brightness(1.2);
+  }
+}
+
+@keyframes glitchEffect {
+  0% { transform: translate(0); }
+  20% { transform: translate(-2px, 2px); }
+  40% { transform: translate(-2px, -2px); }
+  60% { transform: translate(2px, 2px); }
+  80% { transform: translate(2px, -2px); }
+  100% { transform: translate(0); }
+}
+
+@keyframes fadeInUp {
+  from {
+    opacity: 0;
+    transform: translateY(40px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes slideInLeft {
+  from {
+    opacity: 0;
+    transform: translateX(-60px);
+  }
+  to {
+    opacity: 1;
+    transform: translateX(0);
+  }
+}
+
+@keyframes zoomIn {
+  from {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+  to {
+    opacity: 1;
+    transform: scale(1);
+  }
+}
+
+@keyframes scanline {
+  0% {
+    transform: translateY(-100%);
+  }
+  100% {
+    transform: translateY(100vh);
+  }
+}
+
+/* Línea de escaneo futurista */
+.scan-effect::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-primary), transparent);
+  animation: scanline 8s linear infinite;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.3;
+}
+
+/* Animación para el view container */
+#view {
+  animation: fadeInUp 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  position: relative;
+  z-index: 1;
+}
+
+/* 🏎️ Header - Estilo F1 futurista */
+header {
+  background: rgba(10, 10, 10, 0.85);
+  backdrop-filter: blur(20px) saturate(180%);
+  -webkit-backdrop-filter: blur(20px) saturate(180%);
+  border-bottom: 1px solid rgba(196, 255, 13, 0.15);
+  box-shadow: 
+    0 4px 30px rgba(0, 0, 0, 0.7),
+    0 0 20px rgba(196, 255, 13, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 1000;
+  transition: all 0.3s ease;
+}
+
+header::before {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 1px;
+  background: var(--gradient-speed);
+  transform: scaleX(0);
+  transition: transform 0.5s ease;
+}
+
+header:hover::before {
+  transform: scaleX(1);
+}
+
+/* Logo con efecto neón */
+.logo-gradient {
+  background: var(--gradient-speed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  letter-spacing: -0.03em;
+  font-family: 'Rajdhani', sans-serif;
+  text-transform: uppercase;
+  position: relative;
+  animation: slideInLeft 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+.logo-gradient:hover {
+  animation: neonPulse 1.5s ease-in-out infinite;
+}
+
+/* Botones de navegación - Estilo racing */
+.nav-link {
+  position: relative;
+  padding: 0.625rem 1.5rem;
+  border-radius: 0;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  font-weight: 600;
+  font-family: 'Rajdhani', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  font-size: 0.875rem;
+  background: transparent;
+  border: none;
+  color: var(--metal-chrome);
+  overflow: hidden;
+  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+}
+
+.nav-link::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: var(--gradient-speed);
+  transition: left 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  z-index: -1;
+}
+
+.nav-link:hover::before {
+  left: 0;
+}
+
+.nav-link:hover {
+  color: var(--bg-primary);
+  transform: translateX(3px);
+}
+
+.nav-link.active {
+  background: var(--gradient-speed);
+  color: var(--bg-primary);
+  font-weight: 700;
+  box-shadow: 
+    0 0 20px var(--neon-glow),
+    0 4px 15px rgba(196, 255, 13, 0.3);
+}
+
+.nav-link.active::before {
+  display: none;
+}
+
+/* Cards - Diseño metálico con acentos neón */
+.glass-card {
+  background: linear-gradient(135deg, rgba(26, 26, 26, 0.9) 0%, rgba(18, 18, 18, 0.8) 100%);
+  backdrop-filter: blur(15px);
+  -webkit-backdrop-filter: blur(15px);
+  border: 1px solid rgba(196, 255, 13, 0.1);
+  border-radius: 0;
+  padding: 2rem;
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.5),
+    inset 0 1px 0 rgba(255, 255, 255, 0.05);
+  transition: all 0.4s cubic-bezier(0.19, 1, 0.22, 1);
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(0 0, 100% 0, 100% calc(100% - 15px), calc(100% - 15px) 100%, 0 100%);
+}
+
+.glass-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: -100%;
+  width: 100%;
+  height: 100%;
+  background: linear-gradient(90deg, transparent, rgba(196, 255, 13, 0.1), transparent);
+  transition: left 0.6s ease;
+}
+
+.glass-card:hover::before {
+  left: 100%;
+}
+
+.glass-card:hover {
+  transform: translateY(-8px);
+  box-shadow: 
+    0 16px 50px rgba(0, 0, 0, 0.7),
+    0 0 30px rgba(196, 255, 13, 0.2),
+    inset 0 1px 0 rgba(255, 255, 255, 0.1);
+  border-color: rgba(196, 255, 13, 0.3);
+}
+
+/* Gradientes para títulos - Estilo neón */
+.gradient-text-blue,
+.gradient-text-purple,
+.gradient-text-pink {
+  background: var(--gradient-speed);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: -0.02em;
+}
+
+/* Efectos de líneas de velocidad */
+.speed-lines {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  z-index: 0;
+}
+
+.speed-line {
+  position: absolute;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--neon-primary), transparent);
+  animation: speedLineLeft 3s linear infinite;
+  opacity: 0.3;
+}
+
+.speed-line:nth-child(1) { top: 20%; animation-delay: 0s; }
+.speed-line:nth-child(2) { top: 40%; animation-delay: 1s; }
+.speed-line:nth-child(3) { top: 60%; animation-delay: 2s; }
+.speed-line:nth-child(4) { top: 80%; animation-delay: 0.5s; }
+
+/* Lista con animaciones */
+ul li {
+  animation: slideInLeft 0.6s cubic-bezier(0.19, 1, 0.22, 1);
+  animation-fill-mode: both;
+  position: relative;
+  padding-left: 1.5rem;
+}
+
+ul li::before {
+  content: '▸';
+  position: absolute;
+  left: 0;
+  color: var(--neon-primary);
+  font-weight: bold;
+}
+
+ul li:nth-child(1) { animation-delay: 0.1s; }
+ul li:nth-child(2) { animation-delay: 0.2s; }
+ul li:nth-child(3) { animation-delay: 0.3s; }
+ul li:nth-child(4) { animation-delay: 0.4s; }
+ul li:nth-child(5) { animation-delay: 0.5s; }
+
+/* Botones de acción principales - Estilo racing */
+.btn-primary {
+  background: var(--gradient-speed);
+  color: var(--bg-primary);
+  padding: 1rem 2.5rem;
+  border-radius: 0;
+  font-weight: 700;
+  font-family: 'Rajdhani', sans-serif;
+  text-transform: uppercase;
+  letter-spacing: 0.1em;
+  transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+  border: none;
+  cursor: pointer;
+  box-shadow: 
+    0 4px 20px rgba(196, 255, 13, 0.4),
+    0 0 40px rgba(196, 255, 13, 0.2);
+  position: relative;
+  overflow: hidden;
+  clip-path: polygon(5% 0%, 100% 0%, 95% 100%, 0% 100%);
+}
+
+.btn-primary::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 0;
+  height: 0;
+  background: rgba(255, 255, 255, 0.3);
+  border-radius: 50%;
+  transform: translate(-50%, -50%);
+  transition: width 0.5s ease, height 0.5s ease;
+}
+
+.btn-primary:hover::before {
+  width: 300px;
+  height: 300px;
+}
+
+.btn-primary:hover {
+  transform: translateY(-4px) scale(1.02);
+  box-shadow: 
+    0 8px 30px rgba(196, 255, 13, 0.6),
+    0 0 60px rgba(196, 255, 13, 0.4);
+}
+
+.btn-primary:active {
+  transform: translateY(-2px) scale(0.98);
+}
+
+/* Mejoras de accesibilidad */
+.focus-visible:focus {
+  outline: 2px solid var(--neon-primary);
+  outline-offset: 3px;
+}
+
+/* Scrollbar personalizada - Estilo neón */
+::-webkit-scrollbar {
+  width: 12px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--bg-secondary);
+  border-left: 1px solid rgba(196, 255, 13, 0.1);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--gradient-speed);
+  box-shadow: 0 0 10px var(--neon-glow);
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--neon-primary);
+  box-shadow: 0 0 20px var(--neon-glow);
+}
+
+/* Efectos de resplandor neón */
+.neon-glow {
+  text-shadow: 
+    0 0 10px var(--neon-glow),
+    0 0 20px var(--neon-glow),
+    0 0 30px var(--neon-glow);
+}
+
+/* Elemento decorativo - líneas angulares */
+.corner-accent {
+  position: absolute;
+  width: 20px;
+  height: 20px;
+  border: 2px solid var(--neon-primary);
+}
+
+.corner-accent.top-left {
+  top: 0;
+  left: 0;
+  border-right: none;
+  border-bottom: none;
+}
+
+.corner-accent.bottom-right {
+  bottom: 0;
+  right: 0;
+  border-left: none;
+  border-top: none;
+}
+
+/* 🎮 EFECTOS 3D - INMERSIÓN TOTAL */
+
+/* Perspectiva global para efectos 3D */
+#app {
+  perspective: 2000px;
+  transform-style: preserve-3d;
+}
+
+/* Animación 3D flotante */
+@keyframes float3D {
+  0%, 100% {
+    transform: translateY(0px) translateZ(0px) rotateX(0deg);
+  }
+  50% {
+    transform: translateY(-20px) translateZ(30px) rotateX(5deg);
+  }
+}
+
+@keyframes rotate3D {
+  0% {
+    transform: rotateY(0deg) rotateX(0deg);
+  }
+  100% {
+    transform: rotateY(360deg) rotateX(360deg);
+  }
+}
+
+@keyframes tilt3D {
+  0%, 100% {
+    transform: perspective(1000px) rotateX(0deg) rotateY(0deg);
+  }
+  25% {
+    transform: perspective(1000px) rotateX(5deg) rotateY(-5deg);
+  }
+  50% {
+    transform: perspective(1000px) rotateX(-5deg) rotateY(5deg);
+  }
+  75% {
+    transform: perspective(1000px) rotateX(5deg) rotateY(5deg);
+  }
+}
+
+/* Glass cards con efecto 3D mejorado */
+.glass-card {
+  transform-style: preserve-3d;
+  transition: all 0.5s cubic-bezier(0.23, 1, 0.32, 1);
+  position: relative;
+}
+
+.glass-card:hover {
+  transform: translateY(-15px) translateZ(50px) rotateX(5deg);
+  box-shadow: 
+    0 30px 80px rgba(0, 0, 0, 0.8),
+    0 0 50px rgba(196, 255, 13, 0.3),
+    inset 0 1px 0 rgba(255, 255, 255, 0.15);
+}
+
+/* Efecto 3D en stats cards */
+.stats-3d {
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.stats-3d:hover {
+  transform: perspective(800px) translateZ(60px) rotateY(10deg);
+  box-shadow: 
+    -20px 20px 60px rgba(0, 0, 0, 0.9),
+    0 0 40px rgba(196, 255, 13, 0.4);
+}
+
+/* Elementos flotantes 3D */
+.floating-3d {
+  animation: float3D 6s ease-in-out infinite;
+  transform-style: preserve-3d;
+}
+
+/* Cubo 3D decorativo */
+.cube-3d {
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  transform-style: preserve-3d;
+  animation: rotate3D 20s linear infinite;
+  opacity: 0.1;
+}
+
+.cube-3d::before,
+.cube-3d::after {
+  content: '';
+  position: absolute;
+  width: 100px;
+  height: 100px;
+  border: 1px solid var(--neon-primary);
+}
+
+.cube-3d::before {
+  transform: rotateY(90deg) translateZ(50px);
+}
+
+.cube-3d::after {
+  transform: rotateX(90deg) translateZ(50px);
+}
+
+/* Layers con profundidad 3D */
+.layer-3d-1 {
+  transform: translateZ(20px);
+}
+
+.layer-3d-2 {
+  transform: translateZ(40px);
+}
+
+.layer-3d-3 {
+  transform: translateZ(60px);
+}
+
+/* Efecto de paralaje 3D en el header */
+header {
+  transform-style: preserve-3d;
+  transition: transform 0.3s ease;
+}
+
+/* Botones con efecto 3D push */
+.btn-primary {
+  transform-style: preserve-3d;
+  transform: perspective(800px) translateZ(0);
+  transition: all 0.3s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.btn-primary:hover {
+  transform: perspective(800px) translateZ(40px) translateY(-8px) scale(1.05);
+}
+
+.btn-primary:active {
+  transform: perspective(800px) translateZ(10px) translateY(-4px) scale(1.02);
+}
+
+/* Texto con efecto de profundidad 3D */
+.text-3d-depth {
+  text-shadow: 
+    1px 1px 0px rgba(196, 255, 13, 0.3),
+    2px 2px 0px rgba(196, 255, 13, 0.2),
+    3px 3px 0px rgba(196, 255, 13, 0.1),
+    4px 4px 5px rgba(0, 0, 0, 0.5);
+}
+
+/* Nav links con efecto 3D flip */
+.nav-link {
+  transform-style: preserve-3d;
+  transition: all 0.4s cubic-bezier(0.23, 1, 0.32, 1);
+}
+
+.nav-link:hover {
+  transform: perspective(600px) translateZ(30px) rotateX(-10deg);
+}
+
+/* Sombras 3D realistas */
+.shadow-3d {
+  box-shadow: 
+    0 2px 4px rgba(0, 0, 0, 0.1),
+    0 4px 8px rgba(0, 0, 0, 0.15),
+    0 8px 16px rgba(0, 0, 0, 0.2),
+    0 16px 32px rgba(0, 0, 0, 0.25),
+    0 32px 64px rgba(0, 0, 0, 0.3);
+}
+
+/* Elementos que inclinan con el movimiento del mouse */
+.tilt-3d {
+  transform-style: preserve-3d;
+  transition: transform 0.1s ease-out;
+}
+
+/* Efecto de partículas 3D */
+.particle-3d {
+  position: fixed;
+  width: 4px;
+  height: 4px;
+  background: var(--neon-primary);
+  border-radius: 50%;
+  pointer-events: none;
+  animation: float3D 8s ease-in-out infinite;
+  box-shadow: 0 0 10px var(--neon-glow);
+  opacity: 0.6;
+}
+
+/* Efecto de ring 3D */
+.ring-3d {
+  position: absolute;
+  border: 2px solid rgba(196, 255, 13, 0.3);
+  border-radius: 50%;
+  transform-style: preserve-3d;
+}
+
+.ring-3d-1 {
+  width: 300px;
+  height: 300px;
+  animation: rotate3D 30s linear infinite;
+}
+
+.ring-3d-2 {
+  width: 400px;
+  height: 400px;
+  animation: rotate3D 40s linear infinite reverse;
+  animation-delay: -5s;
+}
+
+.ring-3d-3 {
+  width: 500px;
+  height: 500px;
+  animation: rotate3D 50s linear infinite;
+  animation-delay: -10s;
+}
+
+/* Perspectiva isométrica para elementos especiales */
+.isometric-3d {
+  transform: rotateX(45deg) rotateZ(45deg);
+  transform-style: preserve-3d;
+}
+
+/* Efecto de cristal 3D */
+.glass-3d {
+  background: linear-gradient(135deg, rgba(255,255,255,0.1), rgba(255,255,255,0));
+  backdrop-filter: blur(20px);
+  border: 1px solid rgba(255, 255, 255, 0.18);
+  box-shadow: 
+    0 8px 32px 0 rgba(0, 0, 0, 0.37),
+    inset 0 0 20px rgba(196, 255, 13, 0.1);
+  transform-style: preserve-3d;
+}
+
+/* Animación de entrada 3D */
+@keyframes enter3D {
+  0% {
+    opacity: 0;
+    transform: perspective(1000px) translateZ(-200px) rotateY(45deg);
+  }
+  100% {
+    opacity: 1;
+    transform: perspective(1000px) translateZ(0) rotateY(0deg);
+  }
+}
+
+.animate-enter-3d {
+  animation: enter3D 0.8s cubic-bezier(0.23, 1, 0.32, 1) forwards;
+}
+
+/* Efecto de holografía 3D */
+.hologram-3d {
+  position: relative;
+  background: linear-gradient(
+    135deg,
+    rgba(196, 255, 13, 0.1) 0%,
+    transparent 50%,
+    rgba(196, 255, 13, 0.1) 100%
+  );
+  animation: tilt3D 10s ease-in-out infinite;
+}
+
+.hologram-3d::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: repeating-linear-gradient(
+    0deg,
+    rgba(196, 255, 13, 0.03) 0px,
+    rgba(196, 255, 13, 0.03) 1px,
+    transparent 1px,
+    transparent 2px
+  );
+  pointer-events: none;
+}
+
+/* Card flip 3D */
+.flip-card-3d {
+  perspective: 1000px;
+  transform-style: preserve-3d;
+}
+
+.flip-card-inner {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  transition: transform 0.8s;
+  transform-style: preserve-3d;
+}
+
+.flip-card-3d:hover .flip-card-inner {
+  transform: rotateY(180deg);
+}
