@@ -1,0 +1,27 @@
+{
+  "hash": "df1cd3ed",
+  "configHash": "c1d59b18",
+  "lockfileHash": "bd6c04c5",
+  "browserHash": "8ae82d8c",
+  "optimized": {
+    "gsap": {
+      "src": "../../node_modules/gsap/index.js",
+      "file": "gsap.js",
+      "fileHash": "5537a884",
+      "needsInterop": false
+    },
+    "gsap/ScrollToPlugin": {
+      "src": "../../node_modules/gsap/ScrollToPlugin.js",
+      "file": "gsap_ScrollToPlugin.js",
+      "fileHash": "22cc1661",
+      "needsInterop": false
+    },
+    "gsap/ScrollTrigger": {
+      "src": "../../node_modules/gsap/ScrollTrigger.js",
+      "file": "gsap_ScrollTrigger.js",
+      "fileHash": "a52a173e",
+      "needsInterop": false
+    }
+  },
+  "chunks": {}
+}

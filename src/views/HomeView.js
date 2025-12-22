@@ -38,11 +38,11 @@ export default function HomeView() {
   // 5 cuadros flotantes con posiciones fijas
   // ============================================
   const heroFloats = [
-    { pos: 'left-frame', left: '4vw', top: '12vh', width: '220px', height: '290px', depth: '1' },
-    { pos: 'top-frame', left: '48vw', top: '2vh', width: '170px', height: '200px', depth: '2' },
-    { pos: 'right-frame', left: '72vw', top: '12vh', width: '340px', height: '260px', depth: '1' },
-    { pos: 'bottom-left', left: '14vw', top: '72vh', width: '280px', height: '220px', depth: '3' },
-    { pos: 'bottom-right', left: '70vw', top: '70vh', width: '280px', height: '340px', depth: '2' }
+    { pos: 'left-frame', left: '5vw', top: '12vh', width: '180px', height: '240px', depth: '1' },
+    { pos: 'top-frame', left: '48vw', top: '8vh', width: '150px', height: '180px', depth: '2' },
+    { pos: 'right-frame', left: '75vw', top: '15vh', width: '280px', height: '220px', depth: '1' },
+    { pos: 'bottom-left', left: '10vw', top: '70vh', width: '240px', height: '200px', depth: '3' },
+    { pos: 'bottom-right', left: '72vw', top: '68vh', width: '240px', height: '280px', depth: '2' }
   ];
 
   const heroFloatHTML = heroFloats.map((frame, index) => {
@@ -57,7 +57,7 @@ export default function HomeView() {
               data-category="${obra.categoria}"
               style="position: absolute; left: ${frame.left}; top: ${frame.top}; width: ${frame.width}; height: ${frame.height}; will-change: transform;">
         <div class="photo-media frame-real relative w-full h-full cursor-pointer">
-          <img class="w-full h-full object-cover rounded-lg" 
+          <img class="w-full h-full object-contain rounded-lg" 
                src="${obra.img}" 
                alt="${obra.titulo}" />
         </div>
@@ -125,21 +125,26 @@ export default function HomeView() {
 
         <!-- Top bar: Brand + About -->
         <div class="hero-top absolute left-0 right-0 top-0 z-30 flex items-center justify-between px-10 pt-8">
-          <div class="hero-brand text-white/90 text-sm tracking-[0.22em]">PHOTOGRAPHY PORTFOLIO</div>
+          <div class="hero-brand text-white/90 text-sm tracking-[0.22em]">CLAUDE MONET</div>
           <button class="hero-about rounded-full border border-white/25 px-5 py-2 text-sm text-white/80 hover:bg-white/10 transition-all duration-300">ABOUT</button>
         </div>
 
-        <!-- Title + Subtitle + CTA -->
+        <!-- Floating frames container (BEHIND title) -->
+        <div id="hero-floats" class="absolute inset-0 z-5 pointer-events-none">
+          ${heroFloatHTML}
+        </div>
+
+        <!-- Title + Subtitle + CTA (IN FRONT) -->
         <div class="hero-text relative z-20 flex flex-col justify-center" style="min-height: 100vh; padding-inline: max(5vw, 2rem); box-sizing: border-box;">
             <!-- Editorial Aggressive Layout -->
             <!-- MANDATORY HERO TITLE SHELL -->
             <div class="hero-title-shell">
               <h1 id="hero-title" class="hero-title">
                 <span class="title-mask">
-                  <span class="title-line line-1">IMMERSIVE</span>
+                  <span class="title-line line-1 monet-line">MONET</span>
                 </span>
                 <span class="title-mask">
-                  <span class="title-line line-2">GALLERY</span>
+                  <span class="title-line line-2 impressions-line">IMPRESSIONS</span>
                 </span>
               </h1>
             </div>
@@ -152,11 +157,6 @@ export default function HomeView() {
             <span class="hero-arrow text-white/70 text-3xl">→</span>
           </div>
         </div>
-
-        <!-- Floating frames container -->
-        <div id="hero-floats" class="absolute inset-0 z-10 pointer-events-none">
-          ${heroFloatHTML}
-        </div>
       </section>
 
       <!-- ========================================== -->
@@ -165,7 +165,7 @@ export default function HomeView() {
       <!-- ========================================== -->
       <section id="gallery-field" class="relative bg-black" style="min-height: ${totalHeight}px;">
         <!-- Título de sección -->
-        <div class="relative z-40 text-center pt-50 pb-16">
+        <div class="relative z-40 text-center pt-80 pb-24">
           <h2 class="text-5xl md:text-6xl font-serif italic opacity-90 text-white">
             Selected Works
           </h2>

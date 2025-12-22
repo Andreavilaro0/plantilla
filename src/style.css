@@ -14,10 +14,11 @@
 
 html {
   scroll-behavior: smooth;
+  background-color: #000;
 }
 
 body {
-  background-color: var(--color-dark-bg);
+  background-color: #000;
   color: #fff;
   font-family: var(--font-serif); 
   overflow-x: hidden;
@@ -301,6 +302,7 @@ body {
 #hero {
   position: relative;
   background: #000;
+  background-color: #000 !important;
 }
 
 .hero-bg {
@@ -330,8 +332,26 @@ body {
 
 /* Frame styling */
 .hero-float {
-  opacity: 0.92;
+  opacity: 0.85;
   border-radius: 8px;
+  z-index: 1 !important;
+}
+
+/* Hero layering - ensure title is always on top */
+#hero-floats {
+  z-index: 1 !important;
+}
+
+.hero-text {
+  position: relative;
+  z-index: 20 !important;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.hero-top {
+  z-index: 30 !important;
 }
 
 .frame-real {
@@ -353,6 +373,11 @@ body {
 
 .photo-media {
   filter: none !important;
+}
+
+.hero-enter {
+  display: block;
+  margin: 0 auto;
 }
 
 .hero-enter:hover {
@@ -709,6 +734,7 @@ body:has(#hero) .global-nav {
   max-width: 1600px;
   margin: 0 auto;
   padding-inline: clamp(16px, 6vw, 120px);
+  padding-block: clamp(40px, 8vh, 80px);
   overflow-x: hidden;
   box-sizing: border-box;
 }
@@ -746,6 +772,33 @@ body:has(#hero) .global-nav {
   font-family: 'Inter', sans-serif;
   font-weight: 700;
   opacity: 0.95;
+}
+
+/* Monet specific title styles */
+.monet-line {
+  font-family: 'Playfair Display', serif !important;
+  font-style: italic;
+  font-weight: 400;
+}
+
+.impressions-line {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+}
+
+/* Hero subtitle */
+.hero-subtitle {
+  font-family: 'Inter', sans-serif;
+  font-size: clamp(13px, 1.2vw, 16px);
+  line-height: 1.6;
+  color: rgba(255, 255, 255, 0.65);
+  text-align: center;
+  margin-top: clamp(20px, 3vh, 32px);
+  max-width: 700px;
+  margin-left: auto;
+  margin-right: auto;
+  letter-spacing: 0.3px;
 }
 
 @media (max-width: 768px) {
