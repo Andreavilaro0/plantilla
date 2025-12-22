@@ -1,25 +1,9 @@
 @import "tailwindcss";
-@import 'locomotive-scroll/dist/locomotive-scroll.css';
-
-
 
 @theme {
-  
   --font-serif: "Playfair Display", "Times New Roman", serif;
   --color-dark-bg: #0b0b0b;
   --color-modal-bg: #1a1a1a;
-}
-
-body {
-  background-color: var(--color-dark-bg);
-  color: #fff;
-  font-family: var(--font-serif); 
-  overflow-x: hidden; 
-}
-
-
-::-webkit-scrollbar {
-  width: 0px;
 }
 
 * {
@@ -29,81 +13,36 @@ body {
 }
 
 html {
-  scroll-behavior: auto;
+  scroll-behavior: smooth;
 }
 
 body {
-  font-family: system-ui, -apple-system, sans-serif;
-  background: #0a0a0a;
-  color: #ffffff;
-  min-height: 100vh;
+  background-color: var(--color-dark-bg);
+  color: #fff;
+  font-family: var(--font-serif); 
   overflow-x: hidden;
+  min-height: 100vh;
 }
 
-.navbar {
-  position: sticky;
-  top: 0;
-  z-index: 1000;
-  background: rgba(10, 10, 10, 0.95);
-  backdrop-filter: blur(10px);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+::-webkit-scrollbar {
+  width: 0px;
 }
 
-.nav-container {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 1.5rem 2rem;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
+.padding-x {
+  padding-left: 2rem;
+  padding-right: 2rem;
 }
 
-.nav-brand {
-  font-size: 1.5rem;
-  font-weight: bold;
-  color: #ffffff;
-  text-decoration: none;
-  transition: opacity 0.3s;
+.header-anim {
+  transform: translateY(20px);
 }
 
-.nav-brand:hover {
-  opacity: 0.8;
-}
-
-.nav-menu {
-  display: flex;
-  list-style: none;
-  gap: 2rem;
-}
-
-.nav-menu a {
-  color: #a0a0a0;
-  text-decoration: none;
-  font-weight: 500;
-  transition: color 0.3s;
-  position: relative;
-}
-
-.nav-menu a:hover {
-  color: #ffffff;
-}
-
-.nav-menu a.active {
-  color: #ffffff;
-}
-
-.nav-menu a.active::after {
-  content: '';
-  position: absolute;
-  bottom: -0.5rem;
-  left: 0;
-  right: 0;
-  height: 2px;
-  background: linear-gradient(90deg, #667eea, #764ba2);
+.gallery-item {
+  opacity: 1;
 }
 
 .view-container {
-  min-height: calc(100vh - 80px);
+  min-height: 100vh;
   padding: 2rem;
 }
 
@@ -265,18 +204,568 @@ body {
 }
 
 @media (max-width: 768px) {
-  .nav-container {
-    flex-direction: column;
-    gap: 1rem;
-  }
-  
-  .nav-menu {
-    gap: 1rem;
-  }
-  
   .hero-section h1,
   .about-section h1,
   .contact-section h1 {
     font-size: 2.5rem;
   }
+}
+
+/* ============================================
+   BAROQUE GOLDEN FRAME
+   ============================================ */
+
+.baroque-frame {
+  position: relative;
+  
+  /* Borde dorado con gradiente barroco */
+  border: 8px solid;
+  border-image: linear-gradient(
+    135deg,
+    #d4af37 0%,    /* Oro clásico */
+    #f9e79f 25%,   /* Oro brillante */
+    #b8860b 50%,   /* Oro oscuro */
+    #ffd700 75%,   /* Oro vibrante */
+    #d4af37 100%   /* Oro clásico */
+  ) 1;
+  
+  /* Sombras múltiples para profundidad 3D barroca */
+  box-shadow:
+    /* Sombra interior dorada (brillo interno) */
+    inset 0 0 20px rgba(212, 175, 55, 0.4),
+    inset 0 0 10px rgba(255, 215, 0, 0.3),
+    /* Sombra exterior para elevación */
+    0 8px 24px rgba(0, 0, 0, 0.3),
+    0 4px 12px rgba(0, 0, 0, 0.2),
+    /* Brillo dorado exterior sutil */
+    0 0 30px rgba(212, 175, 55, 0.15);
+  
+  /* Outline interior para detalle elegante */
+  outline: 2px solid rgba(255, 215, 0, 0.4);
+  outline-offset: -12px;
+  
+  /* Transición suave */
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+/* Hover state - Marco más brillante */
+.baroque-frame:hover {
+  border-image: linear-gradient(
+    135deg,
+    #ffd700 0%,    /* Oro vibrante */
+    #fff8dc 25%,   /* Oro muy brillante */
+    #d4af37 50%,   /* Oro clásico */
+    #ffec8b 75%,   /* Oro luminoso */
+    #ffd700 100%   /* Oro vibrante */
+  ) 1;
+  
+  box-shadow:
+    inset 0 0 25px rgba(255, 215, 0, 0.5),
+    inset 0 0 15px rgba(212, 175, 55, 0.4),
+    0 12px 32px rgba(0, 0, 0, 0.4),
+    0 6px 16px rgba(0, 0, 0, 0.25),
+    0 0 40px rgba(212, 175, 55, 0.25);
+  
+  outline-color: rgba(255, 215, 0, 0.6);
+}
+
+/* Pseudo-elemento decorativo (textura diagonal sutil) */
+.baroque-frame::before {
+  content: '';
+  position: absolute;
+  top: -8px;
+  left: -8px;
+  right: -8px;
+  bottom: -8px;
+  background: 
+    repeating-linear-gradient(
+      45deg,
+      transparent,
+      transparent 10px,
+      rgba(212, 175, 55, 0.05) 10px,
+      rgba(212, 175, 55, 0.05) 11px
+    );
+  pointer-events: none;
+  z-index: -1;
+  border-radius: inherit;
+}
+
+
+/* ============================================
+   CLAUDE MONET HERO STYLES
+   ============================================ */
+
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600;700&display=swap');
+
+/* Hero background with radial glow */
+#hero {
+  position: relative;
+  background: #000;
+}
+
+.hero-bg {
+  background: radial-gradient(
+    ellipse 80% 50% at 50% 50%,
+    rgba(40, 40, 60, 0.3) 0%,
+    rgba(20, 20, 30, 0.2) 40%,
+    #000 80%
+  );
+  backdrop-filter: blur(60px);
+}
+
+/* Typography overrides */
+.hero-monet {
+  font-family: 'Playfair Display', serif !important;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+.hero-impressions {
+  font-family: 'Inter', sans-serif !important;
+  text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
+  overflow-wrap: break-word;
+}
+
+/* Frame styling */
+.hero-float {
+  opacity: 0.92;
+  border-radius: 8px;
+}
+
+.frame-real {
+  background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
+  box-shadow: 
+    0 8px 32px rgba(0, 0, 0, 0.6),
+    0 4px 16px rgba(0, 0, 0, 0.4),
+    inset 0 0 20px rgba(212, 175, 55, 0.15);
+  border: 4px solid;
+  border-image: linear-gradient(
+    135deg,
+    #d4af37 0%,
+    #f9e79f 25%,
+    #b8860b 50%,
+    #ffd700 75%,
+    #d4af37 100%
+  ) 1;
+}
+
+.photo-media {
+  filter: none !important;
+}
+
+.hero-enter:hover {
+  background: rgba(255, 255, 255, 0.05);
+  border-color: rgba(255, 255, 255, 0.5);
+}
+
+/* Hide global nav on home page only */
+body:has(#hero) .global-nav {
+  display: none;
+}
+
+/* ============================================
+   ABOUT MODAL - Monet Gallery Style
+   ============================================ */
+
+#modal-root {
+  position: relative;
+  z-index: 9999;
+}
+
+.about-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.about-card {
+  position: relative;
+  width: min(920px, 92vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 24px;
+  background: rgba(24, 24, 28, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  padding: 42px 36px;
+  outline: none;
+}
+
+.about-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.about-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.30);
+  color: white;
+  transform: rotate(90deg);
+}
+
+.about-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .about-grid {
+    grid-template-columns: 280px 1fr;
+    gap: 48px;
+  }
+}
+
+.about-media {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.about-photo {
+  width: 100%;
+  max-width: 280px;
+  aspect-ratio: 3/4;
+  object-fit: cover;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.40);
+}
+
+.about-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.about-name {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2rem, 4vw, 3rem);
+  font-weight: 400;
+  font-style: italic;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.about-bio {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.70);
+  margin: 0;
+}
+
+.about-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.about-pill {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.80);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Scrollbar styling para el card */
+.about-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.about-card::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.about-card::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.about-card::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================
+   ENTER GALLERY TRANSITION
+   ============================================ */
+
+#app {
+  will-change: transform;
+  transform-origin: center center;
+}
+
+.hero-monet,
+.hero-impressions {
+  will-change: transform, opacity;
+}
+
+.hero-float {
+  will-change: transform, opacity;
+}
+
+.hero-bg {
+  will-change: transform, filter;
+}
+
+#gallery-field {
+  will-change: transform, opacity;
+}
+
+.hero-enter:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   IMAGE MODAL - Mismo estilo que ABOUT
+   ============================================ */
+
+.image-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(0, 0, 0, 0.55);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+}
+
+.image-card {
+  position: relative;
+  width: min(960px, 92vw);
+  max-height: 85vh;
+  overflow-y: auto;
+  border-radius: 24px;
+  background: rgba(24, 24, 28, 0.92);
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
+  padding: 42px 36px;
+  outline: none;
+}
+
+.image-close {
+  position: absolute;
+  top: 20px;
+  right: 20px;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  color: rgba(255, 255, 255, 0.70);
+  font-size: 28px;
+  line-height: 1;
+  cursor: pointer;
+  transition: all 0.25s ease;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 10;
+}
+
+.image-close:hover {
+  background: rgba(255, 255, 255, 0.12);
+  border-color: rgba(255, 255, 255, 0.30);
+  color: white;
+  transform: rotate(90deg);
+}
+
+.image-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 32px;
+}
+
+@media (min-width: 768px) {
+  .image-grid {
+    grid-template-columns: 1.2fr 1fr;
+    gap: 48px;
+  }
+}
+
+.image-media {
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+}
+
+.image-full {
+  width: 100%;
+  max-height: 70vh;
+  object-fit: contain;
+  border-radius: 12px;
+  border: 1px solid rgba(255, 255, 255, 0.10);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.40);
+}
+
+.image-content {
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.image-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  font-weight: 400;
+  font-style: italic;
+  color: white;
+  margin: 0;
+  line-height: 1.2;
+}
+
+.image-desc {
+  font-family: 'Inter', sans-serif;
+  font-size: 15px;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.70);
+  margin: 0;
+}
+
+.image-meta {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 12px;
+  margin-top: 8px;
+}
+
+.image-pill {
+  display: inline-block;
+  padding: 8px 18px;
+  border-radius: 20px;
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  background: rgba(255, 255, 255, 0.05);
+  font-family: 'Inter', sans-serif;
+  font-size: 13px;
+  color: rgba(255, 255, 255, 0.80);
+  font-weight: 500;
+  letter-spacing: 0.3px;
+}
+
+/* Cursor pointer para imágenes clickeables */
+.photo-media {
+  cursor: pointer;
+}
+
+/* Scrollbar styling para el card */
+.image-card::-webkit-scrollbar {
+  width: 8px;
+}
+
+.image-card::-webkit-scrollbar-track {
+  background: rgba(255, 255, 255, 0.05);
+  border-radius: 4px;
+}
+
+.image-card::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 4px;
+}
+
+.image-card::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.25);
+}
+
+/* ============================================
+   ADVANCED EDITORIAL HERO TITLE
+   ============================================ */
+
+.hero-title-shell {
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding-inline: clamp(16px, 6vw, 120px);
+  overflow-x: hidden;
+  box-sizing: border-box;
+}
+
+.hero-title {
+  margin: 0;
+  line-height: 0.88;
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(64px, 12vw, 200px);
+  letter-spacing: clamp(-0.02em, -0.012em, -0.006em);
+  color: rgba(255,255,255,0.96);
+  /* Depth shadow */
+  text-shadow: 0 10px 40px rgba(0,0,0,0.4);
+}
+
+.title-mask {
+  display: block;
+  overflow: hidden; /* KEY: Reveal Mask */
+  padding-bottom: 0.05em; /* Prevent descender clipping */
+}
+
+.title-line {
+  display: block;
+  will-change: transform, opacity;
+  transform-origin: left center;
+}
+
+.line-1 {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+  opacity: 0.95;
+}
+
+.line-2 {
+  font-family: 'Inter', sans-serif;
+  font-weight: 700;
+  opacity: 0.95;
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(48px, 15vw, 120px);
+    line-height: 0.92;
+  }
+}
+
+/* ============================================
+   TRANSITION CURTAIN (ENTER GALLERY)
+   ============================================ */
+#transition-curtain {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: -110%; /* Start below screen */
+  height: 120%; /* Extra height to cover bounce */
+  z-index: 9998; /* Below modals (9999+), above content */
+  background: linear-gradient(to top, rgba(0,0,0,0.98), rgba(0,0,0,0.75));
+  pointer-events: none;
+  will-change: transform;
 }

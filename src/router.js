@@ -37,16 +37,19 @@ class Router {
     this.currentRoute = path
     this.render(route)
     this.updateActiveLinks()
+    
+    // Inicializar animaciones modulares para home
+    if (path === '/' && window.initAnimations) {
+      setTimeout(() => {
+        window.initAnimations()
+      }, 100)
+    }
   }
 
   render(view) {
     const app = document.querySelector('#app')
     if (app) {
       app.innerHTML = view()
-      
-      if (window.scroll) {
-        window.scroll.update()
-      }
     }
   }
 
