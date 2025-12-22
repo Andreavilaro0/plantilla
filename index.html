@@ -4,14 +4,23 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/plantilla/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Plantilla Vite + Tailwind + GSAP</title>
-    <script type="module" crossorigin src="/plantilla/assets/index-D8oiqWL1.js"></script>
-    <link rel="stylesheet" crossorigin href="/plantilla/assets/index-BRPD1MZp.css">
+    <title> Photography Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <script type="module" crossorigin src="/plantilla/assets/index-ChiaMA2S.js"></script>
+    <link rel="stylesheet" crossorigin href="/plantilla/assets/index-CJxROBxi.css">
   </head>
   <body>
-    <div id="app">
-      <h1>Hola Mundo</h1>
-      <p>Proyecto inicial configurado con Vite, Tailwind CSS y GSAP</p>
-    </div>
+    <!-- Nav fuera del #app para persistencia durante navegación -->
+    <nav class="global-nav fixed top-0 w-full p-8 flex justify-between items-center z-50 mix-blend-difference text-white">
+      <div class="text-xl font-bold uppercase tracking-widest font-serif">PHOTOGRAPHY PORTFOLIO</div>
+      <a href="/about" data-link class="rounded-full border border-white/40 px-6 py-2 uppercase text-xs tracking-widest hover:bg-white hover:text-black transition-all duration-300">
+        About
+      </a>
+    </nav>
+    
+    <div id="app"></div>
+    
   </body>
 </html>
