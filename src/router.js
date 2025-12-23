@@ -1,11 +1,13 @@
 import HomeView from './views/HomeView.js'
 import AboutView from './views/AboutView.js'
 import ContactView from './views/ContactView.js'
+import ServicesView from './views/ServicesView.js'
 
 const routes = {
   '/': HomeView,
   '/about': AboutView,
-  '/contact': ContactView
+  '/contact': ContactView,
+  '/services': ServicesView
 }
 
 class Router {
@@ -58,10 +60,17 @@ class Router {
       const href = link.getAttribute('href').replace('/plantilla', '')
       if (href === this.currentRoute) {
         link.classList.add('active')
+        link.setAttribute('aria-current', 'page')
       } else {
         link.classList.remove('active')
+        link.removeAttribute('aria-current')
       }
     })
+    
+    // Update navbar links if setActiveLink is available
+    if (window.setNavbarActiveLink) {
+      window.setNavbarActiveLink()
+    }
   }
 }
 

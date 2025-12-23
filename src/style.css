@@ -29,6 +29,92 @@ body {
   width: 0px;
 }
 
+/* ============================================
+   ACCESSIBILITY - Skip Link
+   ============================================ */
+.skip-link {
+  position: absolute;
+  top: -100px;
+  left: 0;
+  background: #000;
+  color: #fff;
+  padding: 12px 20px;
+  z-index: 10000;
+  text-decoration: none;
+  font-size: 14px;
+  border: 2px solid #fff;
+  transition: top 0.3s;
+}
+
+.skip-link:focus {
+  top: 0;
+  outline: 3px solid #3b82f6;
+  outline-offset: 2px;
+}
+
+/* ============================================
+   HERO 3D PERSPECTIVE & TRANSFORMS
+   ============================================ */
+#hero {
+  perspective: 1000px;
+  perspective-origin: 50% 50%;
+}
+
+.hero-float {
+  transform-style: preserve-3d;
+  will-change: transform;
+  backface-visibility: hidden;
+  -webkit-backface-visibility: hidden;
+}
+
+/* ============================================
+   CTA FOCUS STATES (Accessibility)
+   ============================================ */
+.hero-cta:focus-visible,
+.hero-enter:focus-visible,
+.hero-about:focus-visible,
+button:focus-visible,
+a:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+  box-shadow: 0 0 0 6px rgba(59, 130, 246, 0.3);
+}
+
+/* Remove default focus outline when using custom */
+.hero-cta:focus,
+.hero-enter:focus,
+.hero-about:focus {
+  outline: none;
+}
+
+/* ============================================
+   RESPONSIVE FRAMES WITH CLAMP
+   ============================================ */
+.frame-responsive {
+  width: clamp(200px, 30vw, 400px);
+  height: auto;
+  aspect-ratio: 3/4;
+}
+
+/* ============================================
+   REDUCED MOTION SUPPORT (Accessibility)
+   ============================================ */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+  
+  /* Disable transforms for reduced motion */
+  .hero-float {
+    transform: none !important;
+  }
+}
+
 .padding-x {
   padding-left: 2rem;
   padding-right: 2rem;
@@ -821,4 +907,533 @@ body:has(#hero) .global-nav {
   background: linear-gradient(to top, rgba(0,0,0,0.98), rgba(0,0,0,0.75));
   pointer-events: none;
   will-change: transform;
+}
+
+/* =================================
+   NAVBAR - CodePen Replica Style
+   ================================= */
+
+/* Header - Transparent with white text */
+.global-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  background: transparent;
+  z-index: 50;
+  opacity: 0; /* Hidden during loading screen */
+  transition: opacity 0.8s ease;
+}
+
+/* Navbar container */
+.global-header .container {
+  max-width: 1280px;
+  margin: 0 auto;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2rem;
+  height: 100%;
+}
+
+/* Left label - "Portfolio" */
+.navbar-label {
+  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #ffffff;
+  font-weight: 300;
+}
+
+/* Center title */
+.navbar-title {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 20px;
+  letter-spacing: 0.1em;
+  color: #ffffff;
+  font-weight: 400;
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+/* Hamburger button - Always visible on all screens */
+.hamburger-btn {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  gap: 5px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  position: relative;
+  z-index: 70;
+}
+
+/* Hamburger lines */
+.hamburger-line {
+  display: block;
+  width: 24px;
+  height: 2px;
+  background: #ffffff;
+  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transform-origin: center;
+}
+
+/* Hamburger to X transformation */
+.hamburger-btn.active .hamburger-line:nth-child(1) {
+  transform: rotate(45deg) translateY(7px);
+}
+
+.hamburger-btn.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+  transform: scaleX(0);
+}
+
+.hamburger-btn.active .hamburger-line:nth-child(3) {
+  transform: rotate(-45deg) translateY(-7px);
+}
+
+/* Dark overlay - appears when menu opens */
+.menu-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.5);
+  opacity: 0;
+  pointer-events: none;
+  z-index: 55;
+  transition: opacity 0.3s ease;
+}
+
+.menu-overlay.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+
+/* Mobile menu panel - slides from bottom */
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  background: #141412;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  z-index: 60;
+  pointer-events: none;
+  /* Initial state - GSAP will animate from here */
+  transform: translateY(100%);
+}
+
+.mobile-menu.open {
+  pointer-events: auto;
+}
+
+/* Menu links container */
+.mobile-menu ul {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2rem;
+}
+
+/* Menu item wrapper */
+.menu-item {
+  overflow: hidden;
+}
+
+/* Menu links styling */
+.menu-link {
+  color: #ffffff;
+  font-family: 'Playfair Display', serif;
+  font-size: 2.5rem;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  font-weight: 300;
+  transition: color 0.3s ease;
+  text-decoration: none;
+  display: block;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+}
+
+@media (min-width: 768px) {
+  .menu-link {
+    font-size: 3rem;
+  }
+}
+
+.menu-link:hover {
+  color: #cccccc;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .hamburger-line,
+  .menu-overlay,
+  .mobile-menu,
+  .menu-link {
+    transition: none !important;
+  }
+}
+
+/* Animated underline using span element */
+.link-underline {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: currentColor;
+  transform-origin: left;
+  will-change: transform;
+}
+
+/* Active state for links */
+.nav-link.active {
+  color: #1a1a1a;
+  font-weight: 600;
+}
+
+/* CTA Button */
+.cta-button {
+  position: relative;
+  font-family: 'Inter', sans-serif;
+  letter-spacing: 0.08em;
+  font-weight: 600;
+  will-change: transform;
+  font-size: 0.875rem;
+}
+
+/* Hamburger Menu Button */
+#menu-toggle {
+  position: relative;
+  z-index: 70;
+}
+
+/* Hamburger lines transformation to X */
+#menu-toggle .hamburger-line {
+  transform-origin: center;
+}
+
+/* Active state (X) */
+#menu-toggle.active .hamburger-line:nth-child(1) {
+  transform: translateY(8px) rotate(45deg);
+}
+
+#menu-toggle.active .hamburger-line:nth-child(2) {
+  opacity: 0;
+}
+
+#menu-toggle.active .hamburger-line:nth-child(3) {
+  transform: translateY(-8px) rotate(-45deg);
+}
+
+/* Full-Screen Mobile Menu Overlay */
+.mobile-menu {
+  font-family: 'Playfair Display', serif;
+  will-change: opacity;
+}
+
+/* Menu links styling */
+.menu-link {
+  position: relative;
+  display: block;
+  font-weight: 400;
+  letter-spacing: 0.05em;
+  will-change: transform, opacity;
+  transition: color 0.3s ease;
+}
+
+/* Optional: Add subtle decoration to menu links */
+.menu-link::before {
+  content: '';
+  position: absolute;
+  left: -24px;
+  top: 50%;
+  transform: translateY(-50%) scaleX(0);
+  width: 12px;
+  height: 2px;
+  background: currentColor;
+  transform-origin: right;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.menu-link:hover::before {
+  transform: translateY(-50%) scaleX(1);
+}
+
+/* Focus visible states for accessibility */
+.nav-link:focus-visible,
+.menu-link:focus-visible,
+.cta-button:focus-visible,
+.logo:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 4px;
+  border-radius: 2px;
+}
+
+#menu-toggle:focus-visible,
+#mobile-menu-close:focus-visible {
+  outline: 2px solid #1a1a1a;
+  outline-offset: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .global-header,
+  .nav-link,
+  .menu-link,
+  .hamburger-line,
+  .cta-button,
+  .link-underline {
+    transition-duration: 0.01ms !important;
+  }
+  
+  .mobile-menu {
+    transition: none !important;
+  }
+}
+
+/* Mobile breakpoint adjustments */
+@media (max-width: 768px) {
+  .global-header .container {
+    padding-left: 1rem;
+    padding-right: 1rem;
+  }
+  
+  .logo {
+    font-size: 1.125rem;
+  }
+  
+  .menu-link {
+    font-size: 2rem;
+  }
+}
+
+/* Tablet adjustments */
+@media (min-width: 768px) and (max-width: 1024px) {
+  .menu-link {
+    font-size: 2.5rem;
+  }
+}
+
+/* Remove old mobile panel styles - no longer needed */
+/* .mobile-menu display is controlled by GSAP now */
+
+/* =================================
+   ORBITING TEXT - Circular Animation
+   ================================= */
+
+/* Container for orbiting text - positioned around hero title */
+.orbiting-text {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 600px;
+  height: 600px;
+  pointer-events: none;
+  z-index: 15; /* Between background floats (z-5) and title (z-20) */
+  opacity: 0.7;
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  will-change: transform;
+}
+
+/* SVG container */
+.orbit-svg {
+  width: 100%;
+  height: 100%;
+  overflow: visible;
+}
+
+/* Text styling for orbiting text */
+.orbit-text {
+  fill: url(#orbit-gradient); /* Gradient for subtle effect */
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-size: 13px;
+  font-weight: 300;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  dominant-baseline: middle;
+  text-anchor: start;
+  opacity: 0.85;
+}
+
+/* Add gradient definition to SVG for subtle color variation */
+.orbit-svg defs::after {
+  content: '';
+}
+
+/* Responsive adjustments for orbiting text */
+@media (max-width: 1024px) {
+  .orbiting-text {
+    width: 500px;
+    height: 500px;
+  }
+  
+  .orbit-text {
+    font-size: 12px;
+    letter-spacing: 0.25em;
+  }
+}
+
+@media (max-width: 768px) {
+  .orbiting-text {
+    width: 400px;
+    height: 400px;
+    opacity: 0.5;
+  }
+  
+  .orbit-text {
+    font-size: 10px;
+    letter-spacing: 0.2em;
+  }
+}
+
+@media (max-width: 480px) {
+  .orbiting-text {
+    width: 320px;
+    height: 320px;
+    opacity: 0.4;
+  }
+  
+  .orbit-text {
+    font-size: 8px;
+    letter-spacing: 0.15em;
+  }
+}
+
+/* Reduced motion: hide or make static */
+@media (prefers-reduced-motion: reduce) {
+  .orbiting-text {
+    opacity: 0.3;
+  }
+}
+
+/* =================================
+   LOADING SCREEN - Max Milkin Style
+   ================================= */
+
+/* Fullscreen loading overlay */
+.loading-screen {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background: #000000;
+  z-index: 9999;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  opacity: 1;
+  transition: opacity 0.8s ease;
+}
+
+/* Percentage counter - centered */
+.loading-percentage {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-size: 48px;
+  font-weight: 300;
+  color: #ffffff;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.1em;
+  z-index: 10;
+}
+
+/* Container for orbiting text particles */
+.orbit-particles-container {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  perspective: 1000px;
+  transform-style: preserve-3d;
+  pointer-events: none;
+}
+
+/* Individual text particle (letter) */
+.text-particle {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  color: #e5e7eb;
+  font-size: 14px;
+  font-weight: 300;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  opacity: 0;
+  will-change: transform, opacity;
+  transform-origin: center;
+}
+
+/* Responsive adjustments for loading screen */
+@media (max-width: 1024px) {
+  .loading-percentage {
+    font-size: 40px;
+  }
+  
+  .orbit-particles-container {
+    width: 500px;
+    height: 500px;
+  }
+  
+  .text-particle {
+    font-size: 12px;
+  }
+}
+
+@media (max-width: 768px) {
+  .loading-percentage {
+    font-size: 32px;
+  }
+  
+  .orbit-particles-container {
+    width: 400px;
+    height: 400px;
+  }
+  
+  .text-particle {
+    font-size: 10px;
+  }
+}
+
+@media (max-width: 480px) {
+  .loading-percentage {
+    font-size: 28px;
+  }
+  
+  .orbit-particles-container {
+    width: 320px;
+    height: 320px;
+  }
+  
+  .text-particle {
+    font-size: 8px;
+    letter-spacing: 0.15em;
+  }
+}
+
+/* Reduced motion: slow or static particles */
+@media (prefers-reduced-motion: reduce) {
+  .text-particle {
+    opacity: 0.5 !important;
+  }
 }

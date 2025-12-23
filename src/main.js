@@ -2,6 +2,7 @@ import './style.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import router from './router.js';
+import { initNavbar, setActiveLink } from './ui/navbar.js';
 
 // Importar módulos de animación
 import { initHeroAnimations } from './animations/hero-monet.js';
@@ -24,6 +25,12 @@ window.gsap = gsap;
 window.addEventListener('load', () => {
   console.log('✅ Todas las imágenes cargadas - Recalculando ScrollTrigger');
   ScrollTrigger.refresh();
+  
+  // Inicializar navbar (persistente en todas las vistas)
+  initNavbar();
+  
+  // Exponer setActiveLink globalmente para el router
+  window.setNavbarActiveLink = setActiveLink;
 });
 
 // ============================================

@@ -1,9 +1,9 @@
 import { obras } from '../data/obras.js';
 import { generateLayout } from '../utils/layoutEngine.js';
-import { bindAboutButton } from '../ui/aboutModal.js';
 import { bindEnterGalleryButton } from '../transitions/enterGallery.js';
 import { bindImageCards } from '../ui/imageModal.js';
 import { initTitleAnimations } from '../animations/hero-scroll-title.js';
+import { initLoadingScreen } from '../animations/loading-screen.js';
 
 export default function HomeView() {
   // ============================================
@@ -47,6 +47,8 @@ export default function HomeView() {
 
   const heroFloatHTML = heroFloats.map((frame, index) => {
     const obra = heroImages[index];
+    const isFirstImage = index === 0;
+    
     return `
       <figure class="hero-float photo-card pos-${frame.pos} pointer-events-auto" 
               data-depth="${frame.depth}"
@@ -56,10 +58,24 @@ export default function HomeView() {
               data-year="${obra.year}"
               data-category="${obra.categoria}"
               style="position: absolute; left: ${frame.left}; top: ${frame.top}; width: ${frame.width}; height: ${frame.height}; will-change: transform;">
-        <div class="photo-media frame-real relative w-full h-full cursor-pointer">
-          <img class="w-full h-full object-contain rounded-lg" 
-               src="${obra.img}" 
-               alt="${obra.titulo}" />
+        <div class="photo-media relative w-full h-full cursor-pointer">
+          <picture>
+            <source 
+              type="image/avif" 
+              srcset="${obra.img}?tr=f-avif,w-400 400w, ${obra.img}?tr=f-avif,w-800 800w"
+              sizes="(max-width: 768px) 200px, ${frame.width}" />
+            <source 
+              type="image/webp" 
+              srcset="${obra.img}?tr=f-webp,w-400 400w, ${obra.img}?tr=f-webp,w-800 800w"
+              sizes="(max-width: 768px) 200px, ${frame.width}" />
+            <img 
+              class="w-full h-full object-contain rounded-lg" 
+              src="${obra.img}" 
+              alt="${obra.titulo} - ${obra.categoria} photography"
+              loading="${isFirstImage ? 'eager' : 'lazy'}"
+              decoding="async"
+              ${isFirstImage ? 'fetchpriority="high"' : ''} />
+          </picture>
         </div>
       </figure>
     `;
@@ -89,7 +105,7 @@ export default function HomeView() {
         data-category="${obra.categoria}">
         
         <!-- INNER: Para Tailwind hover (NO afecta positioning) -->
-        <div class="photo-media baroque-frame relative w-full h-full cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-out hover:scale-105 hover:shadow-2xl hover:shadow-white/20 group">
+        <div class="photo-media relative w-full h-full cursor-pointer overflow-hidden rounded-xl transition-all duration-500 ease-out hover:scale-105 hover:shadow-2xl hover:shadow-white/20 group">
           <!-- IMAGEN SIN FILTROS GRAYSCALE -->
           <img
             src="${obra.img}"
@@ -117,17 +133,22 @@ export default function HomeView() {
       <div id="transition-curtain"></div>
 
       <!-- ========================================== -->
+      <!-- LOADING SCREEN - Max Milkin Style -->
+      <!-- ========================================== -->
+      <div id="loading-screen" class="loading-screen">
+        <!-- Percentage Counter -->
+        <div id="loading-percentage" class="loading-percentage">0%</div>
+        
+        <!-- Orbiting Text Particles Container -->
+        <div id="orbit-particles" class="orbit-particles-container"></div>
+      </div>
+
+      <!-- ========================================== -->
       <!-- HERO SECTION - Claude Monet Exact Replica -->
       <!-- ========================================== -->
-      <section id="hero" class="relative overflow-hidden" style="min-height: 100vh;">
+      <section id="hero" class="relative overflow-hidden" style="min-height: 100vh; opacity: 0;">
         <!-- Background with glow -->
         <div class="hero-bg absolute inset-0 bg-black"></div>
-
-        <!-- Top bar: Brand + About -->
-        <div class="hero-top absolute left-0 right-0 top-0 z-30 flex items-center justify-between px-10 pt-8">
-          <div class="hero-brand text-white/90 text-sm tracking-[0.22em]">CLAUDE MONET</div>
-          <button class="hero-about rounded-full border border-white/25 px-5 py-2 text-sm text-white/80 hover:bg-white/10 transition-all duration-300">ABOUT</button>
-        </div>
 
         <!-- Floating frames container (BEHIND title) -->
         <div id="hero-floats" class="absolute inset-0 z-5 pointer-events-none">
@@ -141,7 +162,7 @@ export default function HomeView() {
             <div class="hero-title-shell">
               <h1 id="hero-title" class="hero-title">
                 <span class="title-mask">
-                  <span class="title-line line-1 monet-line">MONET</span>
+                  <span class="title-line line-1 monet-line">WORK</span>
                 </span>
                 <span class="title-mask">
                   <span class="title-line line-2 impressions-line">IMPRESSIONS</span>
@@ -149,12 +170,24 @@ export default function HomeView() {
               </h1>
             </div>
 
-          <!-- CTA Row: Button + Arrow -->
-          <div class="hero-cta-row flex items-center justify-center gap-6 mt-12">
-            <button class="hero-enter rounded-full border border-white/30 px-8 py-3 text-sm text-white/90 tracking-widest hover:bg-white/10 transition-all duration-300">
-              ENTER GALLERY
+          <!-- CTA Row: Two Buttons with Accessibility -->
+          <div class="hero-cta-row flex items-center justify-center gap-6 mt-12 pointer-events-auto">
+            <button 
+              class="hero-cta hero-enter rounded-full border border-white/30 px-8 py-3 text-sm text-white/90 tracking-widest hover:bg-white/10 transition-all duration-300"
+              aria-label="Ver galería de fotografías"
+              role="button"
+              tabindex="0">
+              VER GALERÍA
             </button>
-            <span class="hero-arrow text-white/70 text-3xl">→</span>
+            <a 
+              href="/contact" 
+              data-link
+              class="hero-cta rounded-full border border-blue-500/40 bg-blue-500/10 px-8 py-3 text-sm text-white/90 tracking-widest hover:bg-blue-500/20 transition-all duration-300"
+              aria-label="Reservar sesión fotográfica"
+              role="button"
+              tabindex="0">
+              RESERVAR SESIÓN
+            </a>
           </div>
         </div>
       </section>
@@ -208,7 +241,7 @@ export default function HomeView() {
             id="modal-img"
             src=""
             alt=""
-            class="baroque-frame max-w-full max-h-full object-contain rounded-2xl shadow-2xl">
+            class="max-w-full max-h-full object-contain rounded-2xl shadow-2xl">
           
           <!-- Navegación siguiente -->
           <button
@@ -239,7 +272,10 @@ export default function HomeView() {
   setTimeout(() => {
     const app = document.querySelector('#app');
     if (app) {
-      bindAboutButton(app, photographerData);
+      // Initialize loading screen FIRST (Max Milkin style)
+      initLoadingScreen();
+      
+      // About button is now in global navbar, not here
       bindEnterGalleryButton(app);
       bindImageCards(app); // Bind todas las imágenes clickeables
       initTitleAnimations(); // Init MANDATORY advanced title animations

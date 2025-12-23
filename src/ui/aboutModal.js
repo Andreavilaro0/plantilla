@@ -49,6 +49,17 @@ export function openAboutModal(data, triggerEl) {
               <span class="about-pill">Based: ${data.city}</span>
               <span class="about-pill">Focus: ${data.focus}</span>
             </div>
+            
+            <!-- CTAs -->
+            <div class="about-actions" style="display: flex; gap: 12px; margin-top: 24px; flex-wrap: wrap;">
+              <button id="about-view-work" class="about-cta-primary" style="flex: 1; min-width: 140px; padding: 12px 24px; border-radius: 24px; border: 1px solid rgba(255, 255, 255, 0.2); background: rgba(255, 255, 255, 0.08); color: white; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.25s ease; letter-spacing: 0.3px;">
+                Explorar trabajo
+              </button>
+              <a href="/contact" data-link id="about-book" class="about-cta-secondary" style="flex: 1; min-width: 140px; padding: 12px 24px; border-radius: 24px; border: 1px solid rgba(59, 130, 246, 0.3); background: rgba(59, 130, 246, 0.1); color: white; font-family: 'Inter', sans-serif; font-size: 14px; font-weight: 500; cursor: pointer; transition: all 0.25s ease; text-align: center; text-decoration: none; display: inline-block; letter-spacing: 0.3px;">
+                Reservar sesión
+              </a>
+            </div>
+
           </div>
         </div>
       </div>
@@ -82,6 +93,26 @@ export function openAboutModal(data, triggerEl) {
   
   // Focus al card
   card.focus();
+  
+  // Event listeners para CTAs
+  const viewWorkBtn = currentModal.querySelector('#about-view-work');
+  const bookBtn = currentModal.querySelector('#about-book');
+  
+  if (viewWorkBtn) {
+    viewWorkBtn.addEventListener('click', () => {
+      // Cerrar modal
+      closeAboutModal();
+      // Esperar a que cierre y hacer scroll suave
+      setTimeout(() => {
+        const gallery = document.querySelector('#gallery-field');
+        if (gallery) {
+          gallery.scrollIntoView({ behavior: 'smooth', block: 'start' });
+        }
+      }, 300);
+    }, { signal });
+  }
+  
+  // bookBtn usa data-link del router, no necesita listener adicional
   
   // Animación de entrada GSAP
   gsap.set(currentModal, { opacity: 0 });
