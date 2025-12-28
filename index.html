@@ -31,66 +31,39 @@
     <!-- Skip link for accessibility -->
     <a href="#main" class="skip-link">Saltar al contenido</a>
     
-    
-    <!-- GSAP Navbar - Minimalist Editorial Style (CodePen Replica) -->
-    <header class="global-header fixed top-0 left-0 right-0 z-50 h-16" role="banner">
-      <div class="container mx-auto flex items-center justify-between px-8 h-full">
-        
-        <!-- Left Label -->
-        <span class="navbar-label tracking-widest uppercase font-light">
-          Portfolio
-        </span>
-        
-        <!-- Center Title -->
-        <h1 class="navbar-title absolute left-1/2 transform -translate-x-1/2 font-serif tracking-wide">
-          WORK IMPRESSIONS
-        </h1>
-        
-        <!-- Right - Hamburger Menu (visible on all screen sizes) -->
-        <button id="menu-toggle" class="hamburger-btn flex flex-col items-center justify-center w-10 h-10 gap-[5px] focus:outline-none rounded-sm z-[70]" aria-label="Abrir menú" aria-expanded="false" aria-controls="mobile-menu">
-          <span class="hamburger-line block w-6 h-[2px] transition-all duration-300 ease-out"></span>
-          <span class="hamburger-line block w-6 h-[2px] transition-all duration-300 ease-out"></span>
-          <span class="hamburger-line block w-6 h-[2px] transition-all duration-300 ease-out"></span>
+    <!-- NAVBAR - Must be outside #app for position:fixed to work -->
+    <nav id="navbar" class="navbar">
+      <div class="container-nav">
+        <!-- Logo -->
+        <div class="logo">
+          <span class="logo-text">Portfolio</span>
+        </div>
+
+        <!-- Desktop Navigation -->
+        <div class="nav-desktop">
+          <a href="#hero" class="nav-link">Home</a>
+          <a href="#about" class="nav-link">About</a>
+          <a href="#portfolio" class="nav-link">Portfolio</a>
+          <a href="#services" class="nav-link">Services</a>
+          <a href="#contact" class="nav-link">Contact</a>
+        </div>
+
+        <!-- Mobile Menu Button -->
+        <button id="mobile-menu-button" class="mobile-menu-btn" aria-label="Toggle menu">
+          <span class="hamburger-line" id="line1"></span>
+          <span class="hamburger-line" id="line2"></span>
+          <span class="hamburger-line" id="line3"></span>
         </button>
-        
       </div>
-    </header>
-    
-    <!-- Dark Overlay Background -->
-    <div id="menu-overlay" class="menu-overlay fixed inset-0 bg-black/50 opacity-0 pointer-events-none z-[55]" aria-hidden="true"></div>
-    
-    <!-- Bottom Slide Menu Panel -->
-    <nav id="mobile-menu" class="mobile-menu fixed inset-0 z-[60] flex flex-col justify-center items-center pointer-events-none" aria-hidden="true" role="dialog" aria-modal="true" aria-label="Menú de navegación">
-      
-      <!-- Menu Links - Centered -->
-      <ul class="flex flex-col items-center gap-6 md:gap-8">
-        <li class="menu-item overflow-hidden">
-          <a href="#gallery-field" class="menu-link block text-4xl md:text-5xl font-serif tracking-wide text-white hover:text-gray-300 transition-colors duration-300 uppercase font-light">
-            Trabajo
-          </a>
-        </li>
-        <li class="menu-item overflow-hidden">
-          <a href="/services" data-link class="menu-link block text-4xl md:text-5xl font-serif tracking-wide text-white hover:text-gray-300 transition-colors duration-300 uppercase font-light">
-            Servicios
-          </a>
-        </li>
-        <li class="menu-item overflow-hidden">
-          <button id="mobile-about-trigger" class="menu-link block text-4xl md:text-5xl font-serif tracking-wide text-white hover:text-gray-300 transition-colors duration-300 uppercase font-light">
-            Sobre mí
-          </button>
-        </li>
-        <li class="menu-item overflow-hidden">
-          <a href="/contact" data-link class="menu-link block text-4xl md:text-5xl font-serif tracking-wide text-white hover:text-gray-300 transition-colors duration-300 uppercase font-light">
-            Contacto
-          </a>
-        </li>
-        <li class="menu-item overflow-hidden mt-4">
-          <a href="/contact" data-link class="menu-link block rounded-full border-2 border-neutral-900 bg-neutral-900 px-10 py-4 text-xl tracking-wider text-neutral-50 hover:bg-neutral-800 transition-all duration-300 uppercase font-normal">
-            Reservar sesión
-          </a>
-        </li>
-      </ul>
-      
+
+      <!-- Mobile Menu -->
+      <div id="mobile-menu" class="mobile-menu">
+        <a href="#hero" class="mobile-nav-link">Home</a>
+        <a href="#about" class="mobile-nav-link">About</a>
+        <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+        <a href="#services" class="mobile-nav-link">Services</a>
+        <a href="#contact" class="mobile-nav-link">Contact</a>
+      </div>
     </nav>
     
     <main id="main">

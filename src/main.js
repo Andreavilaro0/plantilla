@@ -1,20 +1,15 @@
 import './style.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
 import router from './router.js';
 import { initNavbar, setActiveLink } from './ui/navbar.js';
-
-// Importar módulos de animación
-import { initHeroAnimations } from './animations/hero-monet.js';
-import { initScrollAnimations } from './animations/scroll.js';
-import { initCardsAnimations } from './animations/cards.js';
-import { initParallaxMouse } from './animations/parallax.js';
-import { initFlipModal } from './animations/flipModal.js';
+import { initLiquidGradient } from './animations/liquid-gradient.js';
 
 // ============================================
 // REGISTRO EXPLÍCITO DE PLUGINS
 // ============================================
-gsap.registerPlugin(ScrollTrigger);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 // Variables globales
 window.gsap = gsap;
@@ -23,21 +18,24 @@ window.gsap = gsap;
 // INICIALIZACIÓN SEGURA (window.load)
 // ============================================
 window.addEventListener('load', () => {
-  console.log('✅ Todas las imágenes cargadas - Recalculando ScrollTrigger');
+
   ScrollTrigger.refresh();
   
   // Inicializar navbar (persistente en todas las vistas)
   initNavbar();
+  
+  // Inicializar fondo Liquid Gradient
+  initLiquidGradient();
   
   // Exponer setActiveLink globalmente para el router
   window.setNavbarActiveLink = setActiveLink;
 });
 
 // ============================================
-// INIT ANIMATIONS - Orquestador principal
+// INIT ANIMATIONS - Simplificado
 // ============================================
 function initAnimations() {
-  console.log('🎨 Inicializando animaciones modulares');
+
   
   // Fade-in general del contenedor
   const app = document.querySelector('#app');
@@ -48,17 +46,10 @@ function initAnimations() {
     );
   }
   
-  // Inicializar módulos de animación en orden
-  initHeroAnimations();
-  initCardsAnimations();
-  initScrollAnimations();
-  initParallaxMouse();
-  initFlipModal();
-  
-  // Esperar render completo antes de refrescar ScrollTrigger
+  // Refrescar ScrollTrigger después del render
   setTimeout(() => {
     ScrollTrigger.refresh();
-    console.log('✅ ScrollTrigger refrescado');
+
   }, 100);
 }
 
@@ -67,4 +58,4 @@ function initAnimations() {
 // ============================================
 window.initAnimations = initAnimations;
 
-console.log('✅ Immersive Gallery - Arquitectura modular cargada');
+console.log('✅ Portfolio - Arquitectura modular cargada');

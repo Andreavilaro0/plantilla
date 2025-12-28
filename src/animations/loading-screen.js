@@ -181,7 +181,7 @@ function completeLoading() {
   setTimeout(() => {
     const loader = document.getElementById('loading-screen');
     const heroSection = document.getElementById('hero');
-    const navbar = document.querySelector('.global-header');
+    const navbar = document.querySelector('.navbar');
     
     if (loader && heroSection) {
       // Fade out loader

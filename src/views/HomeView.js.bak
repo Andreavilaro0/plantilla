@@ -2,7 +2,6 @@ import { obras } from '../data/obras.js';
 import { bindEnterGalleryButton } from '../transitions/enterGallery.js';
 import { initTitleAnimations } from '../animations/hero-scroll-title.js';
 import { initLoadingScreen } from '../animations/loading-screen.js';
-import VanillaTilt from '../lib/vanilla-tilt.js';
 
 export default function HomeView() {
   // ============================================
@@ -11,7 +10,7 @@ export default function HomeView() {
   // ============================================
   const heroImages = obras.slice(0, 5);
   
-
+  console.log(`📸 Hero: ${heroImages.length} imágenes`);
   
   // 5 cuadros flotantes con posiciones fijas
   // ============================================
@@ -66,7 +65,42 @@ export default function HomeView() {
   // ============================================
 
   const template = `
-    <div class="relative w-full min-h-screen bg-transparent text-white overflow-x-hidden">
+    <div class="relative w-full min-h-screen bg-black text-white overflow-x-hidden">
+      
+      <!-- ========================================== -->
+      <!-- NAVBAR - Minimal White Design -->
+      <!-- ========================================== -->
+      <nav id="navbar" class="navbar">
+        <div class="container-nav">
+          <!-- Logo -->
+          <div class="logo">
+            <span class="logo-text">Portfolio</span>
+          </div>
+
+          <!-- Desktop Navigation -->
+          <div class="nav-desktop">
+            <a href="#hero" class="nav-link">Home</a>
+            <a href="#about" class="nav-link">About</a>
+            <a href="#portfolio" class="nav-link">Portfolio</a>
+            <a href="#contact" class="nav-link">Contact</a>
+          </div>
+
+          <!-- Mobile Menu Button -->
+          <button id="mobile-menu-button" class="mobile-menu-btn" aria-label="Toggle menu">
+            <span class="hamburger-line" id="line1"></span>
+            <span class="hamburger-line" id="line2"></span>
+            <span class="hamburger-line" id="line3"></span>
+          </button>
+        </div>
+
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="mobile-menu">
+          <a href="#hero" class="mobile-nav-link">Home</a>
+          <a href="#about" class="mobile-nav-link">About</a>
+          <a href="#portfolio" class="mobile-nav-link">Portfolio</a>
+          <a href="#contact" class="mobile-nav-link">Contact</a>
+        </div>
+      </nav>
       
       <!-- CINEMATIC TRANSITION CURTAIN -->
       <div id="transition-curtain"></div>
@@ -87,7 +121,7 @@ export default function HomeView() {
       <!-- ========================================== -->
       <section id="hero" class="relative overflow-hidden" style="min-height: 100vh; opacity: 0;">
         <!-- Background with glow -->
-        <div class="hero-bg absolute inset-0 bg-transparent"></div>
+        <div class="hero-bg absolute inset-0 bg-black"></div>
 
         <!-- Floating frames container (BEHIND title) -->
         <div id="hero-floats" class="absolute inset-0 z-5 pointer-events-none">
@@ -135,107 +169,34 @@ export default function HomeView() {
       <!-- ========================================== -->
       <!-- SECTIONS - Colin Moy Style -->
       <!-- ========================================== -->
-      <main class="sections-container bg-transparent">
+      <main class="sections-container bg-white">
         
         <!-- ABOUT SECTION -->
-        <section id="about" class="section-block relative min-h-screen flex items-center justify-center bg-transparent cursor-pointer hover:bg-white/5 transition-colors duration-300">
+        <section id="about" class="section-block relative min-h-screen flex items-center justify-center bg-neutral-50 cursor-pointer hover:bg-neutral-100 transition-colors duration-300">
           <div class="text-center px-8">
-            <h2 class="section-title text-8xl md:text-9xl font-bold uppercase tracking-tighter text-white">
+            <h2 class="section-title text-8xl md:text-9xl font-bold uppercase tracking-tighter text-black">
               ABOUT
             </h2>
           </div>
         </section>
 
-        <!-- PORTFOLIO SECTION - Pinterest Masonry Grid -->
-        <section id="portfolio" class="section-block relative min-h-screen bg-transparent py-20 px-6">
-          <div class="max-w-7xl mx-auto">
-            <!-- Title -->
-            <h2 class="text-6xl md:text-7xl font-bold uppercase tracking-tighter text-white text-center mb-16">
-              PORTF<span class="text-white/40">●</span>LIO
+        <!-- PORTFOLIO SECTION -->
+        <section id="portfolio" class="section-block relative min-h-screen flex items-center justify-center bg-white cursor-pointer hover:bg-neutral-50 transition-colors duration-300">
+          <div class="text-center px-8">
+            <h2 class="section-title text-8xl md:text-9xl font-bold uppercase tracking-tighter text-black">
+              PORTF&#9679;LIO
             </h2>
-            
-            <!-- Pinterest Masonry Grid -->
-            <div class="masonry-grid">
-              ${obras
-                .map(value => ({ value, sort: Math.random() })) // Shuffle array
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ value: obra }, index) => `
-                <div class="masonry-item" data-obra-id="${obra.id}">
-                  <div class="masonry-card group cursor-pointer">
-                    <div class="masonry-img-wrapper">
-                      <!-- Removed h-600 to allow natural height (masonry effect) -->
-                      <img 
-                        src="${obra.img}?tr=w-500,fo-auto" 
-                        alt="${obra.titulo}"
-                        loading="${index < 8 ? 'eager' : 'lazy'}"
-                        class="masonry-img"
-                        style="min-height: 200px; background: #222;"
-                      />
-                      <!-- Overlay on hover -->
-                      <div class="masonry-overlay">
-                        <h3 class="text-xl font-bold text-white mb-2">${obra.titulo}</h3>
-                        <p class="text-sm text-white/80 mb-2">${obra.categoria} • ${obra.year}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `).join('')}
-            </div>
-            
-            <!-- Next Section Arrow -->
-            <div class="w-full flex justify-center py-20">
-              <a href="#services" class="scroll-arrow group" aria-label="Go to Services">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" class="text-white/70 group-hover:text-white transition-colors duration-300 animate-bounce">
-                  <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </div>
-          </div>
-        </section>
-
-        <!-- SERVICES SECTION - VanillaTilt Cards -->
-        <section id="services" class="section-block relative min-h-screen flex items-center justify-center bg-transparent py-20 px-6">
-          <div class="w-full max-w-7xl mx-auto">
-            <h2 class="services-title">Our Services</h2>
-            <div class="services-container">
-              <div class="tilt-card">
-                <div class="card-content">
-                  <h2 class="card-number">01</h2>
-                  <h3 class="card-title">Web Design</h3>
-                  <p class="card-description">Creating stunning, responsive websites that captivate your audience and deliver exceptional user experiences.</p>
-                  <a href="#" class="card-link">Read More</a>
-                </div>
-              </div>
-              
-              <div class="tilt-card">
-                <div class="card-content">
-                  <h2 class="card-number">02</h2>
-                  <h3 class="card-title">App Design</h3>
-                  <p class="card-description">Designing intuitive mobile applications that seamlessly blend aesthetics with functionality for modern users.</p>
-                  <a href="#" class="card-link">Read More</a>
-                </div>
-              </div>
-              
-              <div class="tilt-card">
-                <div class="card-content">
-                  <h2 class="card-number">03</h2>
-                  <h3 class="card-title">Graphic Design</h3>
-                  <p class="card-description">Crafting compelling visual identities and branded materials that make your business stand out from the crowd.</p>
-                  <a href="#" class="card-link">Read More</a>
-                </div>
-              </div>
-            </div>
           </div>
         </section>
 
         <!-- CONTACT SECTION -->
-        <section id="contact" class="section-block relative min-h-screen flex items-center justify-center bg-transparent cursor-pointer hover:bg-white/5 transition-colors duration-300">
+        <section id="contact" class="section-block relative min-h-screen flex items-center justify-center bg-neutral-50 cursor-pointer hover:bg-neutral-100 transition-colors duration-300">
           <div class="text-center px-8">
-            <h2 class="section-title text-8xl md:text-9xl font-bold uppercase tracking-tighter text-white">
+            <h2 class="section-title text-8xl md:text-9xl font-bold uppercase tracking-tighter text-black">
               C&#9679;NTACT
             </h2>
             <div class="mt-12">
-              <button class="px-12 py-4 bg-white text-black rounded-full text-sm uppercase tracking-widest hover:bg-gray-200 transition-colors duration-300">
+              <button class="px-12 py-4 bg-black text-white rounded-full text-sm uppercase tracking-widest hover:bg-gray-800 transition-colors duration-300">
                 ¿CÓMO PUEDO AYUDAR?
               </button>
             </div>
@@ -260,18 +221,6 @@ export default function HomeView() {
       // About button is now in global navbar, not here
       bindEnterGalleryButton(app);
       initTitleAnimations(); // Init MANDATORY advanced title animations
-      
-      // Initialize VanillaTilt on service cards
-      const cards = document.querySelectorAll('.tilt-card');
-      if (cards.length > 0) {
-        VanillaTilt.init(cards, {
-          max: 25,
-          speed: 400,
-          glare: true,
-          'max-glare': 1,
-        });
-        console.log('✨ VanillaTilt initialized on', cards.length, 'cards (HomeView)');
-      }
     }
   }, 100);
   

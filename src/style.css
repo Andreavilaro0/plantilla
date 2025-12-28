@@ -1,4 +1,5 @@
 @import "tailwindcss";
+@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
 
 @theme {
   --font-serif: "Playfair Display", "Times New Roman", serif;
@@ -14,15 +15,20 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: #000;
+  background-color: #0a0e27; /* Match the navy blue of the liquid background as fallback */
 }
 
 body {
-  background-color: #000;
+  background-color: transparent; /* Transparent to show canvas behind */
   color: #fff;
   font-family: var(--font-serif); 
   overflow-x: hidden;
   min-height: 100vh;
+}
+
+#app {
+  position: relative;
+  z-index: 1; /* Content sits on top of background */
 }
 
 ::-webkit-scrollbar {
@@ -387,18 +393,13 @@ a:focus-visible {
 /* Hero background with radial glow */
 #hero {
   position: relative;
-  background: #000;
-  background-color: #000 !important;
+  background: transparent;
+  background-color: transparent !important;
 }
 
 .hero-bg {
-  background: radial-gradient(
-    ellipse 80% 50% at 50% 50%,
-    rgba(40, 40, 60, 0.3) 0%,
-    rgba(20, 20, 30, 0.2) 40%,
-    #000 80%
-  );
-  backdrop-filter: blur(60px);
+  background: transparent;
+  backdrop-filter: blur(0px);
 }
 
 /* Typography overrides */
@@ -910,329 +911,9 @@ body:has(#hero) .global-nav {
 }
 
 /* =================================
-   NAVBAR - CodePen Replica Style
-   ================================= */
-
-/* Header - Transparent with white text */
-.global-header {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  height: 64px;
-  background: transparent;
-  z-index: 50;
-  opacity: 0; /* Hidden during loading screen */
-  transition: opacity 0.8s ease;
-}
-
-/* Navbar container */
-.global-header .container {
-  max-width: 1280px;
-  margin: 0 auto;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  padding: 0 2rem;
-  height: 100%;
-}
-
-/* Left label - "Portfolio" */
-.navbar-label {
-  font-family: 'Franklin Gothic Medium', 'Arial Narrow', Arial, sans-serif;
-  font-size: 14px;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  color: #ffffff;
-  font-weight: 300;
-}
-
-/* Center title */
-.navbar-title {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 20px;
-  letter-spacing: 0.1em;
-  color: #ffffff;
-  font-weight: 400;
-  position: absolute;
-  left: 50%;
-  transform: translateX(-50%);
-}
-
-/* Hamburger button - Always visible on all screens */
-.hamburger-btn {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  justify-content: center;
-  width: 40px;
-  height: 40px;
-  gap: 5px;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-  position: relative;
-  z-index: 70;
-}
-
-/* Hamburger lines */
-.hamburger-line {
-  display: block;
-  width: 24px;
-  height: 2px;
-  background: #ffffff;
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-  transform-origin: center;
-}
-
-/* Hamburger to X transformation */
-.hamburger-btn.active .hamburger-line:nth-child(1) {
-  transform: rotate(45deg) translateY(7px);
-}
-
-.hamburger-btn.active .hamburger-line:nth-child(2) {
-  opacity: 0;
-  transform: scaleX(0);
-}
-
-.hamburger-btn.active .hamburger-line:nth-child(3) {
-  transform: rotate(-45deg) translateY(-7px);
-}
-
-/* Dark overlay - appears when menu opens */
-.menu-overlay {
-  position: fixed;
-  inset: 0;
-  background: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-  pointer-events: none;
-  z-index: 55;
-  transition: opacity 0.3s ease;
-}
-
-.menu-overlay.visible {
-  opacity: 1;
-  pointer-events: auto;
-}
-
-/* Mobile menu panel - slides from bottom */
-.mobile-menu {
-  position: fixed;
-  inset: 0;
-  background: #141412;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  z-index: 60;
-  pointer-events: none;
-  /* Initial state - GSAP will animate from here */
-  transform: translateY(100%);
-}
-
-.mobile-menu.open {
-  pointer-events: auto;
-}
-
-/* Menu links container */
-.mobile-menu ul {
-  list-style: none;
-  padding: 0;
-  margin: 0;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 2rem;
-}
-
-/* Menu item wrapper */
-.menu-item {
-  overflow: hidden;
-}
-
-/* Menu links styling */
-.menu-link {
-  color: #ffffff;
-  font-family: 'Playfair Display', serif;
-  font-size: 2.5rem;
-  letter-spacing: 0.05em;
-  text-transform: uppercase;
-  font-weight: 300;
-  transition: color 0.3s ease;
-  text-decoration: none;
-  display: block;
-  background: transparent;
-  border: none;
-  cursor: pointer;
-}
-
-@media (min-width: 768px) {
-  .menu-link {
-    font-size: 3rem;
-  }
-}
-
-.menu-link:hover {
-  color: #cccccc;
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .hamburger-line,
-  .menu-overlay,
-  .mobile-menu,
-  .menu-link {
-    transition: none !important;
-  }
-}
-
-/* Animated underline using span element */
-.link-underline {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 2px;
-  background: currentColor;
-  transform-origin: left;
-  will-change: transform;
-}
-
-/* Active state for links */
-.nav-link.active {
-  color: #1a1a1a;
-  font-weight: 600;
-}
-
-/* CTA Button */
-.cta-button {
-  position: relative;
-  font-family: 'Inter', sans-serif;
-  letter-spacing: 0.08em;
-  font-weight: 600;
-  will-change: transform;
-  font-size: 0.875rem;
-}
-
-/* Hamburger Menu Button */
-#menu-toggle {
-  position: relative;
-  z-index: 70;
-}
-
-/* Hamburger lines transformation to X */
-#menu-toggle .hamburger-line {
-  transform-origin: center;
-}
-
-/* Active state (X) */
-#menu-toggle.active .hamburger-line:nth-child(1) {
-  transform: translateY(8px) rotate(45deg);
-}
-
-#menu-toggle.active .hamburger-line:nth-child(2) {
-  opacity: 0;
-}
-
-#menu-toggle.active .hamburger-line:nth-child(3) {
-  transform: translateY(-8px) rotate(-45deg);
-}
-
-/* Full-Screen Mobile Menu Overlay */
-.mobile-menu {
-  font-family: 'Playfair Display', serif;
-  will-change: opacity;
-}
-
-/* Menu links styling */
-.menu-link {
-  position: relative;
-  display: block;
-  font-weight: 400;
-  letter-spacing: 0.05em;
-  will-change: transform, opacity;
-  transition: color 0.3s ease;
-}
-
-/* Optional: Add subtle decoration to menu links */
-.menu-link::before {
-  content: '';
-  position: absolute;
-  left: -24px;
-  top: 50%;
-  transform: translateY(-50%) scaleX(0);
-  width: 12px;
-  height: 2px;
-  background: currentColor;
-  transform-origin: right;
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.menu-link:hover::before {
-  transform: translateY(-50%) scaleX(1);
-}
-
-/* Focus visible states for accessibility */
-.nav-link:focus-visible,
-.menu-link:focus-visible,
-.cta-button:focus-visible,
-.logo:focus-visible {
-  outline: 2px solid #1a1a1a;
-  outline-offset: 4px;
-  border-radius: 2px;
-}
-
-#menu-toggle:focus-visible,
-#mobile-menu-close:focus-visible {
-  outline: 2px solid #1a1a1a;
-  outline-offset: 2px;
-}
-
-/* Reduced motion support */
-@media (prefers-reduced-motion: reduce) {
-  .global-header,
-  .nav-link,
-  .menu-link,
-  .hamburger-line,
-  .cta-button,
-  .link-underline {
-    transition-duration: 0.01ms !important;
-  }
-  
-  .mobile-menu {
-    transition: none !important;
-  }
-}
-
-/* Mobile breakpoint adjustments */
-@media (max-width: 768px) {
-  .global-header .container {
-    padding-left: 1rem;
-    padding-right: 1rem;
-  }
-  
-  .logo {
-    font-size: 1.125rem;
-  }
-  
-  .menu-link {
-    font-size: 2rem;
-  }
-}
-
-/* Tablet adjustments */
-@media (min-width: 768px) and (max-width: 1024px) {
-  .menu-link {
-    font-size: 2.5rem;
-  }
-}
-
-/* Remove old mobile panel styles - no longer needed */
-/* .mobile-menu display is controlled by GSAP now */
-
-/* =================================
    ORBITING TEXT - Circular Animation
    ================================= */
+
 
 /* Container for orbiting text - positioned around hero title */
 .orbiting-text {
@@ -1437,3 +1118,432 @@ body:has(#hero) .global-nav {
     opacity: 0.5 !important;
   }
 }
+
+/* ============================================
+   NAVBAR - Minimal White Design
+   Adapted from FutureNav
+   ============================================ */
+
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  background-color: transparent;
+  backdrop-filter: blur(0px);
+  -webkit-backdrop-filter: blur(0px);
+  border-bottom: none;
+  z-index: 10000;
+  transition: all 0.3s ease;
+  height: 70px;
+}
+
+.navbar.scrolled {
+  background-color: rgba(10, 14, 39, 0.3); /* Ultra subtle navy glass */
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  box-shadow: none; /* Remove harsh shadow */
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.container-nav {
+  max-width: 1280px;
+  margin: 0 auto;
+  padding: 0 1.5rem;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+
+/* Logo */
+.logo {
+  display: flex;
+  align-items: center;
+}
+
+.logo-text {
+  font-size: 1.25rem;
+  font-weight: 600;
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+}
+
+/* Desktop Nav */
+.nav-desktop {
+  display: none;
+  gap: 2rem;
+}
+
+@media (min-width: 768px) {
+  .nav-desktop {
+    display: flex;
+  }
+}
+
+.nav-link {
+  color: #fff;
+  font-size: 0.95rem;
+  font-family: 'Playfair Display', serif;
+  position: relative;
+  transition: color 0.2s;
+  text-decoration: none;
+}
+
+.nav-link::after {
+  content: '';
+  position: absolute;
+  bottom: -5px;
+  left: 50%;
+  width: 0;
+  height: 2px;
+  background: #fff;
+  transition: width 0.3s ease;
+  transform: translateX(-50%);
+}
+
+.nav-link:hover::after,
+.nav-link.active::after {
+  width: 80%;
+}
+
+.nav-link:hover {
+  color: #ccc;
+}
+
+/* Mobile Menu Button */
+.mobile-menu-btn {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 8px;
+}
+
+@media (min-width: 768px) {
+  .mobile-menu-btn {
+    display: none;
+  }
+}
+
+.hamburger-line {
+  width: 24px;
+  height: 2px;
+  background: #fff;
+  transition: transform 0.3s ease, opacity 0.2s ease;
+  transform-origin: center;
+}
+
+.mobile-menu-btn.active #line1 {
+  transform: translateY(6px) rotate(45deg);
+}
+
+.mobile-menu-btn.active #line2 {
+  opacity: 0;
+}
+
+.mobile-menu-btn.active #line3 {
+  transform: translateY(-6px) rotate(-45deg);
+}
+
+/* Mobile Menu */
+.mobile-menu {
+  position: fixed;
+  top: 70px; /* Below navbar */
+  left: 0;
+  right: 0;
+  height: 0;
+  overflow: hidden;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
+  background: rgba(10, 14, 39, 0.9); /* Navy Glass */
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  z-index: 9999;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 0; /* Hidden by default */
+}
+
+.mobile-menu.open {
+  /* Height set dynamically in JS */
+  padding-top: 2rem; /* Show padding when open */
+  min-height: calc(100vh - 70px); /* Ensure full viewport coverage */
+}
+
+.mobile-nav-link {
+  display: block;
+  padding: 1.25rem 2rem;
+  color: #fff;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.5rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  transition: background 0.2s, color 0.2s;
+  text-decoration: none;
+  text-align: center;
+}
+
+.mobile-nav-link:hover,
+.mobile-nav-link.active {
+  background: rgba(255, 255, 255, 0.1);
+  color: #fff;
+}
+
+@media (max-width: 767px) {
+  .mobile-menu-btn {
+    display: flex;
+  }
+}
+
+/* ============================================
+   VANILLATILT GLASSMORPHISM CARDS
+   ============================================ */
+
+.services-view {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-wrap: wrap;
+  flex-direction: column;
+  min-height: 100vh;
+  background: #000;
+  padding: 3rem 1.5rem;
+}
+
+.services-title {
+  font-family: 'Poppins', sans-serif;
+  font-size: clamp(3rem, 8vw, 4rem);
+  margin: 3rem auto;
+  color: #fff;
+  text-align: center;
+  font-weight: 700;
+}
+
+.services-container {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  max-width: 1200px;
+  flex-wrap: wrap;
+  z-index: 1;
+  gap: 2rem;
+}
+
+.tilt-card {
+  position: relative;
+  width: 280px;
+  height: 400px;
+  margin: 30px;
+  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
+  border-radius: 15px;
+  background: rgba(255, 255, 255, 0.1);
+  overflow: hidden;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-top: 1px solid rgba(255, 255, 255, 0.5);
+  border-left: 1px solid rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(5px);
+  -webkit-backdrop-filter: blur(5px);
+  transform-style: preserve-3d;
+}
+
+.card-content {
+  padding: 20px;
+  text-align: center;
+  font-family: 'Poppins', sans-serif;
+  transform: translateY(-100px);
+  opacity: 0;
+  transition: 0.5s;
+  position: relative;
+  z-index: 2;
+}
+
+.tilt-card:hover .card-content {
+  transform: translateY(0px);
+  opacity: 1;
+}
+
+.card-number {
+  position: absolute;
+  top: -80px;
+  right: 30px;
+  font-size: 8em;
+  color: rgba(255, 255, 255, 0.05);
+  pointer-events: none;
+  font-weight: 700;
+}
+
+.card-title {
+  font-size: 1.8em;
+  color: #fff;
+  z-index: 1;
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+
+.card-description {
+  font-size: 1em;
+  color: #fff;
+  font-weight: 300;
+  line-height: 1.6;
+  margin-bottom: 1rem;
+}
+
+.card-link {
+  position: relative;
+  display: inline-block;
+  margin-top: 16px;
+  padding: 8px 20px;
+  background: #fff;
+  color: #000;
+  border-radius: 20px;
+  text-decoration: none;
+  font-weight: 500;
+  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
+  transition: all 0.3s ease;
+}
+
+.card-link:hover {
+  transform: translateY(-2px);
+  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+}
+
+/* VanillaTilt Glare Effect Styles */
+.js-tilt-glare {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  pointer-events: none;
+  border-radius: 15px;
+}
+
+.js-tilt-glare-inner {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  pointer-events: none;
+  background-image: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
+  transform: rotate(180deg) translate(-50%, -50%);
+  transform-origin: 0% 0%;
+  opacity: 0;
+}
+
+/* Responsive Design */
+@media (max-width: 768px) {
+  .services-container {
+    gap: 1rem;
+  }
+  
+  .tilt-card {
+    margin: 15px;
+    width: 260px;
+    height: 380px;
+  }
+  
+  .card-number {
+    font-size: 6em;
+  }
+  
+  .card-title {
+    font-size: 1.5em;
+  }
+}
+
+/* ============================================
+   PINTEREST MASONRY GRID
+   ============================================ */
+
+.masonry-grid {
+  column-count: 4;
+  column-gap: 4rem; /* Much more horizontal space */
+  width: 95%; 
+  max-width: 1600px; /* Wider centering */
+  margin: 0 auto; /* Centering */
+}
+
+.masonry-item {
+  break-inside: avoid;
+  margin-bottom: 4rem; /* Much more vertical space */
+  display: block; 
+}
+
+.masonry-card {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  background: #1a1a1a;
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.masonry-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+}
+
+.masonry-img-wrapper {
+  position: relative;
+  overflow: hidden;
+}
+
+.masonry-img {
+  width: 100%;
+  height: auto;
+  display: block;
+  transition: transform 0.5s ease;
+}
+
+.masonry-card:hover .masonry-img {
+  transform: scale(1.05);
+}
+
+.masonry-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1.5rem;
+}
+
+.masonry-card:hover .masonry-overlay {
+  opacity: 1;
+}
+
+/* Responsive columns & Centering */
+@media (max-width: 1400px) {
+  .masonry-grid {
+    column-count: 3;
+    max-width: 1000px;
+  }
+}
+
+@media (max-width: 1024px) {
+  .masonry-grid {
+    column-count: 2;
+    max-width: 700px;
+    column-gap: 1.5rem;
+  }
+}
+
+@media (max-width: 640px) {
+  .masonry-grid {
+    column-count: 1;
+    max-width: 100%;
+    padding-inline: 1rem;
+  }
+  
+  .masonry-item {
+    margin-bottom: 2rem; /* More space on mobile */
+  }
+}
+
