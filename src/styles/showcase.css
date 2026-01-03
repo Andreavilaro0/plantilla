@@ -1,0 +1,39 @@
+/* Showcase Section Styles */
+.showcase-section {
+  position: relative;
+  z-index: 1;
+}
+
+.showcase-container {
+  position: relative;
+}
+
+/* Ghost Elements - Invisible scroll anchors */
+.showcase-item {
+  width: 60vw;
+  height: 60vh;
+  margin: 0 auto 30vh;
+  opacity: 0;
+  pointer-events: none;
+  position: relative;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
+  .showcase-item {
+    width: 90vw;
+    height: 50vh;
+    margin-bottom: 20vh;
+  }
+  
+  .showcase-section {
+    min-height: 200vh !important;
+  }
+}
+
+/* Accessibility */
+@media (prefers-reduced-motion: reduce) {
+  .showcase-item {
+    margin-bottom: 10vh;
+  }
+}

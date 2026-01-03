@@ -1,101 +1,28 @@
 import { obras } from '../data/obras.js';
 import { bindEnterGalleryButton } from '../transitions/enterGallery.js';
 import { initTitleAnimations } from '../animations/hero-scroll-title.js';
-import { initLoadingScreen } from '../animations/loading-screen.js';
 import VanillaTilt from '../lib/vanilla-tilt.js';
 
 export default function HomeView() {
   // ============================================
-  // ============================================
-  // Hero images for floating frames
-  // ============================================
-  const heroImages = obras.slice(0, 5);
-  
-
-  
-  // 5 cuadros flotantes con posiciones fijas
-  // ============================================
-  const heroFloats = [
-    { pos: 'left-frame', left: '5vw', top: '12vh', width: '180px', height: '240px', depth: '1' },
-    { pos: 'top-frame', left: '48vw', top: '8vh', width: '150px', height: '180px', depth: '2' },
-    { pos: 'right-frame', left: '75vw', top: '15vh', width: '280px', height: '220px', depth: '1' },
-    { pos: 'bottom-left', left: '10vw', top: '70vh', width: '240px', height: '200px', depth: '3' },
-    { pos: 'bottom-right', left: '72vw', top: '68vh', width: '240px', height: '280px', depth: '2' }
-  ];
-
-  const heroFloatHTML = heroFloats.map((frame, index) => {
-    const obra = heroImages[index];
-    const isFirstImage = index === 0;
-    
-    return `
-      <figure class="hero-float photo-card pos-${frame.pos} pointer-events-auto" 
-              data-depth="${frame.depth}"
-              data-hero-id="${obra.id}"
-              data-title="${obra.titulo.replace(/"/g, '&quot;')}"
-              data-description="${obra.descripcion.replace(/"/g, '&quot;').replace(/'/g, '&apos;')}"
-              data-year="${obra.year}"
-              data-category="${obra.categoria}"
-              style="position: absolute; left: ${frame.left}; top: ${frame.top}; width: ${frame.width}; height: ${frame.height}; will-change: transform;">
-        <div class="photo-media relative w-full h-full cursor-pointer">
-          <picture>
-            <source 
-              type="image/avif" 
-              srcset="${obra.img}?tr=f-avif,w-400 400w, ${obra.img}?tr=f-avif,w-800 800w"
-              sizes="(max-width: 768px) 200px, ${frame.width}" />
-            <source 
-              type="image/webp" 
-              srcset="${obra.img}?tr=f-webp,w-400 400w, ${obra.img}?tr=f-webp,w-800 800w"
-              sizes="(max-width: 768px) 200px, ${frame.width}" />
-            <img 
-              class="w-full h-full object-contain rounded-lg" 
-              src="${obra.img}" 
-              alt="${obra.titulo} - ${obra.categoria} photography"
-              loading="${isFirstImage ? 'eager' : 'lazy'}"
-              decoding="async"
-              ${isFirstImage ? 'fetchpriority="high"' : ''} />
-          </picture>
-        </div>
-      </figure>
-    `;
-  }).join('');
-  
-  // ============================================
-  // GALLERY FIELD: Imágenes con posicionamiento absoluto
-  // SIN REPETIR - Solo obras 9-47
-  // SIN GRAYSCALE - Solo color original
+  // Hero Section - Clean title + CTAs only
   // ============================================
 
   const template = `
-    <div class="relative w-full min-h-screen bg-transparent text-white overflow-x-hidden">
+    <div class="relative w-full min-h-screen bg-transparent text-white">
       
       <!-- CINEMATIC TRANSITION CURTAIN -->
       <div id="transition-curtain"></div>
 
       <!-- ========================================== -->
-      <!-- LOADING SCREEN - Max Milkin Style -->
+      <!-- HERO SECTION -->
       <!-- ========================================== -->
-      <div id="loading-screen" class="loading-screen">
-        <!-- Percentage Counter -->
-        <div id="loading-percentage" class="loading-percentage">0%</div>
-        
-        <!-- Orbiting Text Particles Container -->
-        <div id="orbit-particles" class="orbit-particles-container"></div>
-      </div>
-
-      <!-- ========================================== -->
-      <!-- HERO SECTION - Claude Monet Exact Replica -->
-      <!-- ========================================== -->
-      <section id="hero" class="relative overflow-hidden" style="min-height: 100vh; opacity: 0;">
+      <section id="hero" class="relative overflow-hidden" style="min-height: 100vh;">
         <!-- Background with glow -->
         <div class="hero-bg absolute inset-0 bg-transparent"></div>
 
-        <!-- Floating frames container (BEHIND title) -->
-        <div id="hero-floats" class="absolute inset-0 z-5 pointer-events-none">
-          ${heroFloatHTML}
-        </div>
-
         <!-- Title + Subtitle + CTA (IN FRONT) -->
-        <div class="hero-text relative z-20 flex flex-col justify-center" style="min-height: 100vh; padding-inline: max(5vw, 2rem); box-sizing: border-box;">
+        <div class="hero-text relative z-20 flex flex-col justify-center" style="min-height: 100vh; box-sizing: border-box;">
             <!-- Editorial Aggressive Layout -->
             <!-- MANDATORY HERO TITLE SHELL -->
             <div class="hero-title-shell">
@@ -128,6 +55,112 @@ export default function HomeView() {
               RESERVAR SESIÓN
             </a>
           </div>
+        </div>
+      </section>
+
+      <!-- ========================================== -->
+      <!-- SHOWCASE SECTION - WebGL Synchronized Masonry Grid -->
+      <!-- ========================================== -->
+      <section id="showcase" class="relative w-full min-h-[200vh] bg-transparent py-32 overflow-hidden">
+        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8">
+
+          <!-- Item 0: Landscape (col-span-5) -->
+          <div class="project-card col-span-12 md:col-span-5 showcase-item" data-layer="1" data-image-src="${obras[0].img}" data-title="${obras[0].titulo}">
+            <!-- Blender Window Chrome -->
+            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
+              <div class="flex gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
+                ${obras[0].titulo}.blend
+              </span>
+            </div>
+            <!-- Image Container - Landscape aspect ratio -->
+            <div class="relative w-full aspect-[4/3] bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
+              <img src="${obras[0].img}?tr=w-900,fo-auto" alt="${obras[0].titulo}" 
+                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
+                   loading="eager" />
+            </div>
+          </div>
+
+          <!-- Item 1: Portrait (col-span-4 mt-32) -->
+          <div class="project-card col-span-12 md:col-span-4 mt-0 md:mt-32 showcase-item" data-layer="2" data-image-src="${obras[1].img}" data-title="${obras[1].titulo}">
+            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
+              <div class="flex gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
+                ${obras[1].titulo}.blend
+              </span>
+            </div>
+            <div class="relative w-full aspect-[3/4] bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
+              <img src="${obras[1].img}?tr=w-700,fo-auto" alt="${obras[1].titulo}" 
+                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
+                   loading="eager" />
+            </div>
+          </div>
+
+          <!-- Item 2: Wide/Video (col-span-6 mt-16) -->
+          <div class="project-card col-span-12 md:col-span-6 mt-0 md:mt-16 showcase-item" data-layer="1" data-image-src="${obras[2].img}" data-title="${obras[2].titulo}">
+            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
+              <div class="flex gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
+                ${obras[2].titulo}.blend
+              </span>
+            </div>
+            <div class="relative w-full aspect-video bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
+              <img src="${obras[2].img}?tr=w-1000,fo-auto" alt="${obras[2].titulo}" 
+                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
+                   loading="eager" />
+            </div>
+          </div>
+
+          <!-- Item 3: Square (col-span-5 mt-24) -->
+          <div class="project-card col-span-12 md:col-span-5 mt-0 md:mt-24 showcase-item" data-layer="2" data-image-src="${obras[3].img}" data-title="${obras[3].titulo}">
+            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
+              <div class="flex gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
+                ${obras[3].titulo}.blend
+              </span>
+            </div>
+            <div class="relative w-full aspect-square bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
+              <img src="${obras[3].img}?tr=w-900,fo-auto" alt="${obras[3].titulo}" 
+                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
+                   loading="eager" />
+            </div>
+          </div>
+
+          <!-- Item 4: Portrait (col-span-4 mt-8) -->
+          <div class="project-card col-span-12 md:col-span-4 mt-0 md:mt-8 showcase-item" data-layer="1" data-image-src="${obras[4].img}" data-title="${obras[4].titulo}">
+            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
+              <div class="flex gap-1.5">
+                <div class="w-2 h-2 rounded-full bg-red-500"></div>
+                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
+                <div class="w-2 h-2 rounded-full bg-green-500"></div>
+              </div>
+              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
+                ${obras[4].titulo}.blend
+              </span>
+            </div>
+            <div class="relative w-full aspect-[3/4] bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
+              <img src="${obras[4].img}?tr=w-700,fo-auto" alt="${obras[4].titulo}" 
+                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
+                   loading="eager" />
+            </div>
+          </div>
+
         </div>
       </section>
 
@@ -254,10 +287,7 @@ export default function HomeView() {
   setTimeout(() => {
     const app = document.querySelector('#app');
     if (app) {
-      // Initialize loading screen FIRST (Max Milkin style)
-      initLoadingScreen();
-      
-      // About button is now in global navbar, not here
+      // Initialize interactions
       bindEnterGalleryButton(app);
       initTitleAnimations(); // Init MANDATORY advanced title animations
       

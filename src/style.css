@@ -1,6 +1,8 @@
+@import url('./styles/showcase.css');
 @import "tailwindcss";
 @import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-
+@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600;700&display=swap');
+/* @import './components/Camera3D/camera3d.css'; */
 @theme {
   --font-serif: "Playfair Display", "Times New Roman", serif;
   --color-dark-bg: #0b0b0b;
@@ -22,7 +24,6 @@ body {
   background-color: transparent; /* Transparent to show canvas behind */
   color: #fff;
   font-family: var(--font-serif); 
-  overflow-x: hidden;
   min-height: 100vh;
 }
 
@@ -136,7 +137,7 @@ a:focus-visible {
 
 .view-container {
   min-height: 100vh;
-  padding: 2rem;
+  padding: 2rem 1rem; /* Minimal padding */
 }
 
 .hero-section,
@@ -171,9 +172,9 @@ a:focus-visible {
 }
 
 .content-section {
-  max-width: 1200px;
+  width: 100%; /* Full width instead of max-width */
   margin: 0 auto;
-  padding: 3rem 2rem;
+  padding: 3rem 1rem; /* Minimal padding */
 }
 
 .grid-container {
@@ -388,7 +389,7 @@ a:focus-visible {
    CLAUDE MONET HERO STYLES
    ============================================ */
 
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600;700&display=swap');
+
 
 /* Hero background with radial glow */
 #hero {
@@ -630,6 +631,139 @@ body:has(#hero) .global-nav {
 }
 
 /* ============================================
+   ADVANCED WINDOW ABOUT COMPONENT
+   ============================================ */
+
+.window-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  min-height: calc(100vh - 100px);
+  padding: 2rem;
+}
+
+.window-about {
+  position: relative;
+  width: 100%;
+  max-width: 800px;
+  background: rgba(15, 23, 42, 0.8);
+  backdrop-filter: blur(12px);
+  border-radius: 12px;
+  padding: 1px; /* Gap for border animation */
+  overflow: hidden;
+  box-shadow: 0 25px 50px -12px rgba(0, 0, 0, 0.5);
+  transition: transform 0.3s ease;
+}
+
+.window-about:hover {
+  transform: translateY(-5px);
+}
+
+/* Animated Border */
+.window-about::before {
+  content: "";
+  position: absolute;
+  top: -50%;
+  left: -50%;
+  width: 200%;
+  height: 200%;
+  background: conic-gradient(
+    from 0deg,
+    transparent,
+    #10b981, /* emerald-500 */
+    #3b82f6, /* blue-500 */
+    #10b981,
+    transparent
+  );
+  animation: rotate-border 4s linear infinite;
+  z-index: -1;
+}
+
+@keyframes rotate-border {
+  from { transform: rotate(0deg); }
+  to { transform: rotate(360deg); }
+}
+
+.window-inner {
+  background: #0f172a; /* bg-slate-900 */
+  border-radius: 11px;
+  height: 100%;
+  overflow: hidden;
+}
+
+.window-header {
+  height: 40px;
+  background: rgba(30, 41, 59, 0.5);
+  display: flex;
+  align-items: center;
+  padding: 0 16px;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+.window-dots {
+  display: flex;
+  gap: 8px;
+}
+
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+
+.dot-red { background: #ff5f56; }
+.dot-yellow { background: #ffbd2e; }
+.dot-green { background: #27c93f; }
+
+.window-body {
+  padding: 3rem;
+  color: #34d399; /* text-emerald-400 */
+}
+
+.window-body h1 {
+  font-family: 'Inter', sans-serif;
+  font-size: 2.5rem;
+  font-weight: 800;
+  margin-bottom: 1.5rem;
+  color: #fff;
+  letter-spacing: -0.025em;
+}
+
+.window-body h2 {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.5rem;
+  font-weight: 600;
+  margin-top: 2rem;
+  margin-bottom: 0.75rem;
+  color: #60a5fa; /* blue-400 */
+}
+
+.window-body p {
+  font-family: 'Inter', sans-serif;
+  font-size: 1.125rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.8);
+  margin-bottom: 1rem;
+}
+
+.window-body ul {
+  list-style: none;
+  padding: 0;
+  display: flex;
+  gap: 1rem;
+  margin-top: 1.5rem;
+}
+
+.window-body li {
+  padding: 0.5rem 1rem;
+  background: rgba(16, 185, 129, 0.1);
+  border: 1px solid rgba(16, 185, 129, 0.2);
+  border-radius: 9999px;
+  font-size: 0.875rem;
+  font-weight: 500;
+}
+
+/* ============================================
    ENTER GALLERY TRANSITION
    ============================================ */
 
@@ -818,11 +952,10 @@ body:has(#hero) .global-nav {
 
 .hero-title-shell {
   width: 100%;
-  max-width: 1600px;
+  /* Removed max-width restriction */
   margin: 0 auto;
-  padding-inline: clamp(16px, 6vw, 120px);
+  padding-inline: 0; /* No padding to allow full width */
   padding-block: clamp(40px, 8vh, 80px);
-  overflow-x: hidden;
   box-sizing: border-box;
 }
 
@@ -1147,9 +1280,9 @@ body:has(#hero) .global-nav {
 }
 
 .container-nav {
-  max-width: 1280px;
+  width: 100%; /* Full width */
   margin: 0 auto;
-  padding: 0 1.5rem;
+  padding: 0 2rem; /* Minimal padding */
   height: 70px;
   display: flex;
   align-items: center;
@@ -1309,7 +1442,7 @@ body:has(#hero) .global-nav {
   flex-direction: column;
   min-height: 100vh;
   background: #000;
-  padding: 3rem 1.5rem;
+  padding: 3rem clamp(16px, 5vw, 120px);
 }
 
 .services-title {
@@ -1326,10 +1459,11 @@ body:has(#hero) .global-nav {
   display: flex;
   justify-content: center;
   align-items: center;
-  max-width: 1200px;
+  max-width: 1600px;
   flex-wrap: wrap;
   z-index: 1;
   gap: 2rem;
+  padding-inline: clamp(16px, 5vw, 120px);
 }
 
 .tilt-card {
@@ -1546,4 +1680,3 @@ body:has(#hero) .global-nav {
     margin-bottom: 2rem; /* More space on mobile */
   }
 }
-

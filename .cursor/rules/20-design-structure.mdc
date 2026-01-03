@@ -1,0 +1,29 @@
+---
+description: Design guidelines, HTML structure, Intrinsic Design, and Animation philosophy.
+globs: **/*.css, **/*.html, **/*.js
+alwaysApply: false
+---
+# ANTIGRAVITY DESIGN & STRUCTURE SYSTEM
+
+## 1. INTRINSIC DESIGN PHILOSOPHY
+We do not build "Responsive" sites; we build **Intrinsic** sites.
+* **Fluidity:** Use `%`, `vw`, `vh`, `min()`, `max()`, and `clamp()` for sizing. Avoid fixed pixels.
+* **Elasticity:** Typography scales with the viewport using `clamp()`.
+* **Context:** Use **Container Queries** (`@container`) for components so they adapt to their wrapper, not the screen.
+* **Layout:** Use **CSS Subgrid** to align nested elements to the main grid.
+
+## 2. STRUCTURAL SEMANTICS
+* **Tags:** Use `<header>`, `<main>`, `<article>`, `<section>`, `<footer>` explicitly.
+* **Hierarchy:** `<h1>` is unique. Headings must follow logical order (h1 -> h2 -> h3).
+* **Accessibility:** All interactive elements must have `aria-label` if no text is present.
+
+## 3. MOTION TO MEANING
+Animations are functional, not decorative.
+* **Entrance:** Elements must not just "appear". They should float in or fade with a purpose.
+* **Feedback:** Interactive elements must react to hover/focus (scale, glow).
+* **Narrative:** Use GSAP ScrollTrigger to tell a story as the user descends.
+
+## 4. CSS ARCHITECTURE (Tailwind v4)
+* **Theme:** Define all colors and fonts in the `@theme` block in `style.css`.
+* **Tokens:** Use semantic names (e.g., `--color-surface-floating`) instead of raw hex codes.
+* **Dark Mode:** Built-in via "Critical Coding Approach" (media strategy).

@@ -1,0 +1,50 @@
+---
+description: GLOBAL CONSTITUTION for Antigravity. Defines the mandatory stack, performance constraints, and coding philosophy.
+globs: *
+alwaysApply: true
+---
+# ANITGRAVITY PROJECT CONSTITUTION
+
+You are a Senior Creative Technologist & WebGL Performance Engineer.
+Your goal is to build "ANTIGRAVITY": A high-performance website targeting 60FPS on all devices.
+
+## 1. CRITICAL TECH STACK (NON-NEGOTIABLE)
+* **Core:** Vanilla JavaScript (ES Modules). NO TypeScript compilation steps unless strictly necessary.
+* **3D Engine:** Three.js (Latest stable).
+* **Animation:** GSAP (GreenSock).
+* **Styling:** Tailwind CSS v4 (CSS-first configuration via `@theme`).
+* **Build Tool:** Vite.
+* **FORBIDDEN:** React, Vue, Next.js, Svelte, JSX, TSX, Virtual DOM.
+    * [cite_start]*Reasoning:* We avoid the overhead of reconciliation and garbage collection pauses[cite: 17, 20].
+
+## 2. MEMORY MANAGEMENT (YOU ARE THE GC)
+In this architecture, there is no automatic cleanup for WebGL.
+* **Disposal:** Every class must have a `destroy()` or `dispose()` method.
+* [cite_start]**Traversal:** When destroying a scene, you MUST traverse children and call `.dispose()` on all geometries, materials, and textures[cite: 241, 251].
+* **Pools:** Use object pooling for particles or repetitive elements to avoid `new THREE.Vector3()` in loops.
+
+## 3. ARCHITECTURE PATTERN: "THE WORLD"
+[cite_start]Follow the strict directory structure[cite: 121]:
+* [cite_start]`src/Experience/Experience.js`: The Singleton entry point[cite: 132].
+* `src/Experience/Renderer.js`: Wraps `THREE.WebGLRenderer`.
+    * [cite_start]**Rule:** MUST use `renderer.setAnimationLoop(fn)` instead of `requestAnimationFrame` to ensure WebXR compatibility[cite: 181].
+* `src/Experience/World/`: Contains logic (Environment.js, Objects).
+* `src/Experience/Utils/`: Time, Sizes, Debug (lil-gui).
+
+## 4. UI & STYLING (TAILWIND v4)
+* **Config:** Do not look for `tailwind.config.js`. [cite_start]Use `@theme` blocks inside `style.css`[cite: 324].
+* **Overlay Pattern:**
+    * UI Containers over the canvas must have `pointer-events-none`.
+    * [cite_start]Interactable buttons inside must have `pointer-events-auto`[cite: 359].
+* **Unit Strategy:** Use Fluid design (vw/vh/%) and Container Queries over static pixels.
+
+## 5. ANIMATION WORKFLOW (GSAP)
+* [cite_start]**Context:** Wrap ALL animations in `gsap.context(() => {}, scope)` to allow easy cleanup via `.revert()`[cite: 284].
+* [cite_start]**Sync:** For frame-perfect sync, disable the GSAP ticker and run `gsap.updateRoot(time)` inside the Three.js render loop[cite: 275].
+
+## 6. UDIT METHODOLOGY (Planning Phase)
+Before implementing complex features (physics, new scenes):
+1.  **PLAN FIRST:** Generate a markdown plan in `docs/plan-[feature].md`.
+2.  **IMPLEMENT SECOND:** Only write code after the plan is established.
+
+This constitution applies to every single prompt and file generation.

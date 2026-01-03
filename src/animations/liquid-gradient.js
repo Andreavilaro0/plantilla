@@ -117,24 +117,24 @@ class GradientBackground {
       uResolution: {
         value: new THREE.Vector2(window.innerWidth, window.innerHeight)
       },
-      // Scheme 1 Default Colors (Orange + Navy)
-      uColor1: { value: new THREE.Vector3(0.945, 0.353, 0.133) }, // F15A22 - Orange
-      uColor2: { value: new THREE.Vector3(0.039, 0.055, 0.153) }, // 0a0e27 - Navy Blue
-      uColor3: { value: new THREE.Vector3(0.945, 0.353, 0.133) }, 
-      uColor4: { value: new THREE.Vector3(0.039, 0.055, 0.153) }, 
-      uColor5: { value: new THREE.Vector3(0.945, 0.353, 0.133) }, 
-      uColor6: { value: new THREE.Vector3(0.039, 0.055, 0.153) }, 
+      // Balanced Elegant Colors (Visible but Refined)
+      uColor1: { value: new THREE.Vector3(0.75, 0.25, 0.11) }, // Visible warm orange
+      uColor2: { value: new THREE.Vector3(0.035, 0.05, 0.12) }, // Refined navy blue
+      uColor3: { value: new THREE.Vector3(0.65, 0.22, 0.10) }, // Variant orange
+      uColor4: { value: new THREE.Vector3(0.03, 0.045, 0.11) }, // Mid navy
+      uColor5: { value: new THREE.Vector3(0.7, 0.23, 0.105) }, // Balanced orange
+      uColor6: { value: new THREE.Vector3(0.032, 0.047, 0.115) }, // Balanced navy
       
-      uSpeed: { value: 1.5 },
-      uIntensity: { value: 1.8 },
+      uSpeed: { value: 0.10 }, // Slow but noticeable movement
+      uIntensity: { value: 0.68 }, // Balanced visibility
       uTouchTexture: { value: null },
-      uGrainIntensity: { value: 0.08 },
+      uGrainIntensity: { value: 0.015 }, // Subtle grain
       uZoom: { value: 1.0 }, 
-      uDarkNavy: { value: new THREE.Vector3(0.039, 0.055, 0.153) },
-      uGradientSize: { value: 0.45 }, 
+      uDarkNavy: { value: new THREE.Vector3(0.03, 0.045, 0.10) }, // Balanced base
+      uGradientSize: { value: 0.50 }, // Refined gradient spread
       uGradientCount: { value: 12.0 }, 
-      uColor1Weight: { value: 0.5 }, 
-      uColor2Weight: { value: 1.8 } 
+      uColor1Weight: { value: 0.45 }, // Moderate orange presence
+      uColor2Weight: { value: 1.0 }  // Balanced visibility 
     };
   }
 
@@ -232,12 +232,14 @@ class GradientBackground {
               
               color = clamp(color, vec3(0.0), vec3(1.0)) * uIntensity;
               
+              // Balanced saturation for elegance
               float luminance = dot(color, vec3(0.299, 0.587, 0.114));
-              color = mix(vec3(luminance), color, 1.35);
-              color = pow(color, vec3(0.92));
+              color = mix(vec3(luminance), color, 1.05); // Moderate saturation
+              color = pow(color, vec3(0.98)); // Balanced gamma
               
+              // Balanced blend with background
               float brightness1 = length(color);
-              float mixFactor1 = max(brightness1 * 1.2, 0.15);
+              float mixFactor1 = max(brightness1 * 0.95, 0.25); // Visible but refined
               color = mix(uDarkNavy, color, mixFactor1);
               
               return color;
@@ -266,13 +268,15 @@ class GradientBackground {
               float grainValue = grain(uv, uTime);
               color += grainValue * uGrainIntensity;
               
-              float timeShift = uTime * 0.5;
-              color.r += sin(timeShift) * 0.02;
-              color.g += cos(timeShift * 1.4) * 0.02;
-              color.b += sin(timeShift * 1.2) * 0.02;
+              // Subtle color shifts for dynamics
+              float timeShift = uTime * 0.4;
+              color.r += sin(timeShift) * 0.012;
+              color.g += cos(timeShift * 1.4) * 0.012;
+              color.b += sin(timeShift * 1.2) * 0.012;
               
+              // Balanced final blend
               float brightness2 = length(color);
-              float mixFactor2 = max(brightness2 * 1.2, 0.15);
+              float mixFactor2 = max(brightness2 * 0.85, 0.20); // Visible gradient
               color = mix(uDarkNavy, color, mixFactor2);
               
               color = clamp(color, vec3(0.0), vec3(1.0));
@@ -420,4 +424,5 @@ export function initLiquidGradient() {
   console.log('🌊 Initializing Liquid Gradient Background');
   const app = new LiquidBackground();
   app.init();
+  return app; // Return instance for external access
 }

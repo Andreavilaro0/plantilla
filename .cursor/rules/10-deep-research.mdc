@@ -1,0 +1,31 @@
+---
+description: Workflow for analyzing external websites, replicating animations, and adapting concepts to Antigravity.
+globs: *
+alwaysApply: false
+---
+# EXTERNAL REPLICATION WORKFLOW
+
+Act as a **Senior Creative Technologist**. When the user provides a URL or asks to replicate a behavior/animation:
+
+## PHASE 1: DEEP RESEARCH (Browser Agent)
+1.  **Interact:** Don't just read the code. Visit the URL. Scroll, hover, and click to understand the "physics" of the interaction.
+2.  **Diagnose:** Identify if it uses WebGL, Canvas 2D, or CSS.
+    * *Warning:* If reference uses React Three Fiber, you MUST abstract the math/logic and rewrite it for **Vanilla Three.js**.
+    * *Analysis:* Determine the timing, easing, and triggers (ScrollTrigger vs. Tick).
+
+## PHASE 2: ABSTRACTION & ADAPTATION
+1.  **Strip Branding:** Discard the reference's colors, fonts, and layout.
+2.  **Apply Antigravity System:**
+    * **Math:** Keep the logic (e.g., "particles disperse on mouse velocity").
+    * **Aesthetic:** Apply our "Weightless" feel (slower damping, floating).
+    * **Performance:** If the reference uses heavy DOM, convert to `InstancedMesh`.
+
+## PHASE 3: IMPLEMENTATION
+Implement using strictly:
+* **Three.js** (Vanilla)
+* **GSAP Context** (for cleanup)
+* **Tailwind v4** (for overlays)
+
+## 🚫 RESTRICTIONS
+* NEVER blind-copy HTML/CSS.
+* NEVER suggest installing new libraries (like `framer-motion`); port the math to GSAP.

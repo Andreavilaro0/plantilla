@@ -40,12 +40,23 @@ class Router {
     this.render(route)
     this.updateActiveLinks()
     
-    // Inicializar animaciones modulares para home
-    if (path === '/' && window.initAnimations) {
-      setTimeout(() => {
-        window.initAnimations()
-      }, 100)
-    }
+    // Final initialization after render
+    setTimeout(() => {
+      if (path === '/') {
+        if (window.initAnimations) window.initAnimations();
+        if (window.initPortfolio3D) window.initPortfolio3D();
+      }
+      
+      if (path === '/about') {
+        if (window.initAboutWindow) window.initAboutWindow();
+      }
+      
+      // Update ScrollTrigger for any new content
+      if (window.gsap && window.gsap.registerPlugin) {
+        const { ScrollTrigger } = window.gsap;
+        if (ScrollTrigger) ScrollTrigger.refresh();
+      }
+    }, 150)
   }
 
   render(view) {

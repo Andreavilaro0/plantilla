@@ -6,13 +6,22 @@ import router from './router.js';
 import { initNavbar, setActiveLink } from './ui/navbar.js';
 import { initLiquidGradient } from './animations/liquid-gradient.js';
 
+import { initPortfolio3D } from './modules/portfolio-3d/index.js';
+import { initAboutWindow } from './modules/aboutWindow.js';
+import { obras } from './data/obras.js';
+import { Showcase } from './Experience/World/Showcase.js';
+
+import { Draggable } from 'gsap/Draggable';
+
 // ============================================
 // REGISTRO EXPLÍCITO DE PLUGINS
 // ============================================
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Draggable);
 
 // Variables globales
 window.gsap = gsap;
+window.Draggable = Draggable;
+window.obrasData = obras; // Expose obras globally for Portfolio 3D
 
 // ============================================
 // INICIALIZACIÓN SEGURA (window.load)
@@ -25,7 +34,12 @@ window.addEventListener('load', () => {
   initNavbar();
   
   // Inicializar fondo Liquid Gradient
-  initLiquidGradient();
+  const liquidApp = initLiquidGradient();
+  
+  // Inicializar Showcase WebGL (portfolio showcase)
+  if (window.initShowcase) {
+    window.initShowcase(liquidApp);
+  }
   
   // Exponer setActiveLink globalmente para el router
   window.setNavbarActiveLink = setActiveLink;
@@ -57,5 +71,56 @@ function initAnimations() {
 // Exponer globalmente para router
 // ============================================
 window.initAnimations = initAnimations;
+window.initPortfolio3D = initPortfolio3D;
+window.initAboutWindow = initAboutWindow;
+
+// ============================================
+// Showcase Initialization Function
+// ============================================
+window.initShowcase = function(liquidApp) {
+  console.log('🎨 Initializing Showcase System');
+  
+  // Wait for DOM to be ready
+  setTimeout(() => {
+    const ghostElements = document.querySelectorAll('.showcase-item');
+    if (ghostElements.length === 0) {
+      console.warn('⚠️ No showcase elements found, skipping Showcase init');
+      return;
+    }
+    
+    // Create Showcase instance
+    const showcase = new Showcase(liquidApp);
+    
+    // Prepare project data from ghost elements
+    const projects = Array.from(ghostElements).map((el, index) => ({
+      imageSrc: el.dataset.imageSrc,
+      title: el.dataset.title || `Project ${index + 1}`,
+      aspectRatio: parseFloat(el.dataset.aspectRatio) || 1.5,
+      layer: parseInt(el.dataset.layer) || 1
+    }));
+    
+    // Initialize showcase
+    showcase.init(projects);
+    
+    // Add to liquid gradient's update loop
+    const originalUpdate = liquidApp.update.bind(liquidApp);
+    liquidApp.update = function(delta) {
+      originalUpdate(delta);
+      showcase.update(delta);
+    };
+    
+    // Add to resize handler
+    const originalResize = liquidApp.onResize.bind(liquidApp);
+    liquidApp.onResize = function() {
+      originalResize();
+      showcase.onResize();
+    };
+    
+    // Store reference for cleanup
+    window.showcase = showcase;
+    
+    console.log('✅ Showcase system initialized');
+  }, 500); // Wait for router to render
+};
 
 console.log('✅ Portfolio - Arquitectura modular cargada');
