@@ -8,32 +8,17 @@
   position: relative;
 }
 
-/* Ghost Elements - Invisible scroll anchors */
+/* Ghost Elements - Invisible scroll anchors for WebGL sync */
 .showcase-item {
-  width: 60vw;
-  height: 60vh;
-  margin: 0 auto 30vh;
-  opacity: 0;
-  pointer-events: none;
+  /* Allow grid to control width/height - don't override */
+  /* opacity: 0; - Removed to show elements properly */
+  /* pointer-events: none; - Removed to allow interaction */
   position: relative;
 }
 
 /* Responsive adjustments */
 @media (max-width: 768px) {
-  .showcase-item {
-    width: 90vw;
-    height: 50vh;
-    margin-bottom: 20vh;
-  }
-  
   .showcase-section {
     min-height: 200vh !important;
-  }
-}
-
-/* Accessibility */
-@media (prefers-reduced-motion: reduce) {
-  .showcase-item {
-    margin-bottom: 10vh;
   }
 }

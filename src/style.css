@@ -7,6 +7,12 @@
   --font-serif: "Playfair Display", "Times New Roman", serif;
   --color-dark-bg: #0b0b0b;
   --color-modal-bg: #1a1a1a;
+  --color-surface-floating: color-mix(in srgb, white 6%, transparent);
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Inter", "SF Pro Text", Arial, sans-serif;
+}
+
+:root {
+  font-family: var(--font-sans);
 }
 
 * {
@@ -30,6 +36,231 @@ body {
 #app {
   position: relative;
   z-index: 1; /* Content sits on top of background */
+}
+
+/* ============================================
+   PORTFOLIO SECTION - PASO 2 Styles
+   ============================================ */
+
+/* Skeleton Loading Animation */
+@keyframes skeleton-loading {
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
+}
+
+.skeleton {
+  background: linear-gradient(
+    90deg,
+    rgba(255, 255, 255, 0.05) 0%,
+    rgba(255, 255, 255, 0.15) 50%,
+    rgba(255, 255, 255, 0.05) 100%
+  );
+  background-size: 200% 100%;
+  animation: skeleton-loading 1.5s ease-in-out infinite;
+}
+
+/* Visually Hidden Utility (for screen readers) */
+.visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/* Focus Visible States for Accessibility */
+article:focus-visible,
+input:focus-visible,
+select:focus-visible,
+button:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+}
+
+/* Portfolio Window Frame */
+.portfolio-window-frame {
+  background: var(--color-surface-floating);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+}
+
+.portfolio-window-dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+  transition: opacity 0.2s ease;
+}
+
+.portfolio-window-dot:hover {
+  opacity: 0.8;
+}
+
+/* Portfolio Canvas */
+#portfolio-canvas {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+  pointer-events: none;
+}
+
+/* Portfolio Grid */
+.portfolio-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(min(300px, 100%), 1fr));
+  gap: 1rem;
+}
+
+@media (min-width: 768px) {
+  .portfolio-grid {
+    gap: 1.5rem;
+    grid-template-columns: repeat(auto-fill, minmax(min(350px, 100%), 1fr));
+  }
+}
+
+/* Grid: 1–2 cols móvil, 2–3 tablet, 3–4 desktop */
+#portfolio-grid {
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+}
+
+/* Portfolio Card */
+.portfolio-card {
+  position: relative;
+  overflow: hidden;
+  border-radius: 0.5rem;
+  transition: transform 0.3s ease;
+}
+
+.portfolio-card:hover {
+  transform: translateY(-4px);
+}
+
+.portfolio-card:focus-visible {
+  outline: 3px solid rgba(255, 255, 255, 0.9);
+  outline-offset: 3px;
+}
+
+.portfolio-card img {
+  transition: transform 0.3s ease;
+}
+
+.portfolio-card:hover img {
+  transform: scale(1.05);
+}
+
+/* Portfolio Overlay */
+.portfolio-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent);
+  opacity: 0;
+  transition: opacity 0.3s ease;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding: 1rem;
+}
+
+.portfolio-card:hover .portfolio-overlay,
+.portfolio-card:focus .portfolio-overlay {
+  opacity: 1;
+}
+
+
+/* ============================================
+   PASO 2 - INDIVIDUAL ARTWORK FRAMES
+   ============================================ */
+
+/* Individual window frame per artwork */
+.frame {
+  @apply rounded-xl border border-white/10 bg-[--color-surface-floating] overflow-hidden shadow-lg;
+}
+
+/* Frame header bar with macOS dots */
+.frame-bar {
+  @apply flex items-center gap-2 h-8 px-3 border-b border-white/10 bg-white/5;
+}
+
+/* macOS-style window control dots */
+.dot {
+  @apply w-2.5 h-2.5 rounded-full inline-block;
+}
+
+.dot-red {
+  background: #ff5f57;
+}
+
+.dot-yellow {
+  background: #ffbd2e;
+}
+
+.dot-green {
+  background: #28c840;
+}
+
+/* ============================================
+   ASPECT RATIO UTILITIES (CLS Prevention)
+   ============================================ */
+.aspect-4-3 {
+  aspect-ratio: 4 / 3;
+}
+
+.aspect-3-4 {
+  aspect-ratio: 3 / 4;
+}
+
+.aspect-1-1 {
+  aspect-ratio: 1 / 1;
+}
+
+/* Card content container */
+.card-content {
+  position: relative;
+}
+
+/* Image fills container with rounded bottom corners */
+.card-img {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  border-radius: 0 0 12px 12px;
+}
+
+/* ============================================
+   ENHANCED SKELETON ANIMATION
+   ============================================ */
+.skel {
+  position: relative;
+  background: linear-gradient(90deg, #ffffff0d, #ffffff1a, #ffffff0d);
+  background-size: 200% 100%;
+}
+
+.skel::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(90deg, transparent, #ffffff26, transparent);
+  animation: skel-shimmer 1.6s infinite;
+}
+
+@keyframes skel-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+  100% {
+    transform: translateX(100%);
+  }
 }
 
 ::-webkit-scrollbar {
@@ -696,955 +927,385 @@ body:has(#hero) .global-nav {
   background: rgba(30, 41, 59, 0.5);
   display: flex;
   align-items: center;
-  padding: 0 16px;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  padding-left: 12px;
+  gap: 6px;
+  border-bottom: 1px solid rgba(100, 116, 139, 0.3);
 }
 
-.window-dots {
-  display: flex;
-  gap: 8px;
-}
-
-.dot {
+.window-dot {
   width: 12px;
   height: 12px;
   border-radius: 50%;
 }
 
-.dot-red { background: #ff5f56; }
+.dot-red { background: #ff5f57; }
 .dot-yellow { background: #ffbd2e; }
-.dot-green { background: #27c93f; }
+.dot-green { background: #28c840; }
 
 .window-body {
-  padding: 3rem;
-  color: #34d399; /* text-emerald-400 */
-}
-
-.window-body h1 {
-  font-family: 'Inter', sans-serif;
-  font-size: 2.5rem;
-  font-weight: 800;
-  margin-bottom: 1.5rem;
-  color: #fff;
-  letter-spacing: -0.025em;
+  padding: 2.5rem;
+  color: white;
 }
 
 .window-body h2 {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.5rem;
-  font-weight: 600;
-  margin-top: 2rem;
-  margin-bottom: 0.75rem;
-  color: #60a5fa; /* blue-400 */
+  font-size: 2rem;
+  margin-bottom: 1.5rem;
+  background: linear-gradient(135deg, #10b981 0%, #3b82f6 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
 }
 
 .window-body p {
-  font-family: 'Inter', sans-serif;
-  font-size: 1.125rem;
-  line-height: 1.75;
+  line-height: 1.8;
   color: rgba(255, 255, 255, 0.8);
   margin-bottom: 1rem;
 }
 
-.window-body ul {
-  list-style: none;
-  padding: 0;
-  display: flex;
-  gap: 1rem;
-  margin-top: 1.5rem;
+/* ============================================
+   SCROLL TRANSFORM EFFECTS - Three.js / GSAP Integration
+   ============================================ */
+
+.scroll-perspective {
+  perspective: 1500px;
+  perspective-origin: 50% 50%;
 }
 
-.window-body li {
-  padding: 0.5rem 1rem;
-  background: rgba(16, 185, 129, 0.1);
-  border: 1px solid rgba(16, 185, 129, 0.2);
-  border-radius: 9999px;
-  font-size: 0.875rem;
-  font-weight: 500;
+.scroll-transform-target {
+  transform-style: preserve-3d;
+  will-change: transform, opacity;
 }
 
 /* ============================================
-   ENTER GALLERY TRANSITION
+   FLOATING GRID - Tridimensional Gallery
    ============================================ */
 
-#app {
-  will-change: transform;
-  transform-origin: center center;
+.floating-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+  gap: 2rem;
+  padding: 2rem;
+  transform-style: preserve-3d;
 }
 
-.hero-monet,
-.hero-impressions {
-  will-change: transform, opacity;
+.floating-item {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  transition: transform 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
 
-.hero-float {
-  will-change: transform, opacity;
-}
-
-.hero-bg {
-  will-change: transform, filter;
-}
-
-#gallery-field {
-  will-change: transform, opacity;
-}
-
-.hero-enter:disabled {
-  opacity: 0.5;
-  cursor: not-allowed;
+.floating-item:hover {
+  transform: translateZ(40px) rotateX(3deg) rotateY(-3deg);
 }
 
 /* ============================================
-   IMAGE MODAL - Mismo estilo que ABOUT
+   GALLERY MODAL - Fullscreen View
    ============================================ */
 
-.image-overlay {
+.gallery-modal {
   position: fixed;
   inset: 0;
-  z-index: 9999;
+  z-index: 9998;
+  background: rgba(0, 0, 0, 0.95);
+  backdrop-filter: blur(20px);
+  -webkit-backdrop-filter: blur(20px);
   display: flex;
   align-items: center;
   justify-content: center;
-  background: rgba(0, 0, 0, 0.55);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.4s ease;
 }
 
-.image-card {
+.gallery-modal.active {
+  opacity: 1;
+  pointer-events: all;
+}
+
+.modal-content {
+  max-width: 90vw;
+  max-height: 90vh;
   position: relative;
-  width: min(960px, 92vw);
-  max-height: 85vh;
-  overflow-y: auto;
-  border-radius: 24px;
-  background: rgba(24, 24, 28, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
-  padding: 42px 36px;
-  outline: none;
 }
 
-.image-close {
+.modal-image {
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  border-radius: 8px;
+  box-shadow: 0 50px 100px rgba(0, 0, 0, 0.8);
+}
+
+.modal-close {
   position: absolute;
-  top: 20px;
-  right: 20px;
+  top: -50px;
+  right: 0;
   width: 40px;
   height: 40px;
   border-radius: 50%;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.70);
-  font-size: 28px;
-  line-height: 1;
+  background: rgba(255, 255, 255, 0.1);
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  color: white;
+  font-size: 24px;
   cursor: pointer;
-  transition: all 0.25s ease;
+  transition: all 0.3s;
   display: flex;
   align-items: center;
   justify-content: center;
-  z-index: 10;
 }
 
-.image-close:hover {
-  background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.30);
-  color: white;
+.modal-close:hover {
+  background: rgba(255, 255, 255, 0.2);
   transform: rotate(90deg);
 }
 
-.image-grid {
-  display: grid;
-  grid-template-columns: 1fr;
-  gap: 32px;
+/* ============================================
+   CINEMATIC TRANSITION - Enter Gallery Button
+   ============================================ */
+
+#transition-curtain {
+  position: fixed;
+  inset: 0;
+  z-index: 9997;
+  background: linear-gradient(135deg, #0a0e27 0%, #1a1a2e 100%);
+  pointer-events: none;
+  opacity: 0;
+  transform: scaleX(0);
+  transform-origin: left center;
+  will-change: transform, opacity;
 }
 
-@media (min-width: 768px) {
-  .image-grid {
-    grid-template-columns: 1.2fr 1fr;
-    gap: 48px;
-  }
+#transition-curtain.active {
+  pointer-events: all;
 }
 
-.image-media {
-  display: flex;
-  justify-content: center;
-  align-items: flex-start;
-}
-
-.image-full {
-  width: 100%;
-  max-height: 70vh;
-  object-fit: contain;
-  border-radius: 12px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.40);
-}
-
-.image-content {
+.section-block {
+  min-height: 100vh;
+  position: relative;
   display: flex;
   flex-direction: column;
-  gap: 20px;
+  align-items: center;
+  justify-content: center;
 }
 
-.image-title {
+.section-title {
   font-family: 'Playfair Display', serif;
-  font-size: clamp(1.8rem, 3.5vw, 2.5rem);
+  letter-spacing: -0.02em;
+  line-height: 1;
+}
+
+/* ============================================
+   VanillaTilt Service Cards
+   ============================================ */
+
+.services-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 400;
   font-style: italic;
   color: white;
-  margin: 0;
-  line-height: 1.2;
-}
-
-.image-desc {
-  font-family: 'Inter', sans-serif;
-  font-size: 15px;
-  line-height: 1.7;
-  color: rgba(255, 255, 255, 0.70);
-  margin: 0;
-}
-
-.image-meta {
-  display: flex;
-  flex-wrap: wrap;
-  gap: 12px;
-  margin-top: 8px;
-}
-
-.image-pill {
-  display: inline-block;
-  padding: 8px 18px;
-  border-radius: 20px;
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  background: rgba(255, 255, 255, 0.05);
-  font-family: 'Inter', sans-serif;
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.80);
-  font-weight: 500;
-  letter-spacing: 0.3px;
-}
-
-/* Cursor pointer para imágenes clickeables */
-.photo-media {
-  cursor: pointer;
-}
-
-/* Scrollbar styling para el card */
-.image-card::-webkit-scrollbar {
-  width: 8px;
-}
-
-.image-card::-webkit-scrollbar-track {
-  background: rgba(255, 255, 255, 0.05);
-  border-radius: 4px;
-}
-
-.image-card::-webkit-scrollbar-thumb {
-  background: rgba(255, 255, 255, 0.15);
-  border-radius: 4px;
-}
-
-.image-card::-webkit-scrollbar-thumb:hover {
-  background: rgba(255, 255, 255, 0.25);
-}
-
-/* ============================================
-   ADVANCED EDITORIAL HERO TITLE
-   ============================================ */
-
-.hero-title-shell {
-  width: 100%;
-  /* Removed max-width restriction */
-  margin: 0 auto;
-  padding-inline: 0; /* No padding to allow full width */
-  padding-block: clamp(40px, 8vh, 80px);
-  box-sizing: border-box;
-}
-
-.hero-title {
-  margin: 0;
-  line-height: 0.88;
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(64px, 12vw, 200px);
-  letter-spacing: clamp(-0.02em, -0.012em, -0.006em);
-  color: rgba(255,255,255,0.96);
-  /* Depth shadow */
-  text-shadow: 0 10px 40px rgba(0,0,0,0.4);
-}
-
-.title-mask {
-  display: block;
-  overflow: hidden; /* KEY: Reveal Mask */
-  padding-bottom: 0.05em; /* Prevent descender clipping */
-}
-
-.title-line {
-  display: block;
-  will-change: transform, opacity;
-  transform-origin: left center;
-}
-
-.line-1 {
-  font-family: 'Playfair Display', serif;
-  font-style: italic;
-  opacity: 0.95;
-}
-
-.line-2 {
-  font-family: 'Inter', sans-serif;
-  font-weight: 700;
-  opacity: 0.95;
-}
-
-/* Monet specific title styles */
-.monet-line {
-  font-family: 'Playfair Display', serif !important;
-  font-style: italic;
-  font-weight: 400;
-}
-
-.impressions-line {
-  font-family: 'Inter', sans-serif !important;
-  font-weight: 700;
-  letter-spacing: 0.02em;
-}
-
-/* Hero subtitle */
-.hero-subtitle {
-  font-family: 'Inter', sans-serif;
-  font-size: clamp(13px, 1.2vw, 16px);
-  line-height: 1.6;
-  color: rgba(255, 255, 255, 0.65);
+  margin-bottom: 3rem;
   text-align: center;
-  margin-top: clamp(20px, 3vh, 32px);
-  max-width: 700px;
-  margin-left: auto;
-  margin-right: auto;
-  letter-spacing: 0.3px;
-}
-
-@media (max-width: 768px) {
-  .hero-title {
-    font-size: clamp(48px, 15vw, 120px);
-    line-height: 0.92;
-  }
-}
-
-/* ============================================
-   TRANSITION CURTAIN (ENTER GALLERY)
-   ============================================ */
-#transition-curtain {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: -110%; /* Start below screen */
-  height: 120%; /* Extra height to cover bounce */
-  z-index: 9998; /* Below modals (9999+), above content */
-  background: linear-gradient(to top, rgba(0,0,0,0.98), rgba(0,0,0,0.75));
-  pointer-events: none;
-  will-change: transform;
-}
-
-/* =================================
-   ORBITING TEXT - Circular Animation
-   ================================= */
-
-
-/* Container for orbiting text - positioned around hero title */
-.orbiting-text {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 600px;
-  height: 600px;
-  pointer-events: none;
-  z-index: 15; /* Between background floats (z-5) and title (z-20) */
-  opacity: 0.7;
-  perspective: 1000px;
-  transform-style: preserve-3d;
-  will-change: transform;
-}
-
-/* SVG container */
-.orbit-svg {
-  width: 100%;
-  height: 100%;
-  overflow: visible;
-}
-
-/* Text styling for orbiting text */
-.orbit-text {
-  fill: url(#orbit-gradient); /* Gradient for subtle effect */
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  font-size: 13px;
-  font-weight: 300;
-  letter-spacing: 0.4em;
-  text-transform: uppercase;
-  dominant-baseline: middle;
-  text-anchor: start;
-  opacity: 0.85;
-}
-
-/* Add gradient definition to SVG for subtle color variation */
-.orbit-svg defs::after {
-  content: '';
-}
-
-/* Responsive adjustments for orbiting text */
-@media (max-width: 1024px) {
-  .orbiting-text {
-    width: 500px;
-    height: 500px;
-  }
-  
-  .orbit-text {
-    font-size: 12px;
-    letter-spacing: 0.25em;
-  }
-}
-
-@media (max-width: 768px) {
-  .orbiting-text {
-    width: 400px;
-    height: 400px;
-    opacity: 0.5;
-  }
-  
-  .orbit-text {
-    font-size: 10px;
-    letter-spacing: 0.2em;
-  }
-}
-
-@media (max-width: 480px) {
-  .orbiting-text {
-    width: 320px;
-    height: 320px;
-    opacity: 0.4;
-  }
-  
-  .orbit-text {
-    font-size: 8px;
-    letter-spacing: 0.15em;
-  }
-}
-
-/* Reduced motion: hide or make static */
-@media (prefers-reduced-motion: reduce) {
-  .orbiting-text {
-    opacity: 0.3;
-  }
-}
-
-/* =================================
-   LOADING SCREEN - Max Milkin Style
-   ================================= */
-
-/* Fullscreen loading overlay */
-.loading-screen {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100vw;
-  height: 100vh;
-  background: #000000;
-  z-index: 9999;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  opacity: 1;
-  transition: opacity 0.8s ease;
-}
-
-/* Percentage counter - centered */
-.loading-percentage {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  font-size: 48px;
-  font-weight: 300;
-  color: #ffffff;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  letter-spacing: 0.1em;
-  z-index: 10;
-}
-
-/* Container for orbiting text particles */
-.orbit-particles-container {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  width: 600px;
-  height: 600px;
-  transform: translate(-50%, -50%);
-  perspective: 1000px;
-  transform-style: preserve-3d;
-  pointer-events: none;
-}
-
-/* Individual text particle (letter) */
-.text-particle {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  color: #e5e7eb;
-  font-size: 14px;
-  font-weight: 300;
-  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
-  letter-spacing: 0.2em;
-  text-transform: uppercase;
-  opacity: 0;
-  will-change: transform, opacity;
-  transform-origin: center;
-}
-
-/* Responsive adjustments for loading screen */
-@media (max-width: 1024px) {
-  .loading-percentage {
-    font-size: 40px;
-  }
-  
-  .orbit-particles-container {
-    width: 500px;
-    height: 500px;
-  }
-  
-  .text-particle {
-    font-size: 12px;
-  }
-}
-
-@media (max-width: 768px) {
-  .loading-percentage {
-    font-size: 32px;
-  }
-  
-  .orbit-particles-container {
-    width: 400px;
-    height: 400px;
-  }
-  
-  .text-particle {
-    font-size: 10px;
-  }
-}
-
-@media (max-width: 480px) {
-  .loading-percentage {
-    font-size: 28px;
-  }
-  
-  .orbit-particles-container {
-    width: 320px;
-    height: 320px;
-  }
-  
-  .text-particle {
-    font-size: 8px;
-    letter-spacing: 0.15em;
-  }
-}
-
-/* Reduced motion: slow or static particles */
-@media (prefers-reduced-motion: reduce) {
-  .text-particle {
-    opacity: 0.5 !important;
-  }
-}
-
-/* ============================================
-   NAVBAR - Minimal White Design
-   Adapted from FutureNav
-   ============================================ */
-
-.navbar {
-  position: fixed;
-  top: 0;
-  left: 0;
-  right: 0;
-  background-color: transparent;
-  backdrop-filter: blur(0px);
-  -webkit-backdrop-filter: blur(0px);
-  border-bottom: none;
-  z-index: 10000;
-  transition: all 0.3s ease;
-  height: 70px;
-}
-
-.navbar.scrolled {
-  background-color: rgba(10, 14, 39, 0.3); /* Ultra subtle navy glass */
-  backdrop-filter: blur(8px);
-  -webkit-backdrop-filter: blur(8px);
-  box-shadow: none; /* Remove harsh shadow */
-  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
-}
-
-.container-nav {
-  width: 100%; /* Full width */
-  margin: 0 auto;
-  padding: 0 2rem; /* Minimal padding */
-  height: 70px;
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
-
-/* Logo */
-.logo {
-  display: flex;
-  align-items: center;
-}
-
-.logo-text {
-  font-size: 1.25rem;
-  font-weight: 600;
-  color: #fff;
-  font-family: 'Playfair Display', serif;
-}
-
-/* Desktop Nav */
-.nav-desktop {
-  display: none;
-  gap: 2rem;
-}
-
-@media (min-width: 768px) {
-  .nav-desktop {
-    display: flex;
-  }
-}
-
-.nav-link {
-  color: #fff;
-  font-size: 0.95rem;
-  font-family: 'Playfair Display', serif;
-  position: relative;
-  transition: color 0.2s;
-  text-decoration: none;
-}
-
-.nav-link::after {
-  content: '';
-  position: absolute;
-  bottom: -5px;
-  left: 50%;
-  width: 0;
-  height: 2px;
-  background: #fff;
-  transition: width 0.3s ease;
-  transform: translateX(-50%);
-}
-
-.nav-link:hover::after,
-.nav-link.active::after {
-  width: 80%;
-}
-
-.nav-link:hover {
-  color: #ccc;
-}
-
-/* Mobile Menu Button */
-.mobile-menu-btn {
-  display: flex;
-  flex-direction: column;
-  gap: 4px;
-  background: none;
-  border: none;
-  cursor: pointer;
-  padding: 8px;
-}
-
-@media (min-width: 768px) {
-  .mobile-menu-btn {
-    display: none;
-  }
-}
-
-.hamburger-line {
-  width: 24px;
-  height: 2px;
-  background: #fff;
-  transition: transform 0.3s ease, opacity 0.2s ease;
-  transform-origin: center;
-}
-
-.mobile-menu-btn.active #line1 {
-  transform: translateY(6px) rotate(45deg);
-}
-
-.mobile-menu-btn.active #line2 {
-  opacity: 0;
-}
-
-.mobile-menu-btn.active #line3 {
-  transform: translateY(-6px) rotate(-45deg);
-}
-
-/* Mobile Menu */
-.mobile-menu {
-  position: fixed;
-  top: 70px; /* Below navbar */
-  left: 0;
-  right: 0;
-  height: 0;
-  overflow: hidden;
-  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s ease;
-  background: rgba(10, 14, 39, 0.9); /* Navy Glass */
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  z-index: 9999;
-  display: flex;
-  flex-direction: column;
-  justify-content: flex-start;
-  padding-top: 0; /* Hidden by default */
-}
-
-.mobile-menu.open {
-  /* Height set dynamically in JS */
-  padding-top: 2rem; /* Show padding when open */
-  min-height: calc(100vh - 70px); /* Ensure full viewport coverage */
-}
-
-.mobile-nav-link {
-  display: block;
-  padding: 1.25rem 2rem;
-  color: #fff;
-  font-family: 'Playfair Display', serif;
-  font-size: 1.5rem;
-  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
-  transition: background 0.2s, color 0.2s;
-  text-decoration: none;
-  text-align: center;
-}
-
-.mobile-nav-link:hover,
-.mobile-nav-link.active {
-  background: rgba(255, 255, 255, 0.1);
-  color: #fff;
-}
-
-@media (max-width: 767px) {
-  .mobile-menu-btn {
-    display: flex;
-  }
-}
-
-/* ============================================
-   VANILLATILT GLASSMORPHISM CARDS
-   ============================================ */
-
-.services-view {
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  flex-wrap: wrap;
-  flex-direction: column;
-  min-height: 100vh;
-  background: #000;
-  padding: 3rem clamp(16px, 5vw, 120px);
-}
-
-.services-title {
-  font-family: 'Poppins', sans-serif;
-  font-size: clamp(3rem, 8vw, 4rem);
-  margin: 3rem auto;
-  color: #fff;
-  text-align: center;
-  font-weight: 700;
 }
 
 .services-container {
-  position: relative;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  max-width: 1600px;
-  flex-wrap: wrap;
-  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   gap: 2rem;
-  padding-inline: clamp(16px, 5vw, 120px);
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .tilt-card {
   position: relative;
-  width: 280px;
-  height: 400px;
-  margin: 30px;
-  box-shadow: 20px 20px 50px rgba(0, 0, 0, 0.5);
-  border-radius: 15px;
-  background: rgba(255, 255, 255, 0.1);
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  border-radius: 20px;
   overflow: hidden;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  border-top: 1px solid rgba(255, 255, 255, 0.5);
-  border-left: 1px solid rgba(255, 255, 255, 0.5);
-  backdrop-filter: blur(5px);
-  -webkit-backdrop-filter: blur(5px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   transform-style: preserve-3d;
+  transition: border-color 0.3s;
+}
+
+.tilt-card:hover {
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
 .card-content {
-  padding: 20px;
-  text-align: center;
-  font-family: 'Poppins', sans-serif;
-  transform: translateY(-100px);
-  opacity: 0;
-  transition: 0.5s;
+  padding: 2.5rem 2rem;
   position: relative;
-  z-index: 2;
-}
-
-.tilt-card:hover .card-content {
-  transform: translateY(0px);
-  opacity: 1;
+  z-index: 1;
 }
 
 .card-number {
-  position: absolute;
-  top: -80px;
-  right: 30px;
-  font-size: 8em;
-  color: rgba(255, 255, 255, 0.05);
-  pointer-events: none;
+  font-family: 'Inter', sans-serif;
+  font-size: 5rem;
   font-weight: 700;
+  opacity: 0.1;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  line-height: 1;
+  pointer-events: none;
 }
 
 .card-title {
-  font-size: 1.8em;
-  color: #fff;
-  z-index: 1;
+  font-family: 'Playfair Display', serif;
+  font-size: 1.8rem;
   font-weight: 600;
-  margin-bottom: 0.5rem;
-}
-
-.card-description {
-  font-size: 1em;
-  color: #fff;
-  font-weight: 300;
-  line-height: 1.6;
+  color: white;
   margin-bottom: 1rem;
 }
 
+.card-description {
+  font-family: 'Inter', sans-serif;
+  font-size: 0.95rem;
+  line-height: 1.7;
+  color: rgba(255, 255, 255, 0.70);
+  margin-bottom: 1.5rem;
+}
+
 .card-link {
-  position: relative;
   display: inline-block;
-  margin-top: 16px;
-  padding: 8px 20px;
-  background: #fff;
-  color: #000;
-  border-radius: 20px;
+  font-family: 'Inter', sans-serif;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: white;
   text-decoration: none;
-  font-weight: 500;
-  box-shadow: 0px 5px 15px rgba(0, 0, 0, 0.2);
-  transition: all 0.3s ease;
+  padding: 0.7rem 1.5rem;
+  border-radius: 8px;
+  border: 1px solid rgba(255, 255, 255, 0.2);
+  background: rgba(255, 255, 255, 0.05);
+  transition: all 0.3s;
 }
 
 .card-link:hover {
-  transform: translateY(-2px);
-  box-shadow: 0px 8px 20px rgba(0, 0, 0, 0.3);
+  background: rgba(255, 255, 255, 0.10);
+  border-color: rgba(255, 255, 255, 0.4);
 }
 
-/* VanillaTilt Glare Effect Styles */
-.js-tilt-glare {
-  position: absolute;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-  pointer-events: none;
-  border-radius: 15px;
-}
+/* ============================================
+   RESPONSIVE TYPOGRAPHY
+   ============================================ */
 
-.js-tilt-glare-inner {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  pointer-events: none;
-  background-image: linear-gradient(0deg, rgba(255,255,255,0) 0%, rgba(255,255,255,1) 100%);
-  transform: rotate(180deg) translate(-50%, -50%);
-  transform-origin: 0% 0%;
-  opacity: 0;
-}
-
-/* Responsive Design */
 @media (max-width: 768px) {
+  .section-title {
+    font-size: clamp(3rem, 12vw, 6rem);
+  }
+  
   .services-container {
-    gap: 1rem;
-  }
-  
-  .tilt-card {
-    margin: 15px;
-    width: 260px;
-    height: 380px;
-  }
-  
-  .card-number {
-    font-size: 6em;
-  }
-  
-  .card-title {
-    font-size: 1.5em;
+    grid-template-columns: 1fr;
   }
 }
 
 /* ============================================
-   PINTEREST MASONRY GRID
+   HERO TITLE ANIMATION - MANDATORY ADVANCED
    ============================================ */
+
+.hero-title-shell {
+  position: relative;
+  overflow: visible;
+  padding: 20px 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+}
+
+.hero-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(4rem, 10vw, 10rem);
+  font-weight: 400;
+  line-height: 0.9;
+  letter-spacing: -0.03em;
+  color: white;
+  text-align: center;
+  will-change: transform;
+  perspective: 1000px;
+}
+
+.title-mask {
+  display: block;
+  overflow: hidden;
+  padding-bottom: 0.2em;
+}
+
+.title-line {
+  display: inline-block;
+  will-change: transform, opacity;
+}
+
+.monet-line {
+  font-style: italic;
+}
+
+.impressions-line {
+  font-family: 'Inter', sans-serif !important;
+  font-weight: 300;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+}
+
+/* ============================================
+   MASONRY GRID - Waterfall Layout
+   ============================================ */
+
+.masonry-wrapper {
+  width: 100%;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 2rem 1rem;
+  display: flex;
+  justify-content: center;
+}
 
 .masonry-grid {
   column-count: 4;
-  column-gap: 4rem; /* Much more horizontal space */
-  width: 95%; 
-  max-width: 1600px; /* Wider centering */
-  margin: 0 auto; /* Centering */
+  column-gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
 }
 
 .masonry-item {
   break-inside: avoid;
-  margin-bottom: 4rem; /* Much more vertical space */
-  display: block; 
+  margin-bottom: 2rem;
+  page-break-inside: avoid;
 }
 
 .masonry-card {
   position: relative;
-  border-radius: 12px;
   overflow: hidden;
-  background: #1a1a1a;
-  transition: transform 0.3s ease, box-shadow 0.3s ease;
+  border-radius: 12px;
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  transition: transform 0.3s ease, border-color 0.3s;
 }
 
 .masonry-card:hover {
   transform: translateY(-4px);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.6);
+  border-color: rgba(255, 255, 255, 0.2);
 }
 
-.masonry-img-wrapper {
-  position: relative;
-  overflow: hidden;
-}
-
-.masonry-img {
+.masonry-card img {
   width: 100%;
   height: auto;
   display: block;
-  transition: transform 0.5s ease;
+  transition: transform 0.3s;
 }
 
-.masonry-card:hover .masonry-img {
+.masonry-card:hover img {
   transform: scale(1.05);
 }
 
 .masonry-overlay {
   position: absolute;
   inset: 0;
-  background: linear-gradient(to top, rgba(0,0,0,0.9) 0%, rgba(0,0,0,0.6) 50%, transparent 100%);
+  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
   opacity: 0;
-  transition: opacity 0.3s ease;
+  transition: opacity 0.3s;
   display: flex;
   flex-direction: column;
+  align-items: flex-start;
   justify-content: flex-end;
   padding: 1.5rem;
 }

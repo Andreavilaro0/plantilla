@@ -2,6 +2,29 @@ import { obras } from '../data/obras.js';
 import { bindEnterGalleryButton } from '../transitions/enterGallery.js';
 import { initTitleAnimations } from '../animations/hero-scroll-title.js';
 import VanillaTilt from '../lib/vanilla-tilt.js';
+import { PortfolioController } from '../controllers/PortfolioController.js';
+
+
+
+/**
+ * Generate descriptive ALT text for artwork images
+ * @param {Object} obra - Artwork object with titulo, categoria, year
+ * @returns {string} Descriptive ALT text
+ */
+function generateAltText(obra) {
+  const categoryDescriptions = {
+    'Paisaje': 'Fotografía de paisaje',
+    'Abstracto': 'Composición abstracta',
+    'Urbano': 'Fotografía urbana',
+    'Interior': 'Fotografía de interior',
+    'Retrato': 'Retrato fotográfico',
+    'Costero': 'Fotografía costera',
+    'Arquitectura': 'Fotografía de arquitectura'
+  };
+  
+  const baseDesc = categoryDescriptions[obra.categoria] || 'Fotografía';
+  return `${baseDesc} titulada "${obra.titulo}" del año ${obra.year}`;
+}
 
 export default function HomeView() {
   // ============================================
@@ -59,112 +82,6 @@ export default function HomeView() {
       </section>
 
       <!-- ========================================== -->
-      <!-- SHOWCASE SECTION - WebGL Synchronized Masonry Grid -->
-      <!-- ========================================== -->
-      <section id="showcase" class="relative w-full min-h-[200vh] bg-transparent py-32 overflow-hidden">
-        <div class="container mx-auto px-6 grid grid-cols-1 md:grid-cols-12 gap-8">
-
-          <!-- Item 0: Landscape (col-span-5) -->
-          <div class="project-card col-span-12 md:col-span-5 showcase-item" data-layer="1" data-image-src="${obras[0].img}" data-title="${obras[0].titulo}">
-            <!-- Blender Window Chrome -->
-            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
-              <div class="flex gap-1.5">
-                <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-              </div>
-              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
-                ${obras[0].titulo}.blend
-              </span>
-            </div>
-            <!-- Image Container - Landscape aspect ratio -->
-            <div class="relative w-full aspect-[4/3] bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
-              <img src="${obras[0].img}?tr=w-900,fo-auto" alt="${obras[0].titulo}" 
-                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
-                   loading="eager" />
-            </div>
-          </div>
-
-          <!-- Item 1: Portrait (col-span-4 mt-32) -->
-          <div class="project-card col-span-12 md:col-span-4 mt-0 md:mt-32 showcase-item" data-layer="2" data-image-src="${obras[1].img}" data-title="${obras[1].titulo}">
-            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
-              <div class="flex gap-1.5">
-                <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-              </div>
-              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
-                ${obras[1].titulo}.blend
-              </span>
-            </div>
-            <div class="relative w-full aspect-[3/4] bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
-              <img src="${obras[1].img}?tr=w-700,fo-auto" alt="${obras[1].titulo}" 
-                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
-                   loading="eager" />
-            </div>
-          </div>
-
-          <!-- Item 2: Wide/Video (col-span-6 mt-16) -->
-          <div class="project-card col-span-12 md:col-span-6 mt-0 md:mt-16 showcase-item" data-layer="1" data-image-src="${obras[2].img}" data-title="${obras[2].titulo}">
-            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
-              <div class="flex gap-1.5">
-                <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-              </div>
-              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
-                ${obras[2].titulo}.blend
-              </span>
-            </div>
-            <div class="relative w-full aspect-video bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
-              <img src="${obras[2].img}?tr=w-1000,fo-auto" alt="${obras[2].titulo}" 
-                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
-                   loading="eager" />
-            </div>
-          </div>
-
-          <!-- Item 3: Square (col-span-5 mt-24) -->
-          <div class="project-card col-span-12 md:col-span-5 mt-0 md:mt-24 showcase-item" data-layer="2" data-image-src="${obras[3].img}" data-title="${obras[3].titulo}">
-            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
-              <div class="flex gap-1.5">
-                <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-              </div>
-              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
-                ${obras[3].titulo}.blend
-              </span>
-            </div>
-            <div class="relative w-full aspect-square bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
-              <img src="${obras[3].img}?tr=w-900,fo-auto" alt="${obras[3].titulo}" 
-                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
-                   loading="eager" />
-            </div>
-          </div>
-
-          <!-- Item 4: Portrait (col-span-4 mt-8) -->
-          <div class="project-card col-span-12 md:col-span-4 mt-0 md:mt-8 showcase-item" data-layer="1" data-image-src="${obras[4].img}" data-title="${obras[4].titulo}">
-            <div class="h-6 bg-[#2d2d2d] rounded-t-md flex items-center px-2 border-b border-[#1a1a1a] w-full">
-              <div class="flex gap-1.5">
-                <div class="w-2 h-2 rounded-full bg-red-500"></div>
-                <div class="w-2 h-2 rounded-full bg-yellow-500"></div>
-                <div class="w-2 h-2 rounded-full bg-green-500"></div>
-              </div>
-              <span class="ml-3 text-[10px] text-gray-300 font-mono truncate">
-                ${obras[4].titulo}.blend
-              </span>
-            </div>
-            <div class="relative w-full aspect-[3/4] bg-[#1a1a1a] border border-[#2d2d2d] rounded-b-md overflow-hidden group">
-              <img src="${obras[4].img}?tr=w-700,fo-auto" alt="${obras[4].titulo}" 
-                   class="webgl-target w-full h-full object-cover opacity-100 group-hover:opacity-0 transition-opacity duration-300" 
-                   loading="eager" />
-            </div>
-          </div>
-
-        </div>
-      </section>
-
-      <!-- ========================================== -->
       <!-- ========================================== -->
       <!-- SECTIONS - Colin Moy Style -->
       <!-- ========================================== -->
@@ -179,50 +96,34 @@ export default function HomeView() {
           </div>
         </section>
 
-        <!-- PORTFOLIO SECTION - Pinterest Masonry Grid -->
+
+        <!-- PORTFOLIO SECTION - PASO 2: Individual frames per artwork, NO global frame -->
         <section id="portfolio" class="section-block relative min-h-screen bg-transparent py-20 px-6">
-          <div class="max-w-7xl mx-auto">
-            <!-- Title -->
-            <h2 class="text-6xl md:text-7xl font-bold uppercase tracking-tighter text-white text-center mb-16">
-              PORTF<span class="text-white/40">●</span>LIO
-            </h2>
-            
-            <!-- Pinterest Masonry Grid -->
-            <div class="masonry-grid">
-              ${obras
-                .map(value => ({ value, sort: Math.random() })) // Shuffle array
-                .sort((a, b) => a.sort - b.sort)
-                .map(({ value: obra }, index) => `
-                <div class="masonry-item" data-obra-id="${obra.id}">
-                  <div class="masonry-card group cursor-pointer">
-                    <div class="masonry-img-wrapper">
-                      <!-- Removed h-600 to allow natural height (masonry effect) -->
-                      <img 
-                        src="${obra.img}?tr=w-500,fo-auto" 
-                        alt="${obra.titulo}"
-                        loading="${index < 8 ? 'eager' : 'lazy'}"
-                        class="masonry-img"
-                        style="min-height: 200px; background: #222;"
-                      />
-                      <!-- Overlay on hover -->
-                      <div class="masonry-overlay">
-                        <h3 class="text-xl font-bold text-white mb-2">${obra.titulo}</h3>
-                        <p class="text-sm text-white/80 mb-2">${obra.categoria} • ${obra.year}</p>
-                      </div>
-                    </div>
-                  </div>
-                </div>
-              `).join('')}
+          <!-- Background layer (reserved for PASO 3 WebGL) -->
+          <div class="absolute inset-0 -z-10 w-full h-full"></div>
+
+          <!-- Content Overlay -->
+          <div class="relative z-10">
+            <div class="mx-auto max-w-[1280px] w-full px-6 py-10">
+              <h2 class="text-sm font-medium tracking-wide opacity-80 mb-5 text-white">Obras</h2>
+
+              <!-- Grid ancho (sin marco global) -->
+              <div id="portfolio-grid" class="grid gap-5 w-full"></div>
+
+              <!-- Estado vacío -->
+              <div id="portfolio-empty" class="hidden p-10 text-center opacity-70">
+                <p>No hay obras para mostrar.</p>
+              </div>
             </div>
-            
-            <!-- Next Section Arrow -->
-            <div class="w-full flex justify-center py-20">
-              <a href="#services" class="scroll-arrow group" aria-label="Go to Services">
-                <svg width="64" height="64" viewBox="0 0 24 24" fill="none" class="text-white/70 group-hover:text-white transition-colors duration-300 animate-bounce">
-                  <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-              </a>
-            </div>
+          </div>
+
+          <!-- Next Section Arrow -->
+          <div class="relative z-10 w-full flex justify-center py-20 pointer-events-auto">
+            <a href="#services" class="scroll-arrow group" aria-label="Ir a Servicios">
+              <svg width="64" height="64" viewBox="0 0 24 24" fill="none" class="text-white/70 group-hover:text-white transition-colors duration-300 animate-bounce">
+                <path d="M7 10L12 15L17 10" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+            </a>
           </div>
         </section>
 
@@ -301,6 +202,16 @@ export default function HomeView() {
           'max-glare': 1,
         });
         console.log('✨ VanillaTilt initialized on', cards.length, 'cards (HomeView)');
+      }
+      
+      // Initialize Portfolio Controller (PASO 2)
+      const portfolioSection = document.getElementById('portfolio');
+      if (portfolioSection) {
+        const portfolioController = new PortfolioController(portfolioSection);
+        portfolioController.mount();
+        
+        // Store controller reference for cleanup
+        window.portfolioController = portfolioController;
       }
     }
   }, 100);

@@ -6,22 +6,17 @@ import router from './router.js';
 import { initNavbar, setActiveLink } from './ui/navbar.js';
 import { initLiquidGradient } from './animations/liquid-gradient.js';
 
-import { initPortfolio3D } from './modules/portfolio-3d/index.js';
 import { initAboutWindow } from './modules/aboutWindow.js';
 import { obras } from './data/obras.js';
 import { Showcase } from './Experience/World/Showcase.js';
 
-import { Draggable } from 'gsap/Draggable';
-
 // ============================================
 // REGISTRO EXPLÍCITO DE PLUGINS
 // ============================================
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Draggable);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 
 // Variables globales
 window.gsap = gsap;
-window.Draggable = Draggable;
-window.obrasData = obras; // Expose obras globally for Portfolio 3D
 
 // ============================================
 // INICIALIZACIÓN SEGURA (window.load)
@@ -71,7 +66,6 @@ function initAnimations() {
 // Exponer globalmente para router
 // ============================================
 window.initAnimations = initAnimations;
-window.initPortfolio3D = initPortfolio3D;
 window.initAboutWindow = initAboutWindow;
 
 // ============================================

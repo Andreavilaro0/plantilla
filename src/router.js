@@ -2,12 +2,14 @@ import HomeView from './views/HomeView.js'
 import AboutView from './views/AboutView.js'
 import ContactView from './views/ContactView.js'
 import ServicesView from './views/ServicesView.js'
+import PortfolioView from './views/PortfolioView.js'
 
 const routes = {
   '/': HomeView,
   '/about': AboutView,
   '/contact': ContactView,
-  '/services': ServicesView
+  '/services': ServicesView,
+  '/portfolio': PortfolioView
 }
 
 class Router {
@@ -44,11 +46,15 @@ class Router {
     setTimeout(() => {
       if (path === '/') {
         if (window.initAnimations) window.initAnimations();
-        if (window.initPortfolio3D) window.initPortfolio3D();
       }
       
       if (path === '/about') {
         if (window.initAboutWindow) window.initAboutWindow();
+      }
+      
+      if (path === '/portfolio') {
+        // PortfolioController is already initialized by PortfolioView
+        console.log('📸 Portfolio view loaded');
       }
       
       // Update ScrollTrigger for any new content
