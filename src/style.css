@@ -1344,7 +1344,7 @@ body:has(#hero) .global-nav {
 }
 
 /* ============================================
-   PORTFOLIO READYMAG - GRID DENSO CON MOSAICO
+   PORTFOLIO READYMAG - POSICIONAMIENTO ABSOLUTO
    ============================================ */
 
 #portfolio {
@@ -1352,10 +1352,11 @@ body:has(#hero) .global-nav {
   min-height: 100vh;
   background: var(--bg-primary);
   padding: var(--space-9) 0 var(--space-10);
+  overflow-x: hidden;
 }
 
 #portfolio > div {
-  max-width: var(--container-max-width);
+  max-width: 100%;
   margin: 0 auto;
   padding: 0 var(--container-padding);
 }
@@ -1371,83 +1372,79 @@ body:has(#hero) .global-nav {
 }
 
 /* ===========================
-   GRID DENSO Y FLUIDO
+   CANVAS ABSOLUTO READYMAG
    =========================== */
 
 #portfolio-grid {
-  display: grid;
-  gap: var(--grid-gap-desktop);
-  /* Grid fluido con clamp */
-  grid-template-columns: var(--grid-columns-mobile);
-  /* CLAVE: dense rellena huecos automáticamente */
-  grid-auto-flow: dense;
+  position: relative;
   width: 100%;
+  min-height: 600vh; /* Alto suficiente para el scroll */
 }
 
-/* Responsive gaps */
+/* Base sizes para obras */
+:root {
+  --obra-base-width: 320px;
+  --obra-base-height: 240px;
+}
+
 @media (max-width: 1024px) {
-  #portfolio-grid {
-    gap: var(--grid-gap-tablet);
+  :root {
+    --obra-base-width: 280px;
+    --obra-base-height: 210px;
   }
 }
 
 @media (max-width: 640px) {
-  #portfolio-grid {
-    gap: var(--grid-gap-mobile);
+  :root {
+    --obra-base-width: 240px;
+    --obra-base-height: 180px;
   }
 }
 
 /* ===========================
-   CLASES DE TAMAÑO (CURADO)
-   =========================== */
-
-/* Ancho doble */
-.span-w2 {
-  grid-column: span 2;
-}
-
-/* Alto doble */
-.span-h2 {
-  grid-row: span 2;
-}
-
-/* Hero: ancho y alto doble */
-.span-w2h2 {
-  grid-column: span 2;
-  grid-row: span 2;
-}
-
-/* En móvil, todo span 1 */
-@media (max-width: 640px) {
-  .span-w2,
-  .span-h2,
-  .span-w2h2 {
-    grid-column: span 1;
-    grid-row: span 1;
-  }
-}
-
-/* ===========================
-   MODO MASONRY (OPCIONAL)
-   Si añades clase .masonry al grid
-   =========================== */
-
-#portfolio-grid.masonry {
-  /* Filas pequeñas para cálculo fino */
-  grid-auto-rows: var(--masonry-row-size);
-}
-
-/* ===========================
-   OBRA ITEM
+   OBRA ITEM - POSICIONAMIENTO ABSOLUTO
    =========================== */
 
 .obra-item {
-  position: relative;
+  position: absolute;
   opacity: 0;
   transform: translateY(20px);
-  transform: translateZ(0);
   backface-visibility: hidden;
-  cursor: pointer;
+  cursor: grab;
+  will-change: transform;
+  transition: transform 0.2s ease-out;
+}
+
+.obra-item.dragging {
+  cursor: grabbing;
+  z-index: 1000 !important;
+  opacity: 0.9;
+}
+
+/* Tamaños base */
+.obra-item {
+  width: var(--obra-base-width);
+}
+
+.obra-item .frame {
+  width: 100%;
+}
+
+/* Tamaños variables según size */
+.obra-item.span-w2 {
+  width: calc(var(--obra-base-width) * 1.5);
+}
+
+.obra-item.span-h2 .frame {
+  min-height: calc(var(--obra-base-height) * 1.8);
+}
+
+.obra-item.span-w2h2 {
+  width: calc(var(--obra-base-width) * 1.6);
+}
+
+.obra-item.span-w2h2 .frame {
+  min-height: calc(var(--obra-base-height) * 2);
 }
 
 /* ===========================

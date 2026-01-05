@@ -32,7 +32,11 @@ export class PortfolioController {
     this.grid = root?.querySelector("#portfolio-grid");
     this.empty = root?.querySelector("#portfolio-empty");
     this.maxZIndex = 100;
-    this.useMasonry = false; // Cambiar a true para masonry automático
+    this.draggedElement = null;
+    this.initialX = 0;
+    this.initialY = 0;
+    this.currentX = 0;
+    this.currentY = 0;
   }
 
   mount() {
@@ -60,35 +64,22 @@ export class PortfolioController {
     this._render();
     this._setupAnimations();
     this._setupCursor();
-    this._setupZIndexInteraction();
-
-    // Masonry automático (opcional)
-    if (this.useMasonry) {
-      this._setupMasonry();
-    }
+    this._setupDragAndDrop();
   }
 
   destroy() {
     this._teardownAnimations?.();
     this._teardownCursor?.();
-    this._teardownZIndex?.();
-    this._teardownMasonry?.();
+    this._teardownDragAndDrop?.();
   }
 
-  // ENRIQUECER DATOS CON LÓGICA DE MOSAICO
   _enrichData(data) {
     return data.map((d, i) => {
       const orientation = getOrientation(d.width, d.height);
 
-      // Si no tiene size asignado, aplicar heurística de ritmo
-      let size = d.size;
-      if (!size) {
-        // Patrón: cada 5ª obra ancha, cada 7ª alta, etc.
-        if (i % 5 === 0 && d.ratio === "4:3") size = "w2";
-        if (i % 7 === 0 && d.ratio === "3:4") size = "h2";
-        // Muy ocasional: hero
-        if (i % 12 === 0) size = "w2h2";
-      }
+      // Si no tiene coordenadas, generar aleatorias
+      let x = d.x ?? (Math.random() * 80);
+      let y = d.y ?? (i * 35);
 
       return {
         ...d,
@@ -97,10 +88,12 @@ export class PortfolioController {
         alt: d.alt || `${d.title || "Obra"}${d.year ? ", " + d.year : ""}`,
         rcls: ratioClass(d),
         ocls: `obra--${orientation}`,
-        size: size,
+        size: d.size,
         featured: d.featured || false,
         objectPosition: d.objectPosition || "50% 50%",
-        zIndex: d.zIndex || 1
+        zIndex: d.zIndex || 1,
+        x: x,
+        y: y
       };
     });
   }
@@ -118,17 +111,25 @@ export class PortfolioController {
     this.data.forEach((item, index) => {
       const article = document.createElement("article");
       article.className = `obra-item ${item.ocls}`;
+      // NO añadir clase 'showcase-item' para evitar objetos 3D flotantes
 
       // Añadir clases de span según size
       if (item.size === "w2") article.classList.add("span-w2");
       if (item.size === "h2") article.classList.add("span-h2");
       if (item.size === "w2h2") article.classList.add("span-w2h2");
 
+      // POSICIONAMIENTO ABSOLUTO
+      article.style.left = `${item.x}%`;
+      article.style.top = `${item.y}vh`;
+
       article.tabIndex = 0;
       article.setAttribute("role", "img");
       article.setAttribute("aria-label", item.alt);
       article.dataset.index = index;
+      article.dataset.x = item.x;
+      article.dataset.y = item.y;
       article.style.zIndex = item.zIndex;
+      // NO añadir dataset.imageSrc, dataset.title, dataset.aspectRatio, dataset.layer para Showcase
 
       const frame = document.createElement("div");
       frame.className = "frame";
@@ -171,15 +172,11 @@ export class PortfolioController {
       if (item.width) img.width = item.width;
       if (item.height) img.height = item.height;
       img.className = "obra-img";
-      // CLAVE: object-position personalizado
       img.style.objectPosition = item.objectPosition;
+      img.draggable = false;
 
       img.addEventListener("load", () => {
         skeleton.remove();
-        // Si masonry, recalcular al cargar imagen
-        if (this.useMasonry) {
-          this._applyMasonry();
-        }
       }, { once: true });
 
       img.addEventListener("error", () => {
@@ -199,39 +196,6 @@ export class PortfolioController {
     console.log(`[Portfolio] ✅ ${this.grid.children.length} obras renderizadas`);
   }
 
-  // MASONRY AUTOMÁTICO (OPCIONAL)
-  _setupMasonry() {
-    this.grid.classList.add("masonry");
-
-    // Aplicar al montar
-    this._applyMasonry();
-
-    // Reajustar en resize
-    this.resizeObserver = new ResizeObserver(() => {
-      this._applyMasonry();
-    });
-    this.resizeObserver.observe(this.grid);
-
-    this._teardownMasonry = () => {
-      this.resizeObserver?.disconnect();
-    };
-  }
-
-  _applyMasonry() {
-    const rowSize = 8; // Debe coincidir con --masonry-row-size
-    const gap = 22;    // Debe coincidir con --grid-gap-desktop
-
-    const items = this.grid.querySelectorAll(".obra-item");
-    items.forEach(item => {
-      const container = item.querySelector(".obra-contenedor");
-      if (!container) return;
-
-      const rect = container.getBoundingClientRect();
-      const span = Math.ceil((rect.height + gap) / (rowSize + gap));
-      item.style.gridRowEnd = `span ${span}`;
-    });
-  }
-
   _setupAnimations() {
     const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
     if (prefersReduce) {
@@ -247,17 +211,16 @@ export class PortfolioController {
     const items = Array.from(this.grid.querySelectorAll(".obra-item"));
 
     const ctx = gsap.context(() => {
-
       items.forEach((el, i) => {
         gsap.to(el, {
           opacity: 1,
           y: 0,
           duration: 0.6,
-          delay: i * 0.05,
+          delay: i * 0.03,
           ease: "power2.out",
           scrollTrigger: {
             trigger: el,
-            start: "top 85%",
+            start: "top 90%",
             once: true
           }
         });
@@ -265,15 +228,15 @@ export class PortfolioController {
         const img = el.querySelector(".obra-img");
         if (img) {
           gsap.fromTo(img,
-            { y: -8 },
+            { y: -5 },
             {
-              y: 8,
+              y: 5,
               ease: "none",
               scrollTrigger: {
                 trigger: el,
                 start: "top bottom",
                 end: "bottom top",
-                scrub: 1.2
+                scrub: 1
               }
             }
           );
@@ -282,7 +245,6 @@ export class PortfolioController {
 
       ScrollTrigger.refresh();
       console.log("[Portfolio] ✅ Animaciones activadas");
-
     }, root);
 
     this._ctx = ctx;
@@ -346,27 +308,67 @@ export class PortfolioController {
     };
   }
 
-  _setupZIndexInteraction() {
+  _setupDragAndDrop() {
     const items = this.grid.querySelectorAll(".obra-item");
 
     items.forEach(item => {
-      item.addEventListener("click", () => {
-        this.maxZIndex++;
-        item.style.zIndex = this.maxZIndex;
-
-        gsap.fromTo(item,
-          { scale: 1 },
-          {
-            scale: 1.02,
-            duration: 0.12,
-            ease: "back.out(1.5)",
-            yoyo: true,
-            repeat: 1
-          }
-        );
-      });
+      item.addEventListener("mousedown", this._onDragStart.bind(this));
+      item.addEventListener("touchstart", this._onDragStart.bind(this), { passive: false });
     });
 
-    this._teardownZIndex = () => {};
+    document.addEventListener("mousemove", this._onDrag.bind(this));
+    document.addEventListener("touchmove", this._onDrag.bind(this), { passive: false });
+
+    document.addEventListener("mouseup", this._onDragEnd.bind(this));
+    document.addEventListener("touchend", this._onDragEnd.bind(this));
+
+    this._teardownDragAndDrop = () => {
+      document.removeEventListener("mousemove", this._onDrag.bind(this));
+      document.removeEventListener("touchmove", this._onDrag.bind(this));
+      document.removeEventListener("mouseup", this._onDragEnd.bind(this));
+      document.removeEventListener("touchend", this._onDragEnd.bind(this));
+    };
+  }
+
+  _onDragStart(e) {
+    const target = e.currentTarget;
+
+    // Traer al frente
+    this.maxZIndex++;
+    target.style.zIndex = this.maxZIndex;
+
+    this.draggedElement = target;
+    this.draggedElement.classList.add("dragging");
+
+    const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type.includes("touch") ? e.touches[0].clientY : e.clientY;
+
+    const rect = target.getBoundingClientRect();
+    this.initialX = clientX - rect.left;
+    this.initialY = clientY - rect.top;
+
+    e.preventDefault();
+  }
+
+  _onDrag(e) {
+    if (!this.draggedElement) return;
+
+    e.preventDefault();
+
+    const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
+    const clientY = e.type.includes("touch") ? e.touches[0].clientY : e.clientY;
+
+    this.currentX = clientX - this.initialX;
+    this.currentY = clientY - this.initialY;
+
+    this.draggedElement.style.left = `${this.currentX}px`;
+    this.draggedElement.style.top = `${this.currentY}px`;
+  }
+
+  _onDragEnd(e) {
+    if (!this.draggedElement) return;
+
+    this.draggedElement.classList.remove("dragging");
+    this.draggedElement = null;
   }
 }
