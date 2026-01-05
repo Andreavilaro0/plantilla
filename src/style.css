@@ -1,15 +1,16 @@
-@import url('./styles/tokens.css');
-@import url('./styles/showcase.css');
+@import url("./styles/tokens.css");
+@import url("./styles/showcase.css");
 @import "tailwindcss";
-@import url('https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600;700&display=swap');
+@import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600;700&display=swap");
 /* @import './components/Camera3D/camera3d.css'; */
 @theme {
   --font-serif: "Playfair Display", "Times New Roman", serif;
   --color-dark-bg: #0b0b0b;
   --color-modal-bg: #1a1a1a;
   --color-surface-floating: color-mix(in srgb, white 6%, transparent);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Inter", "SF Pro Text", Arial, sans-serif;
+  --font-sans: ui-sans-serif, system-ui, -apple-system, "Inter", "SF Pro Text",
+    Arial, sans-serif;
 }
 
 :root {
@@ -30,7 +31,7 @@ html {
 body {
   background-color: transparent; /* Transparent to show canvas behind */
   color: #fff;
-  font-family: var(--font-serif); 
+  font-family: var(--font-serif);
   min-height: 100vh;
 }
 
@@ -131,6 +132,7 @@ button:focus-visible {
 /* Grid: 1–2 cols móvil, 2–3 tablet, 3–4 desktop */
 #portfolio-grid {
   grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+  align-content: start;
 }
 
 /* Portfolio Card */
@@ -175,7 +177,6 @@ button:focus-visible {
 .portfolio-card:focus .portfolio-overlay {
   opacity: 1;
 }
-
 
 /* ============================================
    PASO 2 - INDIVIDUAL ARTWORK FRAMES
@@ -347,7 +348,7 @@ a:focus-visible {
     transition-duration: 0.01ms !important;
     scroll-behavior: auto !important;
   }
-  
+
   /* Disable transforms for reduced motion */
   .hero-float {
     transform: none !important;
@@ -469,7 +470,7 @@ a:focus-visible {
 }
 
 .about-content li::before {
-  content: '•';
+  content: "•";
   position: absolute;
   left: 0;
   color: #667eea;
@@ -543,33 +544,32 @@ a:focus-visible {
 
 .baroque-frame {
   position: relative;
-  
+
   /* Borde dorado con gradiente barroco */
   border: 8px solid;
   border-image: linear-gradient(
-    135deg,
-    #d4af37 0%,    /* Oro clásico */
-    #f9e79f 25%,   /* Oro brillante */
-    #b8860b 50%,   /* Oro oscuro */
-    #ffd700 75%,   /* Oro vibrante */
-    #d4af37 100%   /* Oro clásico */
-  ) 1;
-  
+      135deg,
+      #d4af37 0%,
+      /* Oro clásico */ #f9e79f 25%,
+      /* Oro brillante */ #b8860b 50%,
+      /* Oro oscuro */ #ffd700 75%,
+      /* Oro vibrante */ #d4af37 100% /* Oro clásico */
+    )
+    1;
+
   /* Sombras múltiples para profundidad 3D barroca */
   box-shadow:
-    /* Sombra interior dorada (brillo interno) */
-    inset 0 0 20px rgba(212, 175, 55, 0.4),
+    /* Sombra interior dorada (brillo interno) */ inset 0 0 20px
+      rgba(212, 175, 55, 0.4),
     inset 0 0 10px rgba(255, 215, 0, 0.3),
-    /* Sombra exterior para elevación */
-    0 8px 24px rgba(0, 0, 0, 0.3),
+    /* Sombra exterior para elevación */ 0 8px 24px rgba(0, 0, 0, 0.3),
     0 4px 12px rgba(0, 0, 0, 0.2),
-    /* Brillo dorado exterior sutil */
-    0 0 30px rgba(212, 175, 55, 0.15);
-  
+    /* Brillo dorado exterior sutil */ 0 0 30px rgba(212, 175, 55, 0.15);
+
   /* Outline interior para detalle elegante */
   outline: 2px solid rgba(255, 215, 0, 0.4);
   outline-offset: -12px;
-  
+
   /* Transición suave */
   transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
 }
@@ -577,51 +577,45 @@ a:focus-visible {
 /* Hover state - Marco más brillante */
 .baroque-frame:hover {
   border-image: linear-gradient(
-    135deg,
-    #ffd700 0%,    /* Oro vibrante */
-    #fff8dc 25%,   /* Oro muy brillante */
-    #d4af37 50%,   /* Oro clásico */
-    #ffec8b 75%,   /* Oro luminoso */
-    #ffd700 100%   /* Oro vibrante */
-  ) 1;
-  
-  box-shadow:
-    inset 0 0 25px rgba(255, 215, 0, 0.5),
-    inset 0 0 15px rgba(212, 175, 55, 0.4),
-    0 12px 32px rgba(0, 0, 0, 0.4),
-    0 6px 16px rgba(0, 0, 0, 0.25),
-    0 0 40px rgba(212, 175, 55, 0.25);
-  
+      135deg,
+      #ffd700 0%,
+      /* Oro vibrante */ #fff8dc 25%,
+      /* Oro muy brillante */ #d4af37 50%,
+      /* Oro clásico */ #ffec8b 75%,
+      /* Oro luminoso */ #ffd700 100% /* Oro vibrante */
+    )
+    1;
+
+  box-shadow: inset 0 0 25px rgba(255, 215, 0, 0.5),
+    inset 0 0 15px rgba(212, 175, 55, 0.4), 0 12px 32px rgba(0, 0, 0, 0.4),
+    0 6px 16px rgba(0, 0, 0, 0.25), 0 0 40px rgba(212, 175, 55, 0.25);
+
   outline-color: rgba(255, 215, 0, 0.6);
 }
 
 /* Pseudo-elemento decorativo (textura diagonal sutil) */
 .baroque-frame::before {
-  content: '';
+  content: "";
   position: absolute;
   top: -8px;
   left: -8px;
   right: -8px;
   bottom: -8px;
-  background: 
-    repeating-linear-gradient(
-      45deg,
-      transparent,
-      transparent 10px,
-      rgba(212, 175, 55, 0.05) 10px,
-      rgba(212, 175, 55, 0.05) 11px
-    );
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 10px,
+    rgba(212, 175, 55, 0.05) 10px,
+    rgba(212, 175, 55, 0.05) 11px
+  );
   pointer-events: none;
   z-index: -1;
   border-radius: inherit;
 }
 
-
 /* ============================================
    CLAUDE MONET HERO STYLES
    ============================================ */
-
-
 
 /* Hero background with radial glow */
 #hero {
@@ -637,14 +631,14 @@ a:focus-visible {
 
 /* Typography overrides */
 .hero-monet {
-  font-family: 'Playfair Display', serif !important;
+  font-family: "Playfair Display", serif !important;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
   overflow-wrap: break-word;
 }
 
 .hero-impressions {
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   text-shadow: 0 4px 20px rgba(0, 0, 0, 0.6);
   box-sizing: border-box;
   overflow-wrap: break-word;
@@ -676,19 +670,18 @@ a:focus-visible {
 
 .frame-real {
   background: linear-gradient(135deg, #1a1a1a 0%, #0d0d0d 100%);
-  box-shadow: 
-    0 8px 32px rgba(0, 0, 0, 0.6),
-    0 4px 16px rgba(0, 0, 0, 0.4),
+  box-shadow: 0 8px 32px rgba(0, 0, 0, 0.6), 0 4px 16px rgba(0, 0, 0, 0.4),
     inset 0 0 20px rgba(212, 175, 55, 0.15);
   border: 4px solid;
   border-image: linear-gradient(
-    135deg,
-    #d4af37 0%,
-    #f9e79f 25%,
-    #b8860b 50%,
-    #ffd700 75%,
-    #d4af37 100%
-  ) 1;
+      135deg,
+      #d4af37 0%,
+      #f9e79f 25%,
+      #b8860b 50%,
+      #ffd700 75%,
+      #d4af37 100%
+    )
+    1;
 }
 
 .photo-media {
@@ -738,7 +731,7 @@ body:has(#hero) .global-nav {
   overflow-y: auto;
   border-radius: 24px;
   background: rgba(24, 24, 28, 0.92);
-  border: 1px solid rgba(255, 255, 255, 0.10);
+  border: 1px solid rgba(255, 255, 255, 0.1);
   box-shadow: 0 30px 90px rgba(0, 0, 0, 0.55);
   padding: 42px 36px;
   outline: none;
@@ -753,7 +746,7 @@ body:has(#hero) .global-nav {
   border-radius: 50%;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.05);
-  color: rgba(255, 255, 255, 0.70);
+  color: rgba(255, 255, 255, 0.7);
   font-size: 28px;
   line-height: 1;
   cursor: pointer;
@@ -765,7 +758,7 @@ body:has(#hero) .global-nav {
 
 .about-close:hover {
   background: rgba(255, 255, 255, 0.12);
-  border-color: rgba(255, 255, 255, 0.30);
+  border-color: rgba(255, 255, 255, 0.3);
   color: white;
   transform: rotate(90deg);
 }
@@ -795,8 +788,8 @@ body:has(#hero) .global-nav {
   aspect-ratio: 3/4;
   object-fit: cover;
   border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.10);
-  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.40);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.4);
 }
 
 .about-content {
@@ -806,7 +799,7 @@ body:has(#hero) .global-nav {
 }
 
 .about-name {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: clamp(2rem, 4vw, 3rem);
   font-weight: 400;
   font-style: italic;
@@ -816,10 +809,10 @@ body:has(#hero) .global-nav {
 }
 
 .about-bio {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 15px;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.70);
+  color: rgba(255, 255, 255, 0.7);
   margin: 0;
 }
 
@@ -836,9 +829,9 @@ body:has(#hero) .global-nav {
   border-radius: 20px;
   border: 1px solid rgba(255, 255, 255, 0.15);
   background: rgba(255, 255, 255, 0.05);
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 13px;
-  color: rgba(255, 255, 255, 0.80);
+  color: rgba(255, 255, 255, 0.8);
   font-weight: 500;
   letter-spacing: 0.3px;
 }
@@ -902,9 +895,9 @@ body:has(#hero) .global-nav {
   background: conic-gradient(
     from 0deg,
     transparent,
-    #10b981, /* emerald-500 */
-    #3b82f6, /* blue-500 */
     #10b981,
+    /* emerald-500 */ #3b82f6,
+    /* blue-500 */ #10b981,
     transparent
   );
   animation: rotate-border 4s linear infinite;
@@ -912,8 +905,12 @@ body:has(#hero) .global-nav {
 }
 
 @keyframes rotate-border {
-  from { transform: rotate(0deg); }
-  to { transform: rotate(360deg); }
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .window-inner {
@@ -939,9 +936,15 @@ body:has(#hero) .global-nav {
   border-radius: 50%;
 }
 
-.dot-red { background: #ff5f57; }
-.dot-yellow { background: #ffbd2e; }
-.dot-green { background: #28c840; }
+.dot-red {
+  background: #ff5f57;
+}
+.dot-yellow {
+  background: #ffbd2e;
+}
+.dot-green {
+  background: #28c840;
+}
 
 .window-body {
   padding: 2.5rem;
@@ -1090,7 +1093,7 @@ body:has(#hero) .global-nav {
 }
 
 .section-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   letter-spacing: -0.02em;
   line-height: 1;
 }
@@ -1100,7 +1103,7 @@ body:has(#hero) .global-nav {
    ============================================ */
 
 .services-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: clamp(2.5rem, 5vw, 4rem);
   font-weight: 400;
   font-style: italic;
@@ -1139,7 +1142,7 @@ body:has(#hero) .global-nav {
 }
 
 .card-number {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 5rem;
   font-weight: 700;
   opacity: 0.1;
@@ -1151,7 +1154,7 @@ body:has(#hero) .global-nav {
 }
 
 .card-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: 1.8rem;
   font-weight: 600;
   color: white;
@@ -1159,16 +1162,16 @@ body:has(#hero) .global-nav {
 }
 
 .card-description {
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.95rem;
   line-height: 1.7;
-  color: rgba(255, 255, 255, 0.70);
+  color: rgba(255, 255, 255, 0.7);
   margin-bottom: 1.5rem;
 }
 
 .card-link {
   display: inline-block;
-  font-family: 'Inter', sans-serif;
+  font-family: "Inter", sans-serif;
   font-size: 0.9rem;
   font-weight: 600;
   color: white;
@@ -1181,7 +1184,7 @@ body:has(#hero) .global-nav {
 }
 
 .card-link:hover {
-  background: rgba(255, 255, 255, 0.10);
+  background: rgba(255, 255, 255, 0.1);
   border-color: rgba(255, 255, 255, 0.4);
 }
 
@@ -1193,7 +1196,7 @@ body:has(#hero) .global-nav {
   .section-title {
     font-size: clamp(3rem, 12vw, 6rem);
   }
-  
+
   .services-container {
     grid-template-columns: 1fr;
   }
@@ -1214,7 +1217,7 @@ body:has(#hero) .global-nav {
 }
 
 .hero-title {
-  font-family: 'Playfair Display', serif;
+  font-family: "Playfair Display", serif;
   font-size: clamp(4rem, 10vw, 10rem);
   font-weight: 400;
   line-height: 0.9;
@@ -1241,7 +1244,7 @@ body:has(#hero) .global-nav {
 }
 
 .impressions-line {
-  font-family: 'Inter', sans-serif !important;
+  font-family: "Inter", sans-serif !important;
   font-weight: 300;
   letter-spacing: 0.1em;
   text-transform: uppercase;
@@ -1350,7 +1353,7 @@ body:has(#hero) .global-nav {
 #portfolio {
   position: relative;
   min-height: 100vh;
-  background: var(--bg-primary);
+  background: transparent;
   padding: var(--space-9) 0 var(--space-10);
   overflow-x: hidden;
 }
@@ -1378,7 +1381,7 @@ body:has(#hero) .global-nav {
 #portfolio-grid {
   position: relative;
   width: 100%;
-  min-height: 600vh; /* Alto suficiente para el scroll */
+  min-height: 600vh; /* Espacio vertical amplio para obras esparcidas */
 }
 
 /* Base sizes para obras */
@@ -1461,16 +1464,13 @@ body:has(#hero) .global-nav {
   box-shadow: var(--shadow-md);
   overflow: hidden;
   transform: translateZ(0);
-  transition:
-    box-shadow var(--duration-base) var(--ease-out),
+  transition: box-shadow var(--duration-base) var(--ease-out),
     transform var(--duration-base) var(--ease-out);
 }
 
 .frame.featured {
   border-color: rgba(59, 130, 246, 0.2);
-  box-shadow:
-    var(--shadow-md),
-    0 0 20px rgba(59, 130, 246, 0.1);
+  box-shadow: var(--shadow-md), 0 0 20px rgba(59, 130, 246, 0.1);
 }
 
 /* ===========================
@@ -1503,15 +1503,27 @@ body:has(#hero) .global-nav {
 }
 
 .dot-red {
-  background: linear-gradient(135deg, var(--dot-red-from) 0%, var(--dot-red-to) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--dot-red-from) 0%,
+    var(--dot-red-to) 100%
+  );
 }
 
 .dot-yellow {
-  background: linear-gradient(135deg, var(--dot-yellow-from) 0%, var(--dot-yellow-to) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--dot-yellow-from) 0%,
+    var(--dot-yellow-to) 100%
+  );
 }
 
 .dot-green {
-  background: linear-gradient(135deg, var(--dot-green-from) 0%, var(--dot-green-to) 100%);
+  background: linear-gradient(
+    135deg,
+    var(--dot-green-from) 0%,
+    var(--dot-green-to) 100%
+  );
 }
 
 .frame-title {
@@ -1585,20 +1597,19 @@ body:has(#hero) .global-nav {
 .obra-skeleton {
   position: absolute;
   inset: 0;
-  background: linear-gradient(
-    90deg,
-    #F0F1F3 0%,
-    #F9FAFB 50%,
-    #F0F1F3 100%
-  );
+  background: linear-gradient(90deg, #f0f1f3 0%, #f9fafb 50%, #f0f1f3 100%);
   background-size: 200% 100%;
   animation: skeleton-shimmer 1.8s ease-in-out infinite;
   border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
 @keyframes skeleton-shimmer {
-  0% { background-position: -200% 0; }
-  100% { background-position: 200% 0; }
+  0% {
+    background-position: -200% 0;
+  }
+  100% {
+    background-position: 200% 0;
+  }
 }
 
 /* ===========================
@@ -1617,9 +1628,7 @@ body:has(#hero) .global-nav {
 .obra-item:focus-visible .frame {
   outline: var(--ring-width) solid var(--ring-color);
   outline-offset: var(--ring-offset);
-  box-shadow:
-    var(--shadow-lg),
-    0 0 0 var(--ring-offset) rgba(59, 130, 246, 0.1);
+  box-shadow: var(--shadow-lg), 0 0 0 var(--ring-offset) rgba(59, 130, 246, 0.1);
 }
 
 /* ===========================
@@ -1655,57 +1664,4 @@ body:has(#hero) .global-nav {
 .obra-img,
 .obra-item {
   contain: layout style paint;
-}
-
-/* ===========================
-   CURSOR PERSONALIZADO
-   =========================== */
-
-.custom-cursor {
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 24px;
-  height: 24px;
-  pointer-events: none;
-  z-index: var(--z-cursor);
-  transform-origin: center;
-}
-
-.cursor-dot {
-  width: 6px;
-  height: 6px;
-  background: var(--text-primary);
-  border-radius: var(--radius-full);
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  transition: all var(--duration-fast) var(--ease-out);
-}
-
-.custom-cursor.hover .cursor-dot {
-  width: 32px;
-  height: 32px;
-  background: rgba(31, 41, 55, 0.08);
-  border: var(--border-thin) solid rgba(31, 41, 55, 0.2);
-}
-
-#portfolio {
-  cursor: none;
-}
-
-#portfolio * {
-  cursor: none;
-}
-
-@media (max-width: 1024px), (pointer: coarse) {
-  .custom-cursor {
-    display: none;
-  }
-
-  #portfolio,
-  #portfolio * {
-    cursor: auto;
-  }
 }

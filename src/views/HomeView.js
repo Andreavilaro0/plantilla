@@ -107,8 +107,8 @@ export default function HomeView() {
             <div class="mx-auto max-w-[1280px] w-full px-6 py-10">
               <h2 class="text-sm font-medium tracking-wide opacity-80 mb-5 text-white">Obras</h2>
 
-              <!-- Grid ancho (sin marco global) -->
-              <div id="portfolio-grid" class="grid gap-5 w-full"></div>
+              <!-- Canvas absoluto (sin marco global) -->
+              <div id="portfolio-grid" class="grid gap-8 w-full"></div>
 
               <!-- Estado vacío -->
               <div id="portfolio-empty" class="hidden p-10 text-center opacity-70">

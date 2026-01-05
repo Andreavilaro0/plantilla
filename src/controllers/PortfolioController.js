@@ -5,7 +5,7 @@ import { ScrollTrigger } from "gsap/ScrollTrigger";
 gsap.registerPlugin(ScrollTrigger);
 
 const asset = (p) => {
-  if (p.startsWith('http://') || p.startsWith('https://')) return p;
+  if (p.startsWith("http://") || p.startsWith("https://")) return p;
   return new URL(p, import.meta.env.BASE_URL).pathname;
 };
 
@@ -17,7 +17,12 @@ function getOrientation(w, h) {
 }
 
 function ratioClass({ ratio, width, height }) {
-  if (ratio) return ratio === "3:4" ? "aspect-3-4" : ratio === "1:1" ? "aspect-1-1" : "aspect-4-3";
+  if (ratio)
+    return ratio === "3:4"
+      ? "aspect-3-4"
+      : ratio === "1:1"
+      ? "aspect-1-1"
+      : "aspect-4-3";
   if (width && height) {
     const r = width / height;
     if (Math.abs(r - 1) < 0.05) return "aspect-1-1";
@@ -46,11 +51,11 @@ export class PortfolioController {
     }
 
     // Purga
-    ["portfolio-search", "portfolio-filter", "portfolio-sort"].forEach(id => {
+    ["portfolio-search", "portfolio-filter", "portfolio-sort"].forEach((id) => {
       document.getElementById(id)?.remove();
     });
 
-    this.root.querySelectorAll('button, [role="button"]').forEach(btn => {
+    this.root.querySelectorAll('button, [role="button"]').forEach((btn) => {
       if (btn.textContent.match(/guardar|save/i)) btn.remove();
     });
 
@@ -63,13 +68,11 @@ export class PortfolioController {
 
     this._render();
     this._setupAnimations();
-    this._setupCursor();
     this._setupDragAndDrop();
   }
 
   destroy() {
     this._teardownAnimations?.();
-    this._teardownCursor?.();
     this._teardownDragAndDrop?.();
   }
 
@@ -77,9 +80,34 @@ export class PortfolioController {
     return data.map((d, i) => {
       const orientation = getOrientation(d.width, d.height);
 
-      // Si no tiene coordenadas, generar aleatorias
-      let x = d.x ?? (Math.random() * 80);
-      let y = d.y ?? (i * 35);
+      // Generar coordenadas esparcidas tipo ReadyMag
+      let x, y;
+      
+      if (d.x !== undefined && d.y !== undefined) {
+        // Usar coordenadas predefinidas si existen
+        x = d.x;
+        y = d.y;
+      } else {
+        // Algoritmo de distribución esparcida - VERSIÓN MEJORADA
+        // Distribuir en patrón zigzag para evitar solapamientos
+        
+        // Alternar entre izquierda y derecha más agresivamente
+        const isLeftSide = i % 2 === 0;
+        
+        // Distribución horizontal: mucho más espaciada
+        if (isLeftSide) {
+          // Lado izquierdo: 0-30%
+          x = Math.random() * 30;
+        } else {
+          // Lado derecho: 50-70%
+          x = 50 + Math.random() * 20;
+        }
+        
+        // Distribución vertical: mucho más espacio entre elementos
+        const baseY = i * 12; // 12vh entre cada obra (más espaciado)
+        const variationY = (Math.random() - 0.5) * 8; // ±4vh de variación
+        y = baseY + variationY;
+      }
 
       return {
         ...d,
@@ -91,9 +119,9 @@ export class PortfolioController {
         size: d.size,
         featured: d.featured || false,
         objectPosition: d.objectPosition || "50% 50%",
-        zIndex: d.zIndex || 1,
+        zIndex: d.zIndex || (i + 1),
         x: x,
-        y: y
+        y: y,
       };
     });
   }
@@ -175,14 +203,22 @@ export class PortfolioController {
       img.style.objectPosition = item.objectPosition;
       img.draggable = false;
 
-      img.addEventListener("load", () => {
-        skeleton.remove();
-      }, { once: true });
+      img.addEventListener(
+        "load",
+        () => {
+          skeleton.remove();
+        },
+        { once: true }
+      );
 
-      img.addEventListener("error", () => {
-        skeleton.remove();
-        img.style.opacity = "0.4";
-      }, { once: true });
+      img.addEventListener(
+        "error",
+        () => {
+          skeleton.remove();
+          img.style.opacity = "0.4";
+        },
+        { once: true }
+      );
 
       imgContainer.appendChild(skeleton);
       imgContainer.appendChild(img);
@@ -193,13 +229,17 @@ export class PortfolioController {
     });
 
     this.grid.replaceChildren(frag);
-    console.log(`[Portfolio] ✅ ${this.grid.children.length} obras renderizadas`);
+    console.log(
+      `[Portfolio] ✅ ${this.grid.children.length} obras renderizadas`
+    );
   }
 
   _setupAnimations() {
-    const prefersReduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+    const prefersReduce = window.matchMedia(
+      "(prefers-reduced-motion: reduce)"
+    ).matches;
     if (prefersReduce) {
-      this.grid.querySelectorAll(".obra-item").forEach(el => {
+      this.grid.querySelectorAll(".obra-item").forEach((el) => {
         el.style.opacity = "1";
         el.style.transform = "none";
       });
@@ -221,13 +261,14 @@ export class PortfolioController {
           scrollTrigger: {
             trigger: el,
             start: "top 90%",
-            once: true
-          }
+            once: true,
+          },
         });
 
         const img = el.querySelector(".obra-img");
         if (img) {
-          gsap.fromTo(img,
+          gsap.fromTo(
+            img,
             { y: -5 },
             {
               y: 5,
@@ -236,8 +277,8 @@ export class PortfolioController {
                 trigger: el,
                 start: "top bottom",
                 end: "bottom top",
-                scrub: 1
-              }
+                scrub: 1,
+              },
             }
           );
         }
@@ -251,7 +292,7 @@ export class PortfolioController {
     this._teardownAnimations = () => {
       try {
         ctx.revert();
-        ScrollTrigger.getAll().forEach(st => {
+        ScrollTrigger.getAll().forEach((st) => {
           if (st.vars.trigger?.closest("#portfolio")) st.kill();
         });
       } catch (err) {
@@ -260,64 +301,22 @@ export class PortfolioController {
     };
   }
 
-  _setupCursor() {
-    const cursor = document.createElement("div");
-    cursor.className = "custom-cursor";
-    document.body.appendChild(cursor);
 
-    const dot = document.createElement("div");
-    dot.className = "cursor-dot";
-    cursor.appendChild(dot);
-
-    let cursorX = 0, cursorY = 0;
-    let currentX = 0, currentY = 0;
-
-    const updateCursor = () => {
-      const diffX = cursorX - currentX;
-      const diffY = cursorY - currentY;
-
-      currentX += diffX * 0.12;
-      currentY += diffY * 0.12;
-
-      cursor.style.transform = `translate(${currentX}px, ${currentY}px)`;
-
-      requestAnimationFrame(updateCursor);
-    };
-    updateCursor();
-
-    const onMouseMove = (e) => {
-      cursorX = e.clientX;
-      cursorY = e.clientY;
-    };
-
-    document.addEventListener("mousemove", onMouseMove, { passive: true });
-
-    const items = this.grid.querySelectorAll(".obra-item");
-    items.forEach(item => {
-      item.addEventListener("mouseenter", () => {
-        cursor.classList.add("hover");
-      });
-      item.addEventListener("mouseleave", () => {
-        cursor.classList.remove("hover");
-      });
-    });
-
-    this._teardownCursor = () => {
-      document.removeEventListener("mousemove", onMouseMove);
-      cursor.remove();
-    };
-  }
 
   _setupDragAndDrop() {
     const items = this.grid.querySelectorAll(".obra-item");
 
-    items.forEach(item => {
+    items.forEach((item) => {
       item.addEventListener("mousedown", this._onDragStart.bind(this));
-      item.addEventListener("touchstart", this._onDragStart.bind(this), { passive: false });
+      item.addEventListener("touchstart", this._onDragStart.bind(this), {
+        passive: false,
+      });
     });
 
     document.addEventListener("mousemove", this._onDrag.bind(this));
-    document.addEventListener("touchmove", this._onDrag.bind(this), { passive: false });
+    document.addEventListener("touchmove", this._onDrag.bind(this), {
+      passive: false,
+    });
 
     document.addEventListener("mouseup", this._onDragEnd.bind(this));
     document.addEventListener("touchend", this._onDragEnd.bind(this));

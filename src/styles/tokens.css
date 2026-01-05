@@ -207,34 +207,6 @@
   --grid-columns-mobile: repeat(auto-fit, minmax(clamp(var(--grid-min-mobile), var(--grid-min-tablet), var(--grid-min-desktop)), 1fr));
 }
 
-/* ===========================
-   DARK MODE OVERRIDES (OPTIONAL)
-   =========================== */
 
-@media (prefers-color-scheme: dark) {
-  :root {
-    /* Ya estamos en modo oscuro por defecto */
-  }
-}
 
-/* ===========================
-   LIGHT MODE (OPTIONAL)
-   =========================== */
 
-@media (prefers-color-scheme: light) {
-  :root {
-    --bg-primary: #FFFFFF;
-    --bg-secondary: #F7FAFC;
-    --bg-surface: #EDF2F7;
-    --bg-elevated: #E2E8F0;
-
-    --text-primary: #1A202C;
-    --text-secondary: #2D3748;
-    --text-tertiary: #4A5568;
-    --text-muted: #718096;
-
-    --border-default: rgba(0, 0, 0, 0.1);
-    --border-subtle: rgba(0, 0, 0, 0.05);
-    --border-emphasis: rgba(0, 0, 0, 0.2);
-  }
-}
