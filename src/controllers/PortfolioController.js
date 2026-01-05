@@ -36,12 +36,6 @@ export class PortfolioController {
     this.root = root;
     this.grid = root?.querySelector("#portfolio-grid");
     this.empty = root?.querySelector("#portfolio-empty");
-    this.maxZIndex = 100;
-    this.draggedElement = null;
-    this.initialX = 0;
-    this.initialY = 0;
-    this.currentX = 0;
-    this.currentY = 0;
   }
 
   mount() {
@@ -68,46 +62,15 @@ export class PortfolioController {
 
     this._render();
     this._setupAnimations();
-    this._setupDragAndDrop();
   }
 
   destroy() {
     this._teardownAnimations?.();
-    this._teardownDragAndDrop?.();
   }
 
   _enrichData(data) {
     return data.map((d, i) => {
       const orientation = getOrientation(d.width, d.height);
-
-      // Generar coordenadas esparcidas tipo ReadyMag
-      let x, y;
-      
-      if (d.x !== undefined && d.y !== undefined) {
-        // Usar coordenadas predefinidas si existen
-        x = d.x;
-        y = d.y;
-      } else {
-        // Algoritmo de distribución esparcida - VERSIÓN MEJORADA
-        // Distribuir en patrón zigzag para evitar solapamientos
-        
-        // Alternar entre izquierda y derecha más agresivamente
-        const isLeftSide = i % 2 === 0;
-        
-        // Distribución horizontal: mucho más espaciada
-        if (isLeftSide) {
-          // Lado izquierdo: 0-30%
-          x = Math.random() * 30;
-        } else {
-          // Lado derecho: 50-70%
-          x = 50 + Math.random() * 20;
-        }
-        
-        // Distribución vertical: mucho más espacio entre elementos
-        const baseY = i * 12; // 12vh entre cada obra (más espaciado)
-        const variationY = (Math.random() - 0.5) * 8; // ±4vh de variación
-        y = baseY + variationY;
-      }
 
       return {
         ...d,
@@ -119,9 +82,6 @@ export class PortfolioController {
         size: d.size,
         featured: d.featured || false,
         objectPosition: d.objectPosition || "50% 50%",
-        zIndex: d.zIndex || (i + 1),
-        x: x,
-        y: y,
       };
     });
   }
@@ -139,25 +99,16 @@ export class PortfolioController {
     this.data.forEach((item, index) => {
       const article = document.createElement("article");
       article.className = `obra-item ${item.ocls}`;
-      // NO añadir clase 'showcase-item' para evitar objetos 3D flotantes
 
       // Añadir clases de span según size
       if (item.size === "w2") article.classList.add("span-w2");
       if (item.size === "h2") article.classList.add("span-h2");
       if (item.size === "w2h2") article.classList.add("span-w2h2");
 
-      // POSICIONAMIENTO ABSOLUTO
-      article.style.left = `${item.x}%`;
-      article.style.top = `${item.y}vh`;
-
       article.tabIndex = 0;
       article.setAttribute("role", "img");
       article.setAttribute("aria-label", item.alt);
       article.dataset.index = index;
-      article.dataset.x = item.x;
-      article.dataset.y = item.y;
-      article.style.zIndex = item.zIndex;
-      // NO añadir dataset.imageSrc, dataset.title, dataset.aspectRatio, dataset.layer para Showcase
 
       const frame = document.createElement("div");
       frame.className = "frame";
@@ -229,9 +180,12 @@ export class PortfolioController {
     });
 
     this.grid.replaceChildren(frag);
-    console.log(
-      `[Portfolio] ✅ ${this.grid.children.length} obras renderizadas`
-    );
+
+    // Debug
+    console.log(`[Portfolio] Grid actualizado:`);
+    console.log(`- Obras renderizadas: ${this.grid.children.length}`);
+    console.log(`- Display del grid:`, getComputedStyle(this.grid).display);
+    console.log(`- Grid template columns:`, getComputedStyle(this.grid).gridTemplateColumns);
   }
 
   _setupAnimations() {
@@ -299,75 +253,5 @@ export class PortfolioController {
         console.warn("[Portfolio] Error cleanup:", err);
       }
     };
-  }
-
-
-
-  _setupDragAndDrop() {
-    const items = this.grid.querySelectorAll(".obra-item");
-
-    items.forEach((item) => {
-      item.addEventListener("mousedown", this._onDragStart.bind(this));
-      item.addEventListener("touchstart", this._onDragStart.bind(this), {
-        passive: false,
-      });
-    });
-
-    document.addEventListener("mousemove", this._onDrag.bind(this));
-    document.addEventListener("touchmove", this._onDrag.bind(this), {
-      passive: false,
-    });
-
-    document.addEventListener("mouseup", this._onDragEnd.bind(this));
-    document.addEventListener("touchend", this._onDragEnd.bind(this));
-
-    this._teardownDragAndDrop = () => {
-      document.removeEventListener("mousemove", this._onDrag.bind(this));
-      document.removeEventListener("touchmove", this._onDrag.bind(this));
-      document.removeEventListener("mouseup", this._onDragEnd.bind(this));
-      document.removeEventListener("touchend", this._onDragEnd.bind(this));
-    };
-  }
-
-  _onDragStart(e) {
-    const target = e.currentTarget;
-
-    // Traer al frente
-    this.maxZIndex++;
-    target.style.zIndex = this.maxZIndex;
-
-    this.draggedElement = target;
-    this.draggedElement.classList.add("dragging");
-
-    const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
-    const clientY = e.type.includes("touch") ? e.touches[0].clientY : e.clientY;
-
-    const rect = target.getBoundingClientRect();
-    this.initialX = clientX - rect.left;
-    this.initialY = clientY - rect.top;
-
-    e.preventDefault();
-  }
-
-  _onDrag(e) {
-    if (!this.draggedElement) return;
-
-    e.preventDefault();
-
-    const clientX = e.type.includes("touch") ? e.touches[0].clientX : e.clientX;
-    const clientY = e.type.includes("touch") ? e.touches[0].clientY : e.clientY;
-
-    this.currentX = clientX - this.initialX;
-    this.currentY = clientY - this.initialY;
-
-    this.draggedElement.style.left = `${this.currentX}px`;
-    this.draggedElement.style.top = `${this.currentY}px`;
-  }
-
-  _onDragEnd(e) {
-    if (!this.draggedElement) return;
-
-    this.draggedElement.classList.remove("dragging");
-    this.draggedElement = null;
   }
 }
