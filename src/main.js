@@ -6,9 +6,9 @@ import router from './router.js';
 import { initNavbar, setActiveLink } from './ui/navbar.js';
 import { initLiquidGradient } from './animations/liquid-gradient.js';
 
-import { initAboutWindow } from './modules/aboutWindow.js';
 import { obras } from './data/obras.js';
 import { Showcase } from './Experience/World/Showcase.js';
+import { AboutController } from './controllers/AboutController.js';
 
 // ============================================
 // REGISTRO EXPLÍCITO DE PLUGINS
@@ -66,7 +66,30 @@ function initAnimations() {
 // Exponer globalmente para router
 // ============================================
 window.initAnimations = initAnimations;
-window.initAboutWindow = initAboutWindow;
+
+// About Controller - Global instance
+let aboutController = null;
+
+window.initAboutWindow = function() {
+  console.log('🎨 Initializing About Section');
+
+  // Destroy previous instance if exists
+  if (aboutController) {
+    aboutController.destroy();
+  }
+
+  // Create new instance
+  aboutController = new AboutController();
+  aboutController.mount();
+};
+
+// Cleanup About on route change
+window.destroyAbout = function() {
+  if (aboutController) {
+    aboutController.destroy();
+    aboutController = null;
+  }
+};
 
 // ============================================
 // Showcase Initialization Function

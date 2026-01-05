@@ -1574,3 +1574,139 @@ body:has(#hero) .global-nav {
   0% { background-position: -200% 0; }
   100% { background-position: 200% 0; }
 }
+
+/* ============================================
+   ABOUT SECTION - VENTANA MINIMAL
+   ============================================ */
+
+.about-section {
+  position: relative;
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 6rem 2rem;
+  background: transparent;
+}
+
+/* ===========================
+   VENTANA ABOUT
+   =========================== */
+
+.about-ventana {
+  position: relative;
+  width: 100%;
+  max-width: 900px;
+  background: #2a2d3a;
+  border-radius: 16px;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  overflow: hidden;
+  margin: 0 auto;
+}
+
+/* Barra superior (reutiliza estilos de portfolio) */
+.about-ventana .frame-bar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+  height: 40px;
+  padding: 0 1rem;
+  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+}
+
+/* ===========================
+   CONTENIDO ABOUT
+   =========================== */
+
+.about-contenido {
+  position: relative;
+  padding: clamp(3rem, 8vw, 6rem) clamp(2rem, 6vw, 4rem);
+  background: #1a1d2e;
+}
+
+/* ===========================
+   FRASE XL EDITORIAL
+   =========================== */
+
+.about-frase {
+  font-family: "Playfair Display", serif;
+  font-size: clamp(2rem, 6vw, 4.5rem);
+  font-weight: 400;
+  font-style: italic;
+  line-height: 1.3;
+  letter-spacing: -0.02em;
+  color: rgba(255, 255, 255, 0.95);
+  margin: 0;
+  text-align: left;
+}
+
+/* ===========================
+   PALABRA CAMBIANTE
+   =========================== */
+
+.palabra-cambiante {
+  display: inline-block;
+  font-style: normal;
+  font-weight: 500;
+  color: #667eea; /* Acento inicial */
+  position: relative;
+  transition: color 0.6s ease, opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* Paleta de acentos para las palabras */
+.palabra-cambiante[data-color="0"] {
+  color: #667eea; /* Púrpura suave */
+}
+
+.palabra-cambiante[data-color="1"] {
+  color: #10b981; /* Verde esmeralda */
+}
+
+.palabra-cambiante[data-color="2"] {
+  color: #f59e0b; /* Ámbar */
+}
+
+.palabra-cambiante[data-color="3"] {
+  color: #3b82f6; /* Azul cielo */
+}
+
+/* Estado de transición (fade out) */
+.palabra-cambiante.transitioning {
+  opacity: 0;
+  transform: translateY(-8px);
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+
+@media (max-width: 640px) {
+  .about-section {
+    padding: 4rem 1rem;
+  }
+
+  .about-ventana {
+    max-width: 100%;
+  }
+
+  .about-frase {
+    text-align: left;
+  }
+}
+
+/* ===========================
+   REDUCED MOTION
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .palabra-cambiante {
+    transition: none !important;
+  }
+
+  .palabra-cambiante.transitioning {
+    opacity: 1 !important;
+    transform: none !important;
+  }
+}
