@@ -37,7 +37,12 @@ class Router {
   loadRoute() {
     const path = window.location.pathname.replace('/plantilla', '') || '/'
     const route = routes[path] || routes['/']
-    
+
+    // Cleanup previous route
+    if (window.destroyAbout) {
+      window.destroyAbout();
+    }
+
     this.currentRoute = path
     this.render(route)
     this.updateActiveLinks()
