@@ -1,0 +1,280 @@
+/* ============================================
+   HERO SECTION - HUD Layout (Clarisse Michard Inspired)
+   Mantiene colores y fonts del proyecto
+   ============================================ */
+
+#hero {
+  min-height: 100vh;
+  position: relative;
+  display: grid;
+  place-items: center;
+  background-color: var(--color-bg-lavender);
+  overflow: hidden;
+  padding: clamp(2rem, 4vw, 3rem);
+}
+
+/* ===========================
+   HUD CORNER ELEMENTS
+   =========================== */
+
+.hud-corners {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 10;
+}
+
+.hud-year,
+.hud-tag,
+.hud-projects,
+.hud-status {
+  position: absolute;
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  letter-spacing: var(--tracking-wide);
+  text-transform: uppercase;
+  color: var(--color-text-dark);
+  opacity: 0.6;
+  line-height: 1.4;
+}
+
+.hud-year {
+  top: clamp(1.5rem, 3vw, 2.5rem);
+  left: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.hud-tag {
+  top: clamp(1.5rem, 3vw, 2.5rem);
+  right: clamp(1.5rem, 3vw, 2.5rem);
+}
+
+.hud-projects {
+  bottom: clamp(1.5rem, 3vw, 2.5rem);
+  right: clamp(1.5rem, 3vw, 2.5rem);
+  text-align: right;
+}
+
+.hud-status {
+  top: 50%;
+  right: clamp(1.5rem, 3vw, 2.5rem);
+  transform: translateY(-50%);
+  writing-mode: vertical-rl;
+  text-orientation: mixed;
+}
+
+/* ===========================
+   HERO CENTER CONTENT
+   =========================== */
+
+.hero-center {
+  position: relative;
+  z-index: 5;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: clamp(1.5rem, 3vw, 2.5rem);
+  max-width: 1200px;
+  width: 100%;
+}
+
+.hero-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 12vw, 8rem);
+  font-weight: var(--weight-extrabold);
+  color: var(--color-text-dark);
+  line-height: var(--leading-none);
+  letter-spacing: var(--tracking-tight);
+  text-align: center;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.hero-title .word {
+  display: block;
+  /* GSAP will handle initial opacity and transform */
+}
+
+.hero-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(0.875rem, 1.5vw, 1.125rem);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-dark);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-widest);
+  margin: 0;
+  opacity: 0.7;
+}
+
+/* ===========================
+   MAGNETIC LETTER HOVER EFFECT
+   Letters move toward cursor with GSAP animation
+   =========================== */
+
+.hero-title .word {
+  display: block;
+  position: relative;
+  cursor: pointer;
+}
+
+.magnetic-letter {
+  display: inline-block;
+  position: relative;
+  transition: transform 0.1s ease;
+  will-change: transform;
+}
+
+/* Smooth transitions for magnetic effect */
+.hero-title .word:hover .magnetic-letter {
+  transform-origin: center;
+}
+
+/* ===========================
+   HERO INFO BLOCK (Side Panel)
+   =========================== */
+
+.hero-info {
+  position: absolute;
+  right: clamp(2rem, 4vw, 4rem);
+  top: 50%;
+  transform: translateY(-50%);
+  max-width: 280px;
+  padding: clamp(1.5rem, 2vw, 2rem);
+  background: rgba(255, 255, 255, 0.5);
+  backdrop-filter: blur(20px);
+  border-radius: var(--radius-xl);
+  border: 1px solid rgba(0, 0, 0, 0.05);
+  opacity: 0;
+  z-index: 8;
+}
+
+[data-theme="dark"] .hero-info {
+  background: rgba(0, 0, 0, 0.3);
+  border-color: rgba(255, 255, 255, 0.1);
+}
+
+.hero-info h3 {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-bold);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-dark);
+  margin: 0 0 0.75rem 0;
+  text-decoration: underline;
+  text-decoration-thickness: 2px;
+  text-underline-offset: 4px;
+}
+
+.hero-info p {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-dark);
+  margin: 0 0 1rem 0;
+  opacity: 0.8;
+}
+
+.discover-btn {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-semibold);
+  text-transform: lowercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-dark);
+  background: transparent;
+  border: 1px solid var(--color-text-dark);
+  padding: 0.5rem 1rem;
+  border-radius: var(--radius-full);
+  cursor: pointer;
+  transition: all var(--duration-base) var(--ease-out);
+}
+
+.discover-btn:hover {
+  background: var(--color-text-dark);
+  color: var(--color-bg-lavender);
+  transform: translateY(-2px);
+}
+
+/* ===========================
+   HERO SOCIAL LINKS
+   =========================== */
+
+.hero-socials {
+  position: absolute;
+  bottom: clamp(1.5rem, 3vw, 2.5rem);
+  left: clamp(1.5rem, 3vw, 2.5rem);
+  display: flex;
+  gap: clamp(1rem, 2vw, 1.5rem);
+  opacity: 0;
+  z-index: 10;
+}
+
+.hero-socials a {
+  font-family: var(--font-sans);
+  font-size: var(--text-xs);
+  font-weight: var(--weight-medium);
+  text-transform: lowercase;
+  letter-spacing: var(--tracking-wide);
+  color: var(--color-text-dark);
+  text-decoration: none;
+  opacity: 0.6;
+  transition: opacity var(--duration-base) var(--ease-out);
+}
+
+.hero-socials a:hover {
+  opacity: 1;
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+
+@media (max-width: 1024px) {
+  .hero-info {
+    position: static;
+    transform: none;
+    max-width: 100%;
+    margin-top: clamp(2rem, 4vw, 3rem);
+  }
+  
+  .hud-status {
+    display: none;
+  }
+}
+
+@media (max-width: 768px) {
+  .hero-title {
+    font-size: clamp(2.5rem, 10vw, 4rem);
+  }
+  
+  .hud-projects {
+    display: none;
+  }
+  
+  .hero-socials {
+    position: static;
+    margin-top: 2rem;
+    justify-content: center;
+  }
+}
+
+/* ===========================
+   REDUCED MOTION
+   =========================== */
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-title .word,
+  .hero-info,
+  .hero-socials {
+    opacity: 1;
+    transform: none;
+  }
+  
+  /* Disable magnetic effect for reduced motion */
+  .magnetic-letter {
+    transform: none !important;
+  }
+}

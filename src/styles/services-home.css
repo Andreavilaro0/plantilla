@@ -1,0 +1,112 @@
+/* Services Section - Home Page */
+
+.services-section {
+  padding: 6rem 2rem;
+  background: var(--color-bg-primary);
+  position: relative;
+}
+
+[data-theme="dark"] .services-section {
+  background: var(--color-bg-dark);
+}
+
+.services-section-title {
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-family: var(--font-serif);
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 4rem;
+  color: var(--color-text-primary);
+}
+
+[data-theme="dark"] .services-section-title {
+  color: var(--color-text-primary);
+}
+
+.services-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+  gap: 2rem;
+  max-width: 1200px;
+  margin: 0 auto;
+}
+
+/* Service Card (reuses tilt-card styles from services view) */
+.service-card {
+  background: linear-gradient(135deg, rgba(255, 255, 255, 0.9) 0%, rgba(240, 240, 245, 0.95) 100%);
+  border-radius: 16px;
+  padding: 2.5rem;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+  transition: all 0.4s ease;
+  position: relative;
+  overflow: hidden;
+}
+
+[data-theme="dark"] .service-card {
+  background: linear-gradient(135deg, rgba(40, 40, 50, 0.9) 0%, rgba(30, 30, 40, 0.95) 100%);
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+}
+
+.service-card:hover {
+  transform: translateY(-10px);
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .service-card:hover {
+  box-shadow: 0 20px 50px rgba(0, 0, 0, 0.5);
+}
+
+.service-card .card-number {
+  font-size: 5rem;
+  font-weight: 700;
+  color: rgba(102, 126, 234, 0.15);
+  line-height: 1;
+  margin: 0;
+  position: absolute;
+  top: 1rem;
+  right: 1rem;
+  font-family: var(--font-serif);
+}
+
+[data-theme="dark"] .service-card .card-number {
+  color: rgba(102, 126, 234, 0.2);
+}
+
+.service-card .card-title {
+  font-size: 1.75rem;
+  font-weight: 700;
+  margin: 0 0 1rem;
+  color: var(--color-text-primary);
+  font-family: var(--font-serif);
+}
+
+.service-card .card-description {
+  font-size: 1rem;
+  line-height: 1.6;
+  color: var(--color-text-secondary);
+  margin: 0;
+}
+
+[data-theme="dark"] .service-card .card-description {
+  color: var(--text-secondary);
+}
+
+/* Mobile responsive */
+@media (max-width: 768px) {
+  .services-section {
+    padding: 4rem 1.5rem;
+  }
+  
+  .services-grid {
+    grid-template-columns: 1fr;
+    gap: 1.5rem;
+  }
+  
+  .service-card {
+    padding: 2rem;
+  }
+  
+  .service-card .card-number {
+    font-size: 4rem;
+  }
+}

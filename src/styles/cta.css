@@ -1,0 +1,133 @@
+/* ===========================
+   CTA SECTION
+   Paul Factory inspired dark card CTA
+   =========================== */
+
+.cta-section {
+  padding: clamp(4rem, 8vw, 8rem) var(--container-padding);
+  background: transparent;
+}
+
+.cta-card {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  background: var(--color-bg-dark);
+  border-radius: clamp(2rem, 4vw, 3.5rem);
+  padding: clamp(3rem, 8vw, 6rem);
+  text-align: center;
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.12),
+    0 12px 24px rgba(0, 0, 0, 0.08);
+}
+
+/* ===========================
+   CTA TITLE
+   =========================== */
+
+.cta-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2rem, 5vw, 4rem);
+  font-weight: var(--weight-bold);
+  color: white;
+  line-height: var(--leading-tight);
+  margin: 0 0 2rem 0;
+}
+
+.cta-title .word {
+  display: inline-block;
+  margin: 0 0.15em;
+}
+
+/* ===========================
+   CTA BUTTON
+   =========================== */
+
+.cta-button {
+  font-family: var(--font-sans);
+  font-size: clamp(1rem, 2vw, 1.25rem);
+  font-weight: var(--weight-semibold);
+  color: white;
+  background: var(--color-accent-rust);
+  border: none;
+  border-radius: var(--radius-full);
+  padding: 1rem 3rem;
+  cursor: pointer;
+  transition: all 0.3s ease;
+  box-shadow: 0 8px 16px rgba(var(--color-accent-rust-rgb), 0.3);
+  display: inline-block;
+}
+
+.cta-button:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 12px 24px rgba(var(--color-accent-rust-rgb), 0.4);
+}
+
+.cta-button:active {
+  transform: translateY(0);
+  box-shadow: 0 6px 12px rgba(var(--color-accent-rust-rgb), 0.3);
+}
+
+/* ===========================
+   DARK MODE SUPPORT
+   =========================== */
+
+[data-theme="dark"] .cta-section {
+  background: transparent;
+}
+
+[data-theme="dark"] .cta-card {
+  background: var(--color-bg-dark);
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.4),
+    0 12px 24px rgba(0, 0, 0, 0.3);
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+
+@media (max-width: 768px) {
+  .cta-section {
+    padding: clamp(3rem, 6vw, 4rem) var(--container-padding);
+  }
+  
+  .cta-card {
+    padding: clamp(2rem, 6vw, 3rem);
+    border-radius: clamp(1.5rem, 3vw, 2rem);
+  }
+  
+  .cta-title {
+    font-size: clamp(1.75rem, 7vw, 2.5rem);
+    margin-bottom: 1.5rem;
+  }
+  
+  .cta-title .word {
+    margin: 0 0.1em;
+  }
+  
+  .cta-button {
+    padding: 0.875rem 2rem;
+    font-size: 1rem;
+  }
+}
+
+/* ===========================
+   ACCESSIBILITY
+   =========================== */
+
+.cta-button:focus-visible {
+  outline: var(--ring-width) solid rgba(255, 255, 255, 0.8);
+  outline-offset: var(--ring-offset);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .cta-button {
+    transition: none;
+  }
+  
+  .cta-button:hover,
+  .cta-button:active {
+    transform: none;
+  }
+}

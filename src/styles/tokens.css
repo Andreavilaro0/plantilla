@@ -24,6 +24,20 @@
   --border-subtle: rgba(255, 255, 255, 0.05);
   --border-emphasis: rgba(255, 255, 255, 0.2);
 
+  /* Paul Factory Specific Colors */
+  --color-bg-dark: #1d1d2c;
+  --color-bg-dark-rgb: 29, 29, 44;
+  --color-bg-lavender: #F4F1EB;  /* Light cream/beige background */
+  --color-accent-rust: #ff6b35;
+  --color-accent-rust-rgb: 255, 107, 53;
+  --color-text-dark: #2a2a2a;
+  --color-text-muted: #718096;
+
+  /* Hannah Miles Portfolio Colors */
+  --color-portfolio-bg: #EBEBEB;   /* Cream editorial background */
+  --color-portfolio-text: #000000; /* Pure black for typography */
+  --color-portfolio-text-rgb: 0, 0, 0;
+
   /* ===========================
      TYPOGRAPHY
      =========================== */
@@ -31,6 +45,7 @@
   /* Font Families */
   --font-serif: "Playfair Display", "Times New Roman", serif;
   --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "SF Pro Text", Arial, sans-serif;
+  --font-portfolio-display: "Playfair Display", "Cormorant Garamond", "Times New Roman", serif;
 
   /* Font Sizes */
   --text-xs: 0.75rem;      /* 12px */
@@ -205,6 +220,20 @@
 
   /* Transición suave de columnas */
   --grid-columns-mobile: repeat(auto-fit, minmax(clamp(var(--grid-min-mobile), var(--grid-min-tablet), var(--grid-min-desktop)), 1fr));
+
+  /* ===========================
+     HANNAH MILES PORTFOLIO
+     =========================== */
+  
+  /* Background text typography */
+  --font-size-bg-text: clamp(12rem, 20vw, 25rem); /* 192px - 400px */
+  --bg-text-opacity: 0.08;
+  --bg-text-letter-spacing: -0.02em;
+  
+  /* Portfolio grid spacing */
+  --portfolio-grid-gap: clamp(1.5rem, 3vw, 3rem);
+  --portfolio-padding: clamp(2rem, 5vw, 6rem);
+  --portfolio-max-width: 1400px;
 }
 
 

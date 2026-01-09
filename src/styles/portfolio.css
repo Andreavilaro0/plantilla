@@ -1,0 +1,259 @@
+/* ============================================
+   PORTFOLIO SECTION - Editorial / Stage / Focus
+   Matches hannahmiles.com behavior
+   ============================================ */
+
+/* ROOT CONTAINER */
+.portfolio {
+  position: relative;
+  background: var(--color-bg-primary);
+  width: 100%;
+  /* No padding here, handled by stage logic */
+}
+
+/* SPACER: Allows scrolling "into" the section before pinning starts */
+.portfolio-stage-spacer {
+  height: 20vh;
+  width: 100%;
+}
+
+/* STAGE: The area that gets Pinned */
+.portfolio-stage {
+  position: relative;
+  width: 100%;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-start;
+  padding-top: 10vh; /* Visual top padding */
+  overflow: hidden; /* Clip the big word if needed */
+}
+
+/* BACKGROUND WORD: Centered, Huge, Subtle, BEHIND Grid */
+.portfolio-bgword {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  font-family: var(--font-serif);
+  font-weight: 900;
+  font-size: clamp(80px, 18vw, 280px);
+  line-height: 0.8;
+  color: var(--color-text-dark);
+  opacity: 0; /* JS handles reveal */
+  white-space: nowrap;
+  pointer-events: none;
+  z-index: 0;
+  letter-spacing: -0.02em;
+  user-select: none;
+}
+
+[data-theme="dark"] .portfolio-bgword {
+  color: var(--color-text-light);
+  opacity: 0.04 !important; /* Force override if JS sets it differently, or let JS handle 0->0.04 */
+}
+
+/* GRID CONTAINER */
+.portfolio-grid {
+  position: relative;
+  z-index: 10;
+  width: 100%;
+  max-width: 1600px;
+  margin: 0 auto;
+  padding: 0 clamp(1.5rem, 4vw, 3rem);
+  
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: 2px; /* Fine-grained masonry */
+  grid-auto-flow: dense;
+  gap: clamp(20px, 2.5vw, 32px);
+  
+  /* Start visible - JS will animate if needed */
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* Responsive Grid Columns */
+@media (max-width: 1024px) {
+  .portfolio-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+@media (max-width: 768px) {
+  .portfolio-grid {
+    grid-template-columns: 1fr;
+    grid-auto-rows: auto; /* Stack normally on mobile */
+    gap: 32px;
+  }
+}
+
+/* EMPTY STATE */
+.portfolio-empty {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  text-align: center;
+  color: var(--color-text-secondary);
+}
+
+/* ============================================
+   ITEM STYLES
+   ============================================ */
+.obra-item {
+  position: relative;
+  width: 100%;
+  cursor: pointer;
+  /* FLIP requires no transitions on layout properties during calculation, handled by GSAP */
+}
+
+/* Media Wrapper (No Border Radius, No Card bg) */
+.obra-media {
+  position: relative;
+  width: 100%;
+  border-radius: 0; 
+  overflow: hidden;
+  background: transparent;
+}
+
+/* Image Container */
+.obra-contenedor {
+  position: relative;
+  width: 100%;
+  display: block;
+  /* Aspect ratios handled by img or masonry */
+}
+
+/* Image */
+.obra-img {
+  width: 100%;
+  height: 100%;
+  display: block;
+  object-fit: cover;
+  transition: transform 0.7s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+
+/* Hover Effect: Scale Image */
+@media (hover: hover) {
+  .obra-item:hover .obra-img {
+    transform: scale(1.05);
+  }
+}
+
+/* CAPTIONS: Hover Pill */
+.obra-caption {
+  position: absolute;
+  bottom: 1.5rem;
+  left: 1.5rem;
+  background: rgba(255, 255, 255, 0.95);
+  backdrop-filter: blur(4px);
+  color: #000;
+  padding: 0.5rem 1rem;
+  border-radius: 999px;
+  opacity: 0;
+  transform: translateY(10px);
+  transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
+  pointer-events: none;
+  max-width: calc(100% - 3rem);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  box-shadow: 0 2px 10px rgba(0,0,0,0.05);
+}
+
+.obra-title {
+  font-family: var(--font-sans);
+  font-weight: 500;
+  font-size: 0.875rem;
+  display: inline-block;
+}
+.obra-meta {
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 0.875rem;
+  opacity: 0.6;
+  display: inline-block;
+  margin-left: 0.5rem;
+}
+
+/* Desktop: Hover interactions */
+@media (min-width: 768px) {
+  .obra-item:hover .obra-caption {
+    opacity: 1;
+    transform: translateY(0);
+  }
+  
+  /* Dim others when one is hovered (Optional, but adds focus) */
+  .portfolio-grid:hover .obra-item:not(:hover) {
+    opacity: 0.6;
+    transition: opacity 0.3s ease;
+  }
+  .obra-item {
+    transition: opacity 0.3s ease;
+  }
+}
+
+/* Mobile: Captions always visible or simpler */
+@media (max-width: 767px) {
+  .obra-caption {
+    opacity: 1;
+    transform: translateY(0);
+    bottom: 1rem;
+    left: 1rem;
+  }
+}
+
+/* ============================================
+   FOCUS MODE (CLICKED STATE)
+   ============================================ */
+
+/* When focus mode is active on the container */
+.portfolio-grid.is-focus-mode {
+  /* We might want to lock the grid height or layout here if needed */
+  pointer-events: none; /* Disable hovering others while animating/focused */
+}
+.portfolio-grid.is-focus-mode .obra-item {
+  pointer-events: auto; /* Re-enable for the active item or closing */
+}
+
+/* The Active Item */
+.obra-item.is-active {
+  z-index: 50;
+  /* Styles for the "Expanded" state are mostly handled by FLIP layout changes,
+     but we can enforce some overrides here */
+}
+
+/* Dimmed Items */
+.obra-item.is-dim {
+  opacity: 0.1 !important; /* Fade out more aggressively */
+  transform: scale(0.98);
+  filter: grayscale(100%);
+  pointer-events: none;
+  transition: opacity 0.4s ease, transform 0.4s ease;
+}
+
+/* CLOSE BUTTON (Appears in Focus Mode) */
+.portfolio-close-btn {
+  position: fixed;
+  top: 2rem;
+  right: 2rem;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  background: #000;
+  color: #fff;
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.3s ease;
+  font-size: 1.5rem;
+}
+.portfolio-close-btn.visible {
+  opacity: 1;
+  pointer-events: auto;
+}
+

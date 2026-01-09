@@ -1,0 +1,202 @@
+/* ===========================
+   FOOTER SECTION
+   Paul Factory inspired footer
+   =========================== */
+
+.footer-section {
+  padding: clamp(3rem, 6vw, 4rem) var(--container-padding);
+  background: var(--color-bg-lavender);
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+.footer-content {
+  display: grid;
+  grid-template-columns: 1fr auto 1fr;
+  align-items: center;
+  gap: 2rem;
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+}
+
+/* ===========================
+   SOCIAL LINKS (Left Side)
+   =========================== */
+
+.footer-socials {
+  display: flex;
+  gap: 1rem;
+}
+
+.social-link {
+  width: 48px;
+  height: 48px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--color-bg-dark);
+  color: white;
+  transition: all 0.3s ease;
+  text-decoration: none;
+}
+
+.social-link:hover {
+  transform: scale(1.15) rotate(5deg);
+  background: var(--color-text-dark);
+}
+
+.social-link:active {
+  transform: scale(1.05);
+}
+
+/* ===========================
+   FOOTER LINKS (Right Side)
+   =========================== */
+
+.footer-links {
+  display: flex;
+  gap: 2rem;
+  justify-content: flex-end;
+}
+
+.footer-link {
+  position: relative;
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-dark);
+  text-decoration: none;
+  padding-bottom: 4px;
+  transition: color 0.2s ease;
+}
+
+/* Paul Factory's lineLinkHover animation - underline grows and exits */
+.footer-link::after {
+  content: '';
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  right: auto;
+  width: 0%;
+  height: 2px;
+  background: var(--color-text-dark);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.footer-link:hover {
+  color: var(--color-accent-rust);
+}
+
+.footer-link:hover::after {
+  animation: lineLinkHover 0.6s ease forwards;
+  background: var(--color-accent-rust);
+}
+
+/* Line grows from left, then disappears from right */
+@keyframes lineLinkHover {
+  0% {
+    width: 0%;
+    left: 0;
+    right: auto;
+  }
+  50% {
+    width: 100%;
+    left: 0;
+    right: auto;
+  }
+  51% {
+    width: 100%;
+    right: 0;
+    left: auto;
+  }
+  100% {
+    width: 0%;
+    right: 0;
+    left: auto;
+  }
+}
+
+/* ===========================
+   COPYRIGHT TEXT
+   =========================== */
+
+.footer-copyright {
+  grid-column: 1 / -1;
+  text-align: center;
+  font-size: var(--text-xs);
+  color: var(--color-text-muted);
+  margin-top: 2rem;
+  padding-top: 2rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.08);
+}
+
+/* ===========================
+   DARK MODE SUPPORT
+   =========================== */
+
+[data-theme="dark"] .footer-section {
+  background: var(--bg-secondary);
+  border-top-color: var(--border-subtle);
+}
+
+[data-theme="dark"] .footer-link,
+[data-theme="dark"] .footer-copyright {
+  color: var(--text-secondary);
+}
+
+[data-theme="dark"] .footer-link:hover {
+  color: var(--color-accent-rust);
+}
+
+[data-theme="dark"] .footer-copyright {
+  color: var(--text-tertiary);
+  border-top-color: var(--border-subtle);
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+
+@media (max-width: 768px) {
+  .footer-content {
+    grid-template-columns: 1fr;
+    text-align: center;
+  }
+  
+  .footer-socials,
+  .footer-links {
+    justify-content: center;
+  }
+  
+  .footer-links {
+    flex-direction: column;
+    gap: 1rem;
+  }
+}
+
+/* ===========================
+   ACCESSIBILITY
+   =========================== */
+
+.social-link:focus-visible,
+.footer-link:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .social-link,
+  .footer-link::after {
+    transition: none;
+  }
+  
+  .social-link:hover {
+    transform: none;
+  }
+  
+  .footer-link:hover::after {
+    animation: none;
+    width: 100%;
+  }
+}

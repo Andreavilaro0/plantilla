@@ -4,33 +4,56 @@
     <meta charset="UTF-8" />
     <link rel="icon" type="image/svg+xml" href="/vite.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Photography Portfolio - WORK Impressions | Contemporary Editorial & Urban Photography</title>
-    <meta name="description" content="Contemporary photography portfolio featuring editorial, urban, and portrait series. Immersive visual storytelling through the lens." />
-    
+    <title>
+      Photography Portfolio - WORK Impressions | Contemporary Editorial & Urban
+      Photography
+    </title>
+    <meta
+      name="description"
+      content="Contemporary photography portfolio featuring editorial, urban, and portrait series. Immersive visual storytelling through the lens."
+    />
+
     <!-- Open Graph / Social Media -->
     <meta property="og:type" content="website" />
-    <meta property="og:title" content="Photography Portfolio - WORK Impressions" />
-    <meta property="og:description" content="Contemporary photography portfolio featuring editorial, urban, and portrait series. Immersive visual storytelling." />
-    <meta property="og:url" content="https://andreavilaro0.github.io/plantilla/" />
-    
+    <meta
+      property="og:title"
+      content="Photography Portfolio - WORK Impressions"
+    />
+    <meta
+      property="og:description"
+      content="Contemporary photography portfolio featuring editorial, urban, and portrait series. Immersive visual storytelling."
+    />
+    <meta
+      property="og:url"
+      content="https://andreavilaro0.github.io/plantilla/"
+    />
+
     <!-- JSON-LD Schema -->
     <script type="application/ld+json">
-    {
-      "@context": "https://schema.org",
-      "@type": "Photographer",
-      "name": "Portfolio",
-      "url": "https://andreavilaro0.github.io/plantilla/",
-      "specialty": ["Editorial Photography", "Urban Photography", "Portrait Photography", "Landscape Photography"]
-    }
+      {
+        "@context": "https://schema.org",
+        "@type": "Photographer",
+        "name": "Portfolio",
+        "url": "https://andreavilaro0.github.io/plantilla/",
+        "specialty": [
+          "Editorial Photography",
+          "Urban Photography",
+          "Portrait Photography",
+          "Landscape Photography"
+        ]
+      }
     </script>
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap" rel="stylesheet">
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&display=swap"
+      rel="stylesheet"
+    />
   </head>
   <body>
     <!-- Skip link for accessibility -->
     <a href="#main" class="skip-link">Saltar al contenido</a>
-    
+
     <!-- NAVBAR - Must be outside #app for position:fixed to work -->
     <nav id="navbar" class="navbar">
       <div class="container-nav">
@@ -48,8 +71,15 @@
           <a href="#contact" class="nav-link">Contact</a>
         </div>
 
+        <!-- Theme Toggle - se inicializará automáticamente por ThemeToggle.js -->
+        <div id="theme-toggle-container"></div>
+
         <!-- Mobile Menu Button -->
-        <button id="mobile-menu-button" class="mobile-menu-btn" aria-label="Toggle menu">
+        <button
+          id="mobile-menu-button"
+          class="mobile-menu-btn"
+          aria-label="Toggle menu"
+        >
           <span class="hamburger-line" id="line1"></span>
           <span class="hamburger-line" id="line2"></span>
           <span class="hamburger-line" id="line3"></span>
@@ -65,11 +95,11 @@
         <a href="#contact" class="mobile-nav-link">Contact</a>
       </div>
     </nav>
-    
+
     <main id="main">
       <div id="app"></div>
     </main>
-    
-    <script type="module" src="/src/main.js"></script>
+
+    <script type="module" src="/src/core/app.js"></script>
   </body>
 </html>

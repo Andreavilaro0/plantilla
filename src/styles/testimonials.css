@@ -1,0 +1,293 @@
+/* ===========================
+   TESTIMONIALS SECTION
+   Paul Factory inspired testimonials carousel
+   =========================== */
+
+.testimonials-section {
+  padding: clamp(4rem, 8vw, 8rem) 0;
+  background: var(--color-bg-lavender);
+}
+
+.container-wrapper {
+  max-width: var(--container-max-width);
+  margin: 0 auto;
+  padding: 0 var(--container-padding);
+}
+
+/* ===========================
+   SECTION TITLE
+   =========================== */
+
+.section-title {
+  font-family: var(--font-serif);
+  font-size: clamp(2.5rem, 6vw, 5rem);
+  font-weight: var(--weight-bold);
+  text-align: center;
+  color: var(--color-text-dark);
+  line-height: var(--leading-tight);
+  margin-bottom: clamp(3rem, 6vw, 6rem);
+}
+
+.section-title .word {
+  display: inline-block;
+  margin: 0 0.2em;
+}
+
+/* ===========================
+   CAROUSEL CONTAINER
+   =========================== */
+
+.testimonials-carousel {
+  position: relative;
+  overflow: visible; /* Changed from hidden to show peek */
+  padding-bottom: 4rem;
+  max-width: 1250px; /* Match Paul Factory container width */
+  margin: 0 auto;
+}
+
+.carousel-track {
+  display: flex;
+  gap: 30px; /* Match Paul Factory gap */
+  will-change: transform;
+  transition: transform 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  overflow-x: visible;
+}
+
+/* ===========================
+   TESTIMONIAL CARDS
+   =========================== */
+
+.testimonial-card {
+  /* Paul Factory card dimensions */
+  min-width: 610px;
+  width: 610px;
+  flex-shrink: 0;
+  background: white;
+  border-radius: 64px; /* Large border-radius for "squircle" effect */
+  padding: 64px; /* Paul Factory padding */
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.06),
+    0 8px 16px rgba(0, 0, 0, 0.04);
+  transition: all 0.3s ease;
+}
+
+.testimonial-card:hover {
+  transform: translateY(-4px);
+  box-shadow: 
+    0 24px 48px rgba(0, 0, 0, 0.08),
+    0 12px 20px rgba(0, 0, 0, 0.06);
+}
+
+.testimonial-quote {
+  font-family: var(--font-serif);
+  font-size: clamp(1.125rem, 2vw, 1.5rem);
+  font-style: italic;
+  line-height: var(--leading-relaxed);
+  color: var(--color-text-dark);
+  margin: 0 0 2rem 0;
+}
+
+.testimonial-author {
+  margin-top: auto;
+}
+
+.author-name {
+  font-family: var(--font-sans);
+  font-size: var(--text-base);
+  font-weight: var(--weight-semibold);
+  color: var(--color-text-dark);
+  margin: 0 0 0.25rem 0;
+}
+
+.author-position {
+  font-size: var(--text-sm);
+  color: var(--color-text-muted);
+  margin: 0 0 1.5rem 0;
+}
+
+.testimonial-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.linkedin-link,
+.project-link {
+  font-family: var(--font-sans);
+  font-size: var(--text-sm);
+  font-weight: var(--weight-medium);
+  color: var(--color-text-dark);
+  text-decoration: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  transition: color 0.2s ease;
+}
+
+.linkedin-link:hover,
+.project-link:hover {
+  color: var(--color-accent-rust);
+}
+
+.linkedin-link svg {
+  flex-shrink: 0;
+}
+
+/* ===========================
+   CAROUSEL CONTROLS
+   =========================== */
+
+.carousel-controls {
+  display: flex;
+  gap: 1rem;
+  justify-content: center;
+  margin-top: 3rem;
+}
+
+.carousel-btn {
+  width: 48px;
+  height: 48px;
+  border-radius: 50%;
+  background: var(--color-bg-dark);
+  color: white;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.2s ease;
+  flex-shrink: 0;
+}
+
+.carousel-btn:hover:not(:disabled) {
+  transform: scale(1.1);
+  background: var(--color-text-dark);
+}
+
+.carousel-btn:active:not(:disabled) {
+  transform: scale(1.05);
+}
+
+.carousel-btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+
+.carousel-btn svg {
+  flex-shrink: 0;
+}
+
+/* ===========================
+   DARK MODE SUPPORT
+   =========================== */
+
+[data-theme="dark"] .testimonials-section {
+  background: var(--bg-secondary);
+}
+
+[data-theme="dark"] .section-title {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .testimonial-card {
+  background: var(--bg-surface);
+  box-shadow: 
+    0 20px 40px rgba(0, 0, 0, 0.3),
+    0 8px 16px rgba(0, 0, 0, 0.2);
+}
+
+[data-theme="dark"] .testimonial-quote,
+[data-theme="dark"] .author-name,
+[data-theme="dark"] .linkedin-link,
+[data-theme="dark"] .project-link {
+  color: var(--text-primary);
+}
+
+[data-theme="dark"] .author-position {
+  color: var(--text-tertiary);
+}
+
+[data-theme="dark"] .testimonial-footer {
+  border-top-color: var(--border-subtle);
+}
+
+[data-theme="dark"] .linkedin-link:hover,
+[data-theme="dark"] .project-link:hover {
+  color: var(--color-accent-rust);
+}
+
+/* ===========================
+   RESPONSIVE
+   =========================== */
+
+@media (max-width: 768px) {
+  .testimonials-section {
+    padding: clamp(3rem, 6vw, 4rem) 0;
+  }
+  
+  .section-title {
+    font-size: clamp(2rem, 8vw, 3rem);
+    margin-bottom: 2rem;
+  }
+  
+  .testimonials-carousel {
+    overflow: hidden; /* Hide overflow on mobile */
+    max-width: 100%;
+  }
+  
+  .carousel-track {
+    gap: 1rem;
+  }
+  
+  .testimonial-card {
+    min-width: min(400px, 85vw);
+    width: min(400px, 85vw); /* Fixed width on mobile */
+    padding: 2rem;
+    border-radius: 32px; /* Smaller radius on mobile */
+  }
+  
+  .testimonial-footer {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 1rem;
+  }
+  
+  .carousel-controls {
+    margin-top: 2rem;
+  }
+}
+
+/* ===========================
+   ACCESSIBILITY
+   =========================== */
+
+.carousel-btn:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+}
+
+.linkedin-link:focus-visible,
+.project-link:focus-visible {
+  outline: var(--ring-width) solid var(--ring-color);
+  outline-offset: var(--ring-offset);
+  border-radius: 2px;
+}
+
+/* Reduced motion support */
+@media (prefers-reduced-motion: reduce) {
+  .carousel-track {
+    transition: none;
+  }
+  
+  .testimonial-card,
+  .carousel-btn {
+    transition: none;
+  }
+  
+  .testimonial-card:hover,
+  .carousel-btn:hover {
+    transform: none;
+  }
+}

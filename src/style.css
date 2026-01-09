@@ -1,20 +1,83 @@
-@import url("./styles/tokens.css");
-@import url("./styles/showcase.css");
-@import "tailwindcss";
+/* ============================================
+   FONTS - Must be first to avoid CSS warnings
+   ============================================ */
 @import url("https://fonts.googleapis.com/css2?family=Poppins:ital,wght@0,100;0,200;0,300;0,400;0,500;0,600;0,700;0,800;0,900;1,100;1,200;1,300;1,400;1,500;1,600;1,700;1,800;1,900&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400;1,700&family=Inter:wght@300;400;600;700&display=swap");
-/* @import './components/Camera3D/camera3d.css'; */
+@import url('https://fonts.googleapis.com/css2?family=Caveat&family=Cedarville+Cursive&family=Indie+Flower&family=Nothing+You+Could+Do&family=Oooh+Baby&family=Reenie+Beanie&family=Shadows+Into+Light&display=swap');
+
+/* ============================================
+   CSS MODULES
+   ============================================ */
+@import url("./styles/tokens.css");
+@import url("./styles/navbar.css");
+@import url("./styles/hero.css");
+@import url("./styles/about.css");
+@import url("./styles/portfolio.css");
+@import url("./styles/testimonials.css");
+@import url("./styles/services-home.css");
+@import url("./styles/cta.css");
+@import url("./styles/footer.css");
+@import url("./ui/modals/contact-modal.css");
+
+/* ============================================
+   TAILWIND CSS
+   ============================================ */
+@import "tailwindcss";
+
+/* ============================================
+   UTILITIES
+   ============================================ */
+@import url("./styles/utilities/helpers.css");
 @theme {
+  /* Typography - Light and restrained */
   --font-serif: "Playfair Display", "Times New Roman", serif;
-  --color-dark-bg: #0b0b0b;
-  --color-modal-bg: #1a1a1a;
-  --color-surface-floating: color-mix(in srgb, white 6%, transparent);
-  --font-sans: ui-sans-serif, system-ui, -apple-system, "Inter", "SF Pro Text",
-    Arial, sans-serif;
+  --font-sans: "Inter", ui-sans-serif, system-ui, -apple-system, "SF Pro Text", Arial, sans-serif;
+  
+  /* Fluid Typography Scale - Lighter weights */
+  --text-xs: clamp(0.75rem, 0.7rem + 0.25vw, 0.875rem);
+  --text-sm: clamp(0.875rem, 0.8rem + 0.375vw, 1rem);
+  --text-base: clamp(1rem, 0.9rem + 0.5vw, 1.125rem);
+  --text-lg: clamp(1.125rem, 1rem + 0.625vw, 1.25rem);
+  --text-xl: clamp(1.25rem, 1.1rem + 0.75vw, 1.5rem);
+  --text-2xl: clamp(1.5rem, 1.3rem + 1vw, 2rem);
+  --text-3xl: clamp(2rem, 1.6rem + 2vw, 3rem);
+  --text-4xl: clamp(2.5rem, 2rem + 2.5vw, 4rem);
+  --text-5xl: clamp(3rem, 2.5rem + 3vw, 5rem);
+  --text-6xl: clamp(4rem, 3rem + 5vw, 7rem);
 }
 
+/* ============================================
+   PAUL FACTORY COLOR SCHEME
+   Light mode: Warm beige (#F4F1EB)
+   Dark mode: Deep navy (#21202C)
+   ============================================ */
+
 :root {
+  /* Light Mode Colors (Default) */
+  --color-bg-primary: #F4F1EB; /* Paul Factory light background */
+  --color-bg-secondary: #CAC6BE; /* Slightly darker beige for cards/sections */
+  --color-text-primary: #2a2a2a; /* Dark text */
+  --color-text-secondary: #6B6B7B; /* Muted gray text */
+  --color-border: rgba(0, 0, 0, 0.1); /* Subtle borders */
+  
   font-family: var(--font-sans);
+  font-weight: 300;
+  letter-spacing: 0.02em;
+}
+
+/* Dark Mode Colors */
+[data-theme="dark"] {
+  --color-bg-primary: #21202C; /* Paul Factory dark background */
+  --color-bg-secondary: #161528; /* Slightly darker for cards/sections */
+  --color-text-primary: #F7FAFC; /* Light text */
+  --color-text-secondary: #CBD5E0; /* Muted light gray text */
+  --color-border: rgba(255, 255, 255, 0.1); /* Subtle borders */
+}
+
+/* Smooth Theme Transitions */
+.theme-transitioning,
+.theme-transitioning * {
+  transition: background-color 0.3s ease, color 0.3s ease, border-color 0.3s ease !important;
 }
 
 * {
@@ -25,14 +88,23 @@
 
 html {
   scroll-behavior: smooth;
-  background-color: #0a0e27; /* Match the navy blue of the liquid background as fallback */
+  background-color: var(--color-bg-primary);
+  overflow-x: hidden;
+  width: 100%;
+  transition: background-color 0.3s ease;
 }
 
 body {
-  background-color: transparent; /* Transparent to show canvas behind */
-  color: #fff;
-  font-family: var(--font-serif);
+  background-color: var(--color-bg-primary);
+  color: var(--color-text-secondary);
+  font-family: var(--font-sans);
   min-height: 100vh;
+  line-height: 1.7;
+  position: relative;
+  overflow-x: hidden;
+  width: 100%;
+  max-width: 100vw;
+  transition: background-color 0.3s ease, color 0.3s ease;
 }
 
 #app {
@@ -178,36 +250,7 @@ button:focus-visible {
   opacity: 1;
 }
 
-/* ============================================
-   PASO 2 - INDIVIDUAL ARTWORK FRAMES
-   ============================================ */
 
-/* Individual window frame per artwork */
-.frame {
-  @apply rounded-xl border border-white/10 bg-[--color-surface-floating] overflow-hidden shadow-lg;
-}
-
-/* Frame header bar with macOS dots */
-.frame-bar {
-  @apply flex items-center gap-2 h-8 px-3 border-b border-white/10 bg-white/5;
-}
-
-/* macOS-style window control dots */
-.dot {
-  @apply w-2.5 h-2.5 rounded-full inline-block;
-}
-
-.dot-red {
-  background: #ff5f57;
-}
-
-.dot-yellow {
-  background: #ffbd2e;
-}
-
-.dot-green {
-  background: #28c840;
-}
 
 /* ============================================
    ASPECT RATIO UTILITIES (CLS Prevention)
@@ -1251,116 +1294,43 @@ body:has(#hero) .global-nav {
 }
 
 /* ============================================
-   MASONRY GRID - Waterfall Layout
-   ============================================ */
-
-.masonry-wrapper {
-  width: 100%;
-  max-width: 1400px;
-  margin: 0 auto;
-  padding: 2rem 1rem;
-  display: flex;
-  justify-content: center;
-}
-
-.masonry-grid {
-  column-count: 4;
-  column-gap: 2rem;
-  max-width: 1200px;
-  margin: 0 auto;
-}
-
-.masonry-item {
-  break-inside: avoid;
-  margin-bottom: 2rem;
-  page-break-inside: avoid;
-}
-
-.masonry-card {
-  position: relative;
-  overflow: hidden;
-  border-radius: 12px;
-  background: rgba(255, 255, 255, 0.03);
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  transition: transform 0.3s ease, border-color 0.3s;
-}
-
-.masonry-card:hover {
-  transform: translateY(-4px);
-  border-color: rgba(255, 255, 255, 0.2);
-}
-
-.masonry-card img {
-  width: 100%;
-  height: auto;
-  display: block;
-  transition: transform 0.3s;
-}
-
-.masonry-card:hover img {
-  transform: scale(1.05);
-}
-
-.masonry-overlay {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  opacity: 0;
-  transition: opacity 0.3s;
-  display: flex;
-  flex-direction: column;
-  align-items: flex-start;
-  justify-content: flex-end;
-  padding: 1.5rem;
-}
-
-.masonry-card:hover .masonry-overlay {
-  opacity: 1;
-}
-
-/* Responsive columns & Centering */
-@media (max-width: 1400px) {
-  .masonry-grid {
-    column-count: 3;
-    max-width: 1000px;
-  }
-}
-
-@media (max-width: 1024px) {
-  .masonry-grid {
-    column-count: 2;
-    max-width: 700px;
-    column-gap: 1.5rem;
-  }
-}
-
-@media (max-width: 640px) {
-  .masonry-grid {
-    column-count: 1;
-    max-width: 100%;
-    padding-inline: 1rem;
-  }
-
-  .masonry-item {
-    margin-bottom: 2rem; /* More space on mobile */
-  }
-}
-
-/* ============================================
-   PORTFOLIO GRID - VERSIÓN SIMPLE Y FUNCIONAL
+   PORTFOLIO SECTION - HANNAH MILES STYLE
    ============================================ */
 
 #portfolio {
   position: relative;
-  min-height: 100vh;
-  background: #1a1d2e;
-  padding: 4rem 0;
+  min-height: 200vh; /* Ensure scrollable area for parallax effect */
+  background: var(--color-portfolio-bg);
+  padding: var(--portfolio-padding) 0;
+  overflow: hidden; /* Contain background text */
+}
+
+/* Background Text Layer - Fixed position behind images */
+.portfolio-bg-text {
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 0; /* Behind grid */
+  
+  font-family: var(--font-portfolio-display);
+  font-size: var(--font-size-bg-text);
+  font-weight: 700;
+  color: var(--color-portfolio-text);
+  opacity: var(--bg-text-opacity);
+  letter-spacing: var(--bg-text-letter-spacing);
+  white-space: nowrap;
+  pointer-events: none;
+  user-select: none;
+  line-height: 1;
 }
 
 #portfolio > div {
-  max-width: 1600px;
+  position: relative;
+  z-index: 1; /* Above background text */
+  max-width: var(--portfolio-max-width);
   margin: 0 auto;
-  padding: 0 2rem;
+  padding: 0 var(--portfolio-padding);
 }
 
 #portfolio h2 {
@@ -1368,70 +1338,64 @@ body:has(#hero) .global-nav {
   font-weight: 600;
   letter-spacing: 0.15em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.7);
+  color: var(--color-portfolio-text);
+  opacity: 0.6;
   margin-bottom: 3rem;
   text-align: center;
 }
 
 /* ===========================
-   GRID PRINCIPAL
+   GRID PRINCIPAL - MASONRY
    =========================== */
 
 #portfolio-grid {
+  position: relative;
+  z-index: 2; /* Above background text */
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
-  gap: 24px;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: var(--portfolio-grid-gap);
   width: 100%;
-  grid-auto-flow: dense;
+  max-width: var(--portfolio-max-width);
+  margin: 0 auto;
 }
 
-/* Responsive */
+/* Responsive grid for larger screens */
 @media (min-width: 768px) {
   #portfolio-grid {
-    grid-template-columns: repeat(auto-fit, minmax(360px, 1fr));
-    gap: 24px;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
   }
 }
 
 @media (min-width: 1024px) {
   #portfolio-grid {
-    grid-template-columns: repeat(auto-fit, minmax(380px, 1fr));
-    gap: 28px;
+    grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
   }
 }
 
-@media (min-width: 1440px) {
-  #portfolio-grid {
-    grid-template-columns: repeat(auto-fit, minmax(400px, 1fr));
-    gap: 32px;
-  }
+/* Portfolio Item Size Variants for Masonry Layout */
+.portfolio-item.size-small {
+  grid-row: span 1;
+  grid-column: span 1;
 }
 
-/* ===========================
-   TAMAÑOS DE OBRA (SPANS)
-   =========================== */
+.portfolio-item.size-medium {
+  grid-row: span 2;
+  grid-column: span 1;
+}
 
-.span-w2 {
+.portfolio-item.size-large {
+  grid-row: span 2;
   grid-column: span 2;
 }
 
-.span-h2 {
-  grid-row: span 2;
+.portfolio-item.size-tall {
+  grid-row: span 3;
+  grid-column: span 1;
 }
 
-.span-w2h2 {
+.portfolio-item.size-wide {
+  grid-row: span 1;
   grid-column: span 2;
-  grid-row: span 2;
-}
-
-/* En móvil, todo span 1 */
-@media (max-width: 767px) {
-  .span-w2,
-  .span-h2,
-  .span-w2h2 {
-    grid-column: span 1 !important;
-    grid-row: span 1 !important;
-  }
 }
 
 /* ===========================
@@ -1440,79 +1404,24 @@ body:has(#hero) .global-nav {
 
 .obra-item {
   position: relative;
-  opacity: 0;
-  transform: translateY(20px);
-}
-
-/* ===========================
-   FRAME
-   =========================== */
-
-.frame {
-  position: relative;
-  height: 100%;
-  min-height: 320px;
-  background: #2a2d3a;
-  border-radius: 16px;
-  border: 1px solid rgba(255, 255, 255, 0.1);
-  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+  z-index: 3; /* Above grid and background */
+  opacity: 0; /* For GSAP entrance animation */
+  transform: translateY(40px);
+  transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+  border-radius: 0; /* Sharp corners for editorial feel */
   overflow: hidden;
 }
 
-/* ===========================
-   BARRA SUPERIOR
-   =========================== */
-
-.frame-bar {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-  height: 40px;
-  padding: 0 1rem;
-  background: linear-gradient(180deg, rgba(255,255,255,0.08) 0%, rgba(255,255,255,0.04) 100%);
-  border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+/* Subtle hover effect - editorial style */
+.obra-item:hover {
+  transform: translateY(40px) scale(1.02);
 }
 
-.frame-dots {
-  display: flex;
-  align-items: center;
-  gap: 7px;
+/* Remove active drag cursor (Hannah Miles aesthetic) */
+.obra-item:active {
+  cursor: default;
 }
 
-.dot {
-  width: 11px;
-  height: 11px;
-  border-radius: 50%;
-}
-
-.dot-red {
-  background: #ff5f57;
-}
-
-.dot-yellow {
-  background: #ffbd2e;
-}
-
-.dot-green {
-  background: #28c840;
-}
-
-.frame-title {
-  flex: 1;
-  font-size: 0.875rem;
-  font-weight: 600;
-  color: rgba(255, 255, 255, 0.9);
-  margin: 0 1rem;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
-
-.frame-year {
-  font-size: 0.75rem;
-  font-weight: 500;
-  color: rgba(255, 255, 255, 0.5);
-}
 
 /* ===========================
    CONTENEDOR IMAGEN
@@ -1521,10 +1430,11 @@ body:has(#hero) .global-nav {
 .obra-contenedor {
   position: relative;
   width: 100%;
-  height: calc(100% - 40px);
-  min-height: 280px;
+  height: 100%;
+  /* Removed min-height to allow masonry layout with natural image aspect ratios */
   background: #1a1d2e;
   overflow: hidden;
+  border-radius: 0; /* Sharp corners for editorial feel */
 }
 
 .obra-img {
@@ -1534,8 +1444,9 @@ body:has(#hero) .global-nav {
   height: 100%;
   object-fit: cover;
   object-position: center;
-  border-radius: 0 0 16px 16px;
+  border-radius: 0; /* Sharp corners for editorial feel */
 }
+
 
 /* ===========================
    ASPECT RATIOS
@@ -1710,3 +1621,262 @@ body:has(#hero) .global-nav {
     transform: none !important;
   }
 }
+
+/* Theme toggle button */
+.theme-toggle {
+  position: relative;
+  z-index: 1;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  border: 1px solid var(--color-border);
+  background: transparent;
+  backdrop-filter: none;
+  color: var(--color-text-primary);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: all 0.3s ease, color 0.3s ease, border-color 0.3s ease;
+}
+
+.theme-toggle:hover {
+  transform: scale(1.1);
+  border-color: var(--color-text-primary);
+  background: var(--color-bg-secondary);
+}
+
+.theme-toggle svg {
+  width: 20px;
+  height: 20px;
+  stroke: currentColor;
+  fill: currentColor;
+  stroke-width: 1.5px;
+}
+
+/* Smooth transitions durante cambio de tema */
+html.theme-transitioning * {
+  transition: background-color 0.5s ease, color 0.5s ease, border-color 0.5s ease !important;
+}
+
+/* ============================================
+   CONTACT CTA CARD (Hero Section)
+   ============================================ */
+
+.contact-cta-card {
+  position: relative;
+  max-width: 850px;
+  margin: 4rem auto;
+  padding: 5rem 4rem;
+  border-radius: 60px;
+  background: #1F1B2E;
+  border: none;
+  text-align: center;
+  cursor: default;
+  transition: transform 0.4s ease, box-shadow 0.4s ease;
+}
+
+.contact-cta-card:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 25px 70px rgba(0, 0, 0, 0.3);
+}
+
+.cta-title {
+  font-family: 'Poppins', var(--font-sans);
+  font-size: clamp(2.5rem, 6vw, 4.5rem);
+  font-weight: 800;
+  color: #FFFFFF;
+  margin-bottom: 1.5rem;
+  line-height: 1.1;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.cta-subtitle {
+  font-family: var(--font-sans);
+  font-size: clamp(1.1rem, 2.5vw, 1.4rem);
+  color: rgba(255, 255, 255, 0.8);
+  opacity: 1;
+  margin-bottom: 2.5rem;
+  font-weight: 400;
+}
+
+.cta-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 1.2rem 3rem;
+  border-radius: 50px;
+  background: #FF6B5A;
+  color: #FFFFFF;
+  font-weight: 700;
+  font-size: 0.95rem;
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  transition: all 0.3s ease;
+  font-family: 'Poppins', var(--font-sans);
+}
+
+.cta-button:hover {
+  transform: scale(1.05);
+  box-shadow: 0 15px 40px rgba(255, 107, 90, 0.4);
+  background: #FF7A6B;
+}
+
+.cta-button svg {
+  transition: transform 0.3s ease;
+}
+
+.cta-button:hover svg {
+  transform: translateX(5px);
+}
+
+/* ============================================
+   CONTACT SECTION (Formulario)
+   ============================================ */
+
+.contact-wrapper {
+  max-width: 1600px; /* Allow wider layout for 50/50 split */
+  margin: 8rem auto 4rem;
+  padding: 0 2rem;
+}
+
+.contact-content {
+  text-align: center;
+}
+
+.contact-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 8vw, 6rem);
+  font-weight: 400;
+  color: var(--theme-text);
+  margin-bottom: 1rem;
+  line-height: 1.1;
+}
+
+.contact-subtitle {
+  font-size: clamp(1rem, 2vw, 1.5rem);
+  color: var(--theme-text);
+  opacity: 0.7;
+  margin-bottom: 4rem;
+  max-width: 600px;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.contact-form {
+  text-align: left;
+}
+
+.contact-form .form-group {
+  margin-bottom: 2rem;
+}
+
+.contact-form label {
+  display: block;
+  color: var(--theme-text);
+  font-weight: 500;
+  font-size: 0.9rem;
+  margin-bottom: 0.5rem;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+}
+
+.contact-form input,
+.contact-form textarea {
+  width: 100%;
+  padding: 1rem 1.5rem;
+  border-radius: 50px;
+  border: 2px solid var(--theme-border);
+  background: var(--theme-surface);
+  color: var(--theme-text);
+  font-family: inherit;
+  font-size: 1rem;
+  transition: all 0.3s ease;
+}
+
+.contact-form textarea {
+  border-radius: 25px;
+  resize: vertical;
+  min-height: 150px;
+}
+
+.contact-form input:focus,
+.contact-form textarea:focus {
+  outline: none;
+  border-color: var(--theme-text);
+  box-shadow: 0 0 0 3px var(--theme-glow);
+}
+
+.checkbox-group {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+}
+
+.checkbox-group input[type="checkbox"] {
+  width: auto;
+  margin-top: 0.25rem;
+  cursor: pointer;
+}
+
+.checkbox-group label {
+  text-transform: none;
+  font-weight: 400;
+  font-size: 0.875rem;
+  opacity: 0.8;
+  cursor: pointer;
+}
+
+.contact-submit {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  width: 100%;
+  padding: 1.25rem 2rem;
+  border-radius: 50px;
+  border: none;
+  background: var(--theme-text);
+  color: var(--theme-bg);
+  font-family: inherit;
+  font-size: 1.125rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.contact-submit:hover:not(:disabled) {
+  transform: scale(1.02);
+  box-shadow: 0 10px 40px var(--theme-glow);
+}
+
+.contact-submit:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+/* ============================================
+   RESPONSIVE ADJUSTMENTS
+   ============================================ */
+
+@media (max-width: 768px) {
+  .theme-toggle {
+    top: 1rem;
+    right: 1rem;
+    width: 44px;
+    height: 44px;
+  }
+  
+  .contact-cta-card {
+    padding: 3rem 2rem;
+    border-radius: 30px;
+  }
+  
+  .contact-wrapper {
+    margin: 4rem auto 2rem;
+  }
+}
+
