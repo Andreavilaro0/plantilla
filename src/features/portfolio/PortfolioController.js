@@ -206,72 +206,121 @@ export class PortfolioController {
   }
 
   // ========================================================
-  // FOCUS MODE (FLIP)
+  // FOCUS MODE (FLIP) - Hannah Miles Style
   // ========================================================
   _toFocusMode(index) {
-    if (this.isFocusMode) return;
+    if (this.isFocusMode) {
+      // If already in focus mode, switch active item
+      this._switchActiveItem(index);
+      return;
+    }
+
     this.isFocusMode = true;
-    
+    this.activeIndex = index;
     const activeItem = this.items[index];
-    
+
     // 1. Capture State
     const state = Flip.getState(this.items);
-    
+
     // 2. Change Layout Classes
     this.grid.classList.add('is-focus-mode');
+
+    // Reorder DOM: Active first, then thumbnails
+    this.grid.appendChild(activeItem); // Move to end (visually first with grid)
+
     this.items.forEach((item, i) => {
+        item.style.gridRowEnd = ""; // Clear masonry spans
+
         if (i === index) {
             item.classList.add('is-active');
-            // Force styles for active item in grid
-            item.style.gridColumn = "1 / -1"; // Full width
-            item.style.gridRowEnd = "auto";   // Let it define height naturally or by CSS
-            // Optionally set a max-height via CSS or here
+            item.classList.remove('is-dim');
         } else {
             item.classList.add('is-dim');
-            // Make others small thumbnails
-            item.style.gridColumn = "span 1"; // 1 column wide
-            // We might want to fix their height or spans?
-            item.style.gridRowEnd = "span 200"; // Arbitrary small span? 
-            // Better: Let masonry calc handle them or force aspect
+            item.classList.remove('is-active');
+
+            // Make thumbnails clickable to switch
+            item.style.cursor = 'pointer';
         }
     });
-    
+
     // 3. Animate (FLIP)
     Flip.from(state, {
-        duration: 0.6,
-        ease: "power4.inOut",
-        absolute: true, // Crucial for smooth grid layout transitions
+        duration: 0.7,
+        ease: "power3.inOut",
+        scale: true,
         onComplete: () => {
-             // Scroll to active item if needed
-             gsap.to(window, { scrollTo: { y: activeItem, offsetY: 100 }, duration: 0.4 });
              this.closeBtn.classList.add('visible');
+
+             // Scroll to top of portfolio stage for better view
+             const stageTop = this.stage?.getBoundingClientRect().top + window.scrollY;
+             gsap.to(window, {
+               scrollTo: { y: stageTop - 80 },
+               duration: 0.5,
+               ease: "power2.inOut"
+             });
         }
     });
   }
-  
+
+  _switchActiveItem(newIndex) {
+    if (newIndex === this.activeIndex) return;
+
+    const state = Flip.getState(this.items);
+
+    this.activeIndex = newIndex;
+    const newActiveItem = this.items[newIndex];
+
+    // Reorder DOM
+    this.grid.appendChild(newActiveItem);
+
+    // Update classes
+    this.items.forEach((item, i) => {
+        if (i === newIndex) {
+            item.classList.add('is-active');
+            item.classList.remove('is-dim');
+        } else {
+            item.classList.add('is-dim');
+            item.classList.remove('is-active');
+        }
+    });
+
+    // Animate switch
+    Flip.from(state, {
+        duration: 0.5,
+        ease: "power2.inOut",
+        scale: true
+    });
+  }
+
   _exitFocusMode() {
     if (!this.isFocusMode) return;
     this.isFocusMode = false;
+    this.activeIndex = null;
     this.closeBtn.classList.remove('visible');
 
     // 1. Capture State
     const state = Flip.getState(this.items);
-    
+
     // 2. Reset Layout Classes
     this.grid.classList.remove('is-focus-mode');
     this.items.forEach(item => {
         item.classList.remove('is-active', 'is-dim');
-        item.style.gridColumn = ""; // Reset
+        item.style.gridColumn = "";
+        item.style.gridRowEnd = "";
+        item.style.cursor = "pointer";
     });
-    
+
+    // 3. Restore original DOM order
+    this.items.forEach(item => this.grid.appendChild(item));
+
     // Recalculate Masonry Spans to restore original layout
     this._calculateMasonrySpans();
-    
-    // 3. Animate (FLIP)
+
+    // 4. Animate (FLIP)
     Flip.from(state, {
-        duration: 0.5,
+        duration: 0.6,
         ease: "power3.inOut",
-        absolute: true
+        scale: true
     });
   }
 
