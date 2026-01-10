@@ -6,6 +6,7 @@
 
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
+import { log } from '@/utils/logger.js';
 
 gsap.registerPlugin(ScrollTrigger);
 

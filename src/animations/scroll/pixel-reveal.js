@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { log } from '@/utils/logger.js';
 
 /**
  * Magnetic Letter Effect for Hero Title
