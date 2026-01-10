@@ -50,6 +50,9 @@ export class ContactModal {
     document.body.insertAdjacentHTML('beforeend', modalHTML);
     this.modal = document.getElementById('contact-modal');
     
+    // Setup event listeners for close button and overlay
+    this.setupEventListeners();
+    
     // Setup form handler
     this.setupFormHandler();
     
@@ -59,6 +62,20 @@ export class ContactModal {
         this.close();
       }
     });
+  }
+  
+  setupEventListeners() {
+    // Close button
+    const closeBtn = document.getElementById('contact-modal-close');
+    if (closeBtn) {
+      closeBtn.addEventListener('click', () => this.close());
+    }
+    
+    // Overlay click to close
+    const overlay = document.getElementById('contact-modal-overlay');
+    if (overlay) {
+      overlay.addEventListener('click', () => this.close());
+    }
   }
 
   setupFormHandler() {
