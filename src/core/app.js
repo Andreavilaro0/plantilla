@@ -17,33 +17,36 @@ gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
 window.gsap = gsap;
 
 // ============================================
-// INICIALIZACIÓN SEGURA (window.load)
+// INICIALIZACIÓN TEMPRANA - DOMContentLoaded
 // ============================================
-window.addEventListener('load', () => {
-
-  ScrollTrigger.refresh();
+document.addEventListener('DOMContentLoaded', () => {
+  log('🚀 DOM Content Loaded - Starting initialization');
   
-  // Inicializar navbar (persistente en todas las vistas)
+  // Inicializar theme toggle lo antes posible para evitar flash
+  const themeToggle = new ThemeToggle();
+  themeToggle.init();
+  window.themeToggle = themeToggle;
+  
+  // Inicializar navbar 
   initNavbar();
-  
-  // ============================================
-  // PAUL FACTORY - NEW SYSTEMS
-  // ============================================
   
   // Inicializar smooth scrolling
   const smoothScroll = new SmoothScroll();
   smoothScroll.init();
   window.smoothScroll = smoothScroll;
   
-  // Inicializar theme toggle
-  const themeToggle = new ThemeToggle();
-  themeToggle.init();
-  window.themeToggle = themeToggle;
-  
-  log('✅ Paul Factory systems initialized');
-  
   // Exponer setActiveLink globalmente para el router
   window.setNavbarActiveLink = setActiveLink;
+  
+  log('✅ Componentes core inicializados');
+});
+
+// ============================================
+// REFRESH FINAL - window.load
+// ============================================
+window.addEventListener('load', () => {
+  ScrollTrigger.refresh();
+  log('✅ ScrollTrigger refreshed on window load');
 });
 
 log('✅ Portfolio - Arquitectura modular cargada');
