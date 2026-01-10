@@ -319,7 +319,27 @@ export default function HomeView() {
       const contactModal = new ContactModal();
       contactModal.render();
       window.contactModal = contactModal;
-      console.log('📧 Contact modal initialized');
+      log('📧 Contact modal initialized');
+      
+      // Setup event listeners for buttons (no inline onclick)
+      const viewPortfolioBtn = document.getElementById('view-portfolio-btn');
+      if (viewPortfolioBtn) {
+        viewPortfolioBtn.addEventListener('click', () =\u003e {
+          const portfolioSection = document.getElementById('portfolio');
+          if (portfolioSection) {
+            portfolioSection.scrollIntoView({ behavior: 'smooth' });
+          }
+        });
+      }
+      
+      const ctaContactBtn = document.getElementById('cta-contact-btn');
+      if (ctaContactBtn) {
+        ctaContactBtn.addEventListener('click', () =\u003e {
+          if (window.contactModal) {
+            window.contactModal.open();
+          }
+        });
+      }
     }
   }, 100);
   
