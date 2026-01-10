@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { log } from '@/utils/logger.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -81,7 +82,7 @@ export function initBounceEntrance() {
     });
   });
   
-  console.log(`✨ Bounce entrance initialized for ${sections.length} section(s)`);
+  log(`✨ Bounce entrance initialized for ${sections.length} section(s)`);
 }
 
 /**
@@ -94,5 +95,5 @@ export function destroyBounceEntrance() {
       trigger.kill();
     }
   });
-  console.log('🧹 Bounce entrance cleaned up');
+  log('🧹 Bounce entrance cleaned up');
 }

@@ -24,7 +24,7 @@ export function initPixelRevealEffect() {
     });
   });
   
-  console.log('✨ Magnetic Letter Effect initialized');
+  log('✨ Magnetic Letter Effect initialized');
 }
 
 /**
@@ -117,5 +117,5 @@ export function destroyPixelRevealEffect() {
   letters.forEach(letter => {
     gsap.killTweensOf(letter);
   });
-  console.log('🧹 Magnetic Letter Effect cleaned up');
+  log('🧹 Magnetic Letter Effect cleaned up');
 }

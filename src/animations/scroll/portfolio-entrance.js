@@ -36,7 +36,7 @@ export function initPortfolioEntrance(container) {
       item.style.opacity = "1";
       item.style.transform = "none";
     });
-    console.log("[PortfolioEntrance] ⚡ Reduced motion - animations disabled");
+    log("[PortfolioEntrance] ⚡ Reduced motion - animations disabled");
     return () => {};
   }
 
@@ -57,12 +57,12 @@ export function initPortfolioEntrance(container) {
       });
     });
 
-    console.log(`[PortfolioEntrance] ✅ Animated ${items.length} items`);
+    log(`[PortfolioEntrance] ✅ Animated ${items.length} items`);
   }, container);
 
   // Return cleanup function
   return () => {
     ctx.revert();
-    console.log("[PortfolioEntrance] 🧹 Context reverted");
+    log("[PortfolioEntrance] 🧹 Context reverted");
   };
 }

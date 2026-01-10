@@ -1,5 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { log } from '@/utils/logger.js';
 
 // Register ScrollTrigger plugin
 gsap.registerPlugin(ScrollTrigger);
@@ -52,7 +53,7 @@ export function initAboutAnimations() {
     });
   });
 
-  console.log('✨ About section scroll animations initialized');
+  log('✨ About section scroll animations initialized');
 }
 
 /**
@@ -64,5 +65,5 @@ export function destroyAboutAnimations() {
       trigger.kill();
     }
   });
-  console.log('🧹 About animations cleaned up');
+  log('🧹 About animations cleaned up');
 }

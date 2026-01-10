@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { log } from '@/utils/logger.js';
 
 /**
  * Hero Section Entrance Animations - HUD Layout
@@ -75,7 +76,7 @@ export function initTitleAnimations() {
       stagger: 0.1
     }, 2.2);
 
-    console.log('✨ Hero HUD animations initialized');
+    log('✨ Hero HUD animations initialized');
   });
 }
 
@@ -84,5 +85,5 @@ export function initTitleAnimations() {
  */
 export function destroyTitleAnimations() {
   // Future: Add cleanup if using ScrollTrigger or other persistent animations
-  console.log('🧹 Hero animations cleaned up');
+  log('🧹 Hero animations cleaned up');
 }

@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { log } from '@/utils/logger.js';
 import { Draggable } from 'gsap/Draggable';
 
 gsap.registerPlugin(Draggable);
@@ -52,7 +53,7 @@ export class TestimonialCarousel {
     // Update button states
     this.updateButtonStates();
     
-    console.log(`🎠 Carousel initialized with ${this.cards.length} slides`);
+    log(`🎠 Carousel initialized with ${this.cards.length} slides`);
   }
   
   updateDimensions() {
@@ -179,6 +180,6 @@ export class TestimonialCarousel {
     
     window.removeEventListener('resize', this.resizeHandler);
     
-    console.log('🧹 Carousel destroyed');
+    log('🧹 Carousel destroyed');
   }
 }
