@@ -2,6 +2,7 @@ import rawData from "@/data/obras.js";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/ScrollTrigger";
 import { Flip } from "gsap/Flip";
+import { log } from '@/utils/logger.js';
 
 gsap.registerPlugin(ScrollTrigger, Flip);
 
@@ -108,7 +109,7 @@ export class PortfolioController {
     this.grid.appendChild(frag);
     this.items = Array.from(this.grid.children);
     
-    console.log(`[Portfolio] ✅ Rendered ${this.items.length} items to grid`);
+    log(`[Portfolio] ✅ Rendered ${this.items.length} items to grid`);
   }
 
   _waitForImages() {
@@ -159,7 +160,7 @@ export class PortfolioController {
       return;
     }
     
-    console.log("[Portfolio] Setting up stage interactions...");
+    log("[Portfolio] Setting up stage interactions...");
     
     // Set initial hidden states for animation
     gsap.set(this.bgWord, { opacity: 0, scale: 0.95 });
@@ -172,9 +173,9 @@ export class PortfolioController {
             start: "top 80%", // When stage enters viewport
             end: "top 20%",   // Complete by center
             scrub: 0.5,
-            onEnter: () => console.log("[Portfolio] ✅ Stage entered"),
-            onComplete: () => console.log("[Portfolio] ✅ Stage animation complete"),
-            onEnterBack: () => console.log("[Portfolio] Stage re-entered (scroll back)"),
+            onEnter: () => log("[Portfolio] ✅ Stage entered"),
+            onComplete: () => log("[Portfolio] ✅ Stage animation complete"),
+            onEnterBack: () => log("[Portfolio] Stage re-entered (scroll back)"),
         }
     });
 
@@ -202,7 +203,7 @@ export class PortfolioController {
             ease: "power2.out"
         }, "-=0.7");
         
-    console.log("[Portfolio] ✅ Stage Interactions Set");
+    log("[Portfolio] ✅ Stage Interactions Set");
   }
 
   // ========================================================

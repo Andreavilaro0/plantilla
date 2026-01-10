@@ -6,6 +6,7 @@ import router from '@/core/router.js';
 import { initNavbar, setActiveLink } from '@/ui/navbar/navbar.js';
 import SmoothScroll from '@/utils/scroll/SmoothScroll.js';
 import ThemeToggle from '@/utils/theme/ThemeToggle.js';
+import { log } from '@/utils/logger.js';
 
 // ============================================
 // REGISTRO EXPLÍCITO DE PLUGINS
@@ -39,12 +40,12 @@ window.addEventListener('load', () => {
   themeToggle.init();
   window.themeToggle = themeToggle;
   
-  console.log('✅ Paul Factory systems initialized');
+  log('✅ Paul Factory systems initialized');
   
   // Exponer setActiveLink globalmente para el router
   window.setNavbarActiveLink = setActiveLink;
 });
 
-console.log('✅ Portfolio - Arquitectura modular cargada');
+log('✅ Portfolio - Arquitectura modular cargada');
 
 

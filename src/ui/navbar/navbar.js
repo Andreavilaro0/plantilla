@@ -1,10 +1,12 @@
+import { log } from '@/utils/logger.js';
+
 /**
  * Navbar - Minimal White Design
  * Adapted from FutureNav with smooth scroll, mobile menu, and active section highlighting
  */
 
 export function initNavbar() {
-  console.log('🎯 Initializing minimal navbar');
+  log('🎯 Initializing minimal navbar');
   
   // DOM Elements
   const navbar = document.getElementById('navbar');
@@ -129,11 +131,11 @@ export function initNavbar() {
   // Initialize active section on page load
   highlightCurrentSection();
   
-  console.log('✅ Navbar initialized');
+  log('✅ Navbar initialized');
 }
 
 // For backwards compatibility
 export function setActiveLink(path) {
   // Not needed for single page navigation, but keeping for compatibility
-  console.log('setActiveLink called with:', path);
+  log('setActiveLink called with:', path);
 }
