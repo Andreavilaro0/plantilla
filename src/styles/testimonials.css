@@ -184,15 +184,15 @@
    =========================== */
 
 [data-theme="dark"] .testimonials-section {
-  background: var(--bg-secondary);
+  background-color: #21202C;
 }
 
 [data-theme="dark"] .section-title {
-  color: var(--text-primary);
+  color: #FFFFFF;
 }
 
 [data-theme="dark"] .testimonial-card {
-  background: var(--bg-surface);
+  background: rgba(40, 38, 54, 0.8);
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.3),
     0 8px 16px rgba(0, 0, 0, 0.2);
@@ -202,20 +202,20 @@
 [data-theme="dark"] .author-name,
 [data-theme="dark"] .linkedin-link,
 [data-theme="dark"] .project-link {
-  color: var(--text-primary);
+  color: rgba(255, 255, 255, 0.9);
 }
 
 [data-theme="dark"] .author-position {
-  color: var(--text-tertiary);
+  color: rgba(255, 255, 255, 0.6);
 }
 
 [data-theme="dark"] .testimonial-footer {
-  border-top-color: var(--border-subtle);
+  border-top-color: rgba(255, 255, 255, 0.1);
 }
 
 [data-theme="dark"] .linkedin-link:hover,
 [data-theme="dark"] .project-link:hover {
-  color: var(--color-accent-rust);
+  color: #FFFFFF;
 }
 
 /* ===========================

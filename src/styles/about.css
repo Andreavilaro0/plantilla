@@ -243,3 +243,33 @@
   transform: translateY(-2px) rotate(2deg);
   color: #667eea; /* Paul Factory accent */
 }
+
+/* ===========================
+   DARK MODE SUPPORT
+   =========================== */
+
+[data-theme="dark"] #about {
+  background-color: #21202C;
+}
+
+[data-theme="dark"] .about-title,
+[data-theme="dark"] .about-description {
+  color: rgba(255, 255, 255, 0.95);
+}
+
+[data-theme="dark"] .about-description .highlight {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .blob-text-content {
+  fill: rgba(255, 255, 255, 0.8);
+}
+
+[data-theme="dark"] .handwriting-container p {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .handwriting-container span:hover {
+  color: #FFFFFF;
+}
+

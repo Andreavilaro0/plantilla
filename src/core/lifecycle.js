@@ -141,12 +141,28 @@ class LifecycleManager {
     return this.mountView('portfolio', {
       init: async () => {
         log('📸 Portfolio view loaded');
-        // PortfolioController is already initialized by PortfolioView
+        
+        // Dynamically import and initialize PortfolioController
+        const { PortfolioController } = await import('@/features/portfolio/PortfolioController.js');
+        const controller = new PortfolioController();
+        controller.init();
+        
+        // Store controller reference for cleanup
+        this.storeInstance('portfolioController', controller);
+        
+        // Also expose globally for legacy compatibility (if needed)
+        window.__portfolioController = controller;
       },
       cleanup: async () => {
-        // Cleanup portfolio-specific resources
-        if (window.__portfolioController && window.__portfolioController.destroy) {
-          window.__portfolioController.destroy();
+        // Cleanup portfolio controller
+        const controller = this.getInstance('portfolioController');
+        if (controller && controller.cleanup) {
+          controller.cleanup();
+        }
+        
+        // Clean up global reference
+        if (window.__portfolioController) {
+          delete window.__portfolioController;
         }
       }
     });

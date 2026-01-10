@@ -5,8 +5,6 @@ import { initBounceEntrance } from '@/animations/scroll/bounce-entrance.js';
 import { TestimonialCarousel } from '@/animations/carousel/testimonial-carousel.js';
 import VanillaTilt from '@/lib/vanilla-tilt.js';
 import { PortfolioController } from '@/features/portfolio/PortfolioController.js';
-// PortfolioBackgroundText removed
-import { initPortfolioEntrance } from '@/animations/scroll/portfolio-entrance.js';
 import { InlineIcons } from '@/ui/icons/InlineIcons.js';
 import { TestimonialsView } from '@/features/shared/TestimonialsView.js';
 import { FooterView } from '@/features/shared/FooterView.js';
@@ -144,27 +142,20 @@ export default function HomeView() {
       </section>
 
       <!-- ========================================== -->
-      <!-- PORTFOLIO SECTION - Postage Stamps -->
+      <!-- PORTFOLIO SECTION - Hannah Miles Style -->
       <!-- ========================================== -->
-      <!-- ========================================== -->
-      <!-- PORTFOLIO SECTION - Editorial Stage -->
-      <!-- ========================================== -->
-      <section id="portfolio" class="portfolio">
-        <!-- Scroll Spacer (allows scrolling "into" the stage) -->
-        <div class="portfolio-stage-spacer"></div>
+      <section id="portfolio" class="portfolio-section">
+        <!-- Título gigante fijo (z-index: 1, detrás de fotos) -->
+        <h1 class="bg-title" aria-label="Portfolio">IMPRESSIONS</h1>
         
-        <!-- The Stage (Pinned area) -->
-        <div class="portfolio-stage">
-          <div class="portfolio-bgword" aria-hidden="true">IMPRESSIONS</div>
-          
-          <!-- Grid -->
-          <div id="portfolio-grid" class="portfolio-grid"></div>
-          
-          <!-- Empty State -->
-          <div id="portfolio-empty" class="hidden portfolio-empty">
-            <p>No hay obras para mostrar.</p>
-          </div>
-        </div>
+        <!-- Grid de fotografías (z-index: 2, encima del título) -->
+        <div class="photos-grid" role="list"></div>
+        
+        <!-- Overlay para focus mode (oculto por defecto) -->
+        <div class="focus-overlay" role="dialog" aria-modal="true" aria-hidden="true"></div>
+        
+        <!-- Contenedor de thumbnails (oculto por defecto) -->
+        <div class="thumbnails-container" role="navigation" aria-label="Photo thumbnails"></div>
       </section>
 
       <!-- ========================================== -->
@@ -267,26 +258,12 @@ export default function HomeView() {
       // Initialize Portfolio Controller with Hannah Miles style
       const portfolioSection = document.getElementById('portfolio');
       if (portfolioSection) {
-        // Initialize Portfolio Controller
-        const portfolioController = new PortfolioController(portfolioSection);
-        portfolioController.mount();
+        // Create controller instance
+        const portfolioController = new PortfolioController();
+        portfolioController.init(); // Llama a init() sin argumentos
         
-        // Initialize Background Text Layer - "IMPRESSIONS"
-        // Background Text now part of HTML structure
-        // const bgText = new PortfolioBackgroundText(portfolioSection, "IMPRESSIONS");
-        // bgText.mount();
-        
-        // Initialize Portfolio Entrance Animation (NOW HANDLED BY PortfolioController)
-        // const portfolioGrid = document.getElementById('portfolio-grid');
-        // if (portfolioGrid) {
-        //   const cleanupPortfolioAnim = initPortfolioEntrance(portfolioGrid);
-        //   // Store cleanup function
-        //   window.cleanupPortfolioEntrance = cleanupPortfolioAnim;
-        // }
-        
-        // Store references for cleanup
+        // Store reference for cleanup (LifecycleManager lo llamará)
         window.portfolioController = portfolioController;
-        // window.portfolioBgText = bgText;
         
         log('[HomeView] ✅ Portfolio initialized with Hannah Miles style');
       }

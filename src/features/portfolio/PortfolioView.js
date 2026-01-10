@@ -1,43 +1,28 @@
-import { PortfolioController } from '@/features/portfolio/PortfolioController.js';
-import { log } from '@/utils/logger.js';
+/**
+ * PortfolioView.js
+ * Template HTML para portfolio estilo Hannah Miles
+ * 
+ * Estructura:
+ * - Título gigante fijo "PORTFOLIO" (z-index: 1, detrás)
+ * - Grid de fotos 4 columnas (z-index: 2, encima)
+ */
 
-const PortfolioView = () => {
-  // Initialize PortfolioController after DOM is ready
-  setTimeout(() => {
-    const portfolioRoot = document.getElementById('portfolio');
-    if (portfolioRoot) {
-      const controller = new PortfolioController(portfolioRoot);
-      controller.mount();
-      log('✨ PortfolioController initialized - obras loaded');
-      
-      // Store reference for cleanup
-      window.__portfolioController = controller;
-    } else {
-      console.warn('⚠️ Portfolio root element not found');
-    }
-  }, 100);
-
+export default function PortfolioView() {
   return `
-    <section id="portfolio" class="portfolio">
-      <!-- SPACER: Create scroll distance before reveal -->
-      <div class="portfolio-stage-spacer"></div>
-
-      <!-- STAGE: The pinned area with background word + grid -->
-      <div class="portfolio-stage">
-        <!-- BACKGROUND WORD: Gigante, detrás, editorial -->
-        <div class="portfolio-bgword" aria-hidden="true">IMPRESSIONS</div>
-
-        <!-- GRID CONTAINER: Editorial layout -->
-        <div id="portfolio-grid" class="portfolio-grid"></div>
-
-        <!-- Estado vacío -->
-        <div id="portfolio-empty" class="portfolio-empty hidden">
-          <p>No hay obras para mostrar.</p>
-        </div>
+    <section id="portfolio" class="portfolio-section" data-scroll-section>
+      <!-- Título gigante de fondo (FIJO) -->
+      <h1 class="bg-title" aria-hidden="true">PORTFOLIO</h1>
+      
+      <!-- Grid de fotografías -->
+      <div class="photos-grid">
+        <!-- Las fotos se insertan aquí dinámicamente por PortfolioController -->
       </div>
+      
+      <!-- Overlay para focus mode (inicialmente oculto) -->
+      <div class="focus-overlay"></div>
+      
+      <!-- Contenedor de thumbnails (inicialmente vacío) -->
+      <div class="thumbnails-container"></div>
     </section>
-  `;
-};
-
-export default PortfolioView;
-
+  `
+}

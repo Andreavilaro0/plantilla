@@ -107,23 +107,26 @@ export function initNavbar() {
   // Función para highlight de sección activa
   function highlightCurrentSection() {
     let currentSection = '';
-    
+
     sections.forEach(section => {
-      if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
-        current = section.getAttribute('id');
+      const sectionTop = section.offsetTop;
+      const sectionHeight = section.offsetHeight;
+      // Offset de 100px para activar antes de llegar exactamente
+      if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight) {
+        currentSection = section.getAttribute('id');
       }
     });
-    
+
     navLinks.forEach(link => {
       link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) {
+      if (link.getAttribute('href') === `#${currentSection}`) {
         link.classList.add('active');
       }
     });
-    
+
     mobileNavLinks.forEach(link => {
       link.classList.remove('active');
-      if (link.getAttribute('href') === `#${current}`) {
+      if (link.getAttribute('href') === `#${currentSection}`) {
         link.classList.add('active');
       }
     });

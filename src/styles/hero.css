@@ -155,6 +155,14 @@
   border-color: rgba(255, 255, 255, 0.1);
 }
 
+[data-theme="dark"] .hero-subtitle {
+  color: rgba(255, 255, 255, 0.9);
+}
+
+[data-theme="dark"] .hero-title {
+  color: #FFFFFF;
+}
+
 .hero-info h3 {
   font-family: var(--font-sans);
   font-size: var(--text-sm);

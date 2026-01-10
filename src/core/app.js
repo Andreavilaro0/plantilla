@@ -2,6 +2,7 @@ import '@/style.css';
 import { gsap } from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 import { ScrollToPlugin } from 'gsap/ScrollToPlugin';
+import { Flip } from 'gsap/Flip';
 import router from '@/core/router.js';
 import { initNavbar, setActiveLink } from '@/ui/navbar/navbar.js';
 import SmoothScroll from '@/utils/scroll/SmoothScroll.js';
@@ -11,10 +12,12 @@ import { log } from '@/utils/logger.js';
 // ============================================
 // REGISTRO EXPLÍCITO DE PLUGINS
 // ============================================
-gsap.registerPlugin(ScrollTrigger, ScrollToPlugin);
+gsap.registerPlugin(ScrollTrigger, ScrollToPlugin, Flip);
 
-// Variables globales
+// Variables globales (para acceso en controladores)
 window.gsap = gsap;
+window.ScrollTrigger = ScrollTrigger;
+window.Flip = Flip;
 
 // ============================================
 // INICIALIZACIÓN TEMPRANA - DOMContentLoaded

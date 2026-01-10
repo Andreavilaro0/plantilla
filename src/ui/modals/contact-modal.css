@@ -31,7 +31,7 @@
 .contact-modal-content {
   position: relative;
   z-index: 1;
-  background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+  background: linear-gradient(135deg, rgb(28, 32, 50) 0%, rgb(35, 40, 60) 100%);
   border-radius: 16px;
   padding: 3rem;
   max-width: 600px;
