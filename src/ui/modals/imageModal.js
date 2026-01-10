@@ -3,6 +3,7 @@
  * Reutiliza #modal-root (mismo que ABOUT)
  */
 import { gsap } from 'gsap';
+import { log } from '@/utils/logger.js';
 
 // Estado del modal
 let currentModal = null;
@@ -167,10 +168,10 @@ export function bindImageCards(rootEl) {
   
   // Event delegation: escuchar clicks en .photo-media
   rootEl.addEventListener('click', (e) => {
-    console.log('🖱️ Click detectado en:', e.target);
+    log('🖱️ Click detectado en:', e.target);
     
     const photoMedia = e.target.closest('.photo-media');
-    console.log('📸 photoMedia encontrado:', photoMedia);
+    log('📸 photoMedia encontrado:', photoMedia);
     
     if (!photoMedia) return;
     
@@ -178,8 +179,8 @@ export function bindImageCards(rootEl) {
     
     // Extraer data desde el elemento padre (photo-card o hero-float)
     const card = photoMedia.closest('[data-gallery-id], [data-hero-id]');
-    console.log('🎴 Card encontrado:', card);
-    console.log('📊 Datasets:', {
+    log('🎴 Card encontrado:', card);
+    log('📊 Datasets:', {
       galleryId: card?.dataset.galleryId,
       heroId: card?.dataset.heroId,
       title: card?.dataset.title,
@@ -206,9 +207,9 @@ export function bindImageCards(rootEl) {
       categoria: card.dataset.category || 'Photography'
     };
     
-    console.log('🚀 Abriendo modal con data:', data);
+    log('🚀 Abriendo modal con data:', data);
     openImageModal(data, photoMedia);
   }, { signal: imageCardsAbortController.signal });
   
-  console.log('✅ Image cards vinculados al modal');
+  log('✅ Image cards vinculados al modal');
 }

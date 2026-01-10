@@ -1,4 +1,5 @@
 import { PortfolioController } from '@/features/portfolio/PortfolioController.js';
+import { log } from '@/utils/logger.js';
 
 const PortfolioView = () => {
   // Initialize PortfolioController after DOM is ready
@@ -7,7 +8,7 @@ const PortfolioView = () => {
     if (portfolioRoot) {
       const controller = new PortfolioController(portfolioRoot);
       controller.mount();
-      console.log('✨ PortfolioController initialized - obras loaded');
+      log('✨ PortfolioController initialized - obras loaded');
       
       // Store reference for cleanup
       window.__portfolioController = controller;

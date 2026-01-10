@@ -4,6 +4,8 @@
  * Inspired by Hannah Miles editorial photography aesthetic
  */
 
+import { log } from '@/utils/logger.js';
+
 export class PortfolioBackgroundText {
   constructor(container, word = "IMPRESSIONS") {
     this.container = container;
@@ -21,14 +23,14 @@ export class PortfolioBackgroundText {
     // Insert at the beginning of the container (behind grid)
     this.container.insertBefore(this.element, this.container.firstChild);
     
-    console.log(`[PortfolioBgText] ✅ Mounted: "${this.word}"`);
+    log(`[PortfolioBgText] ✅ Mounted: "${this.word}"`);
   }
 
   destroy() {
     if (this.element) {
       this.element.remove();
       this.element = null;
-      console.log("[PortfolioBgText] 🧹 Destroyed");
+      log("[PortfolioBgText] 🧹 Destroyed");
     }
   }
 
@@ -36,7 +38,7 @@ export class PortfolioBackgroundText {
     if (this.element) {
       this.word = newWord;
       this.element.textContent = newWord;
-      console.log(`[PortfolioBgText] Updated to: "${newWord}"`);
+      log(`[PortfolioBgText] Updated to: "${newWord}"`);
     }
   }
 }

@@ -3,6 +3,7 @@
  * Montado en #modal-root (fuera del #app)
  */
 import { gsap } from 'gsap';
+import { log } from '@/utils/logger.js';
 
 // Estado del modal
 let currentModal = null;
@@ -209,5 +210,5 @@ export function bindAboutButton(rootEl, data) {
   }, { signal: buttonAbortController.signal });
   
   currentBoundButton = aboutBtn;
-  console.log('✅ Botón ABOUT vinculado al modal');
+  log('✅ Botón ABOUT vinculado al modal');
 }

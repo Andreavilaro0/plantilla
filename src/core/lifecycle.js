@@ -4,6 +4,7 @@
 
 import { SELECTORS, TIMING } from '@/core/constants.js';
 import { AboutController } from '@/features/about/AboutController.js';
+import { log } from '@/utils/logger.js';
 
 /**
  * LifecycleManager
@@ -22,7 +23,7 @@ class LifecycleManager {
    * @param {Object} options - Mount options { init: Function, cleanup: Function }
    */
   async mountView(viewName, options = {}) {
-    console.log(`🔄 [Lifecycle] Mounting view: ${viewName}`);
+    log(`🔄 [Lifecycle] Mounting view: ${viewName}`);
     
     // Cleanup previous view
     await this.unmountCurrent();
@@ -40,7 +41,7 @@ class LifecycleManager {
           this.cleanupFunctions.set(viewName, options.cleanup);
         }
         
-        console.log(`✅ [Lifecycle] View mounted: ${viewName}`);
+        log(`✅ [Lifecycle] View mounted: ${viewName}`);
       } catch (error) {
         console.error(`❌ [Lifecycle] Error mounting ${viewName}:`, error);
       }
@@ -53,7 +54,7 @@ class LifecycleManager {
   async unmountCurrent() {
     if (!this.currentView) return;
     
-    console.log(`🧹 [Lifecycle] Unmounting view: ${this.currentView}`);
+    log(`🧹 [Lifecycle] Unmounting view: ${this.currentView}`);
     
     // Execute cleanup function if exists
     const cleanup = this.cleanupFunctions.get(this.currentView);
@@ -125,7 +126,7 @@ class LifecycleManager {
     return this.mountView('about', {
       init: async () => {
         // New About section is purely HTML/CSS/SVG-based, no controller needed
-        console.log('🎨 About section initialized (blob effect)');
+        log('🎨 About section initialized (blob effect)');
       },
       cleanup: async () => {
         // No cleanup needed for static About section
@@ -139,7 +140,7 @@ class LifecycleManager {
   async initPortfolio() {
     return this.mountView('portfolio', {
       init: async () => {
-        console.log('📸 Portfolio view loaded');
+        log('📸 Portfolio view loaded');
         // PortfolioController is already initialized by PortfolioView
       },
       cleanup: async () => {
@@ -157,7 +158,7 @@ class LifecycleManager {
   async initContact() {
     return this.mountView('contact', {
       init: async () => {
-        console.log('📧 Contact view loaded');
+        log('📧 Contact view loaded');
       }
     });
   }
@@ -168,7 +169,7 @@ class LifecycleManager {
   async initServices() {
     return this.mountView('services', {
       init: async () => {
-        console.log('🛠️ Services view loaded');
+        log('🛠️ Services view loaded');
       }
     });
   }

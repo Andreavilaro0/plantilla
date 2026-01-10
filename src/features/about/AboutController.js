@@ -3,6 +3,9 @@
  * Gestiona la animación de la palabra cambiante en la sección About
  */
 
+import gsap from 'gsap';
+import { log } from '@/utils/logger.js';
+
 export class AboutController {
   constructor() {
     this.palabras = ['levitar', 'flotar', 'suspender', 'aligerar', 'despegar', 'elevar'];
@@ -28,13 +31,13 @@ export class AboutController {
     if (this.prefersReducedMotion) {
       this.element.textContent = this.palabras[0];
       this.element.setAttribute('data-color', '0');
-      console.log('[AboutController] Animación desactivada (prefers-reduced-motion)');
+      log('[AboutController] Animación desactivada (prefers-reduced-motion)');
       return;
     }
 
     // Iniciar ciclo de palabras
     this.startCycle();
-    console.log('[AboutController] ✅ Ciclo de palabras iniciado');
+    log('[AboutController] ✅ Ciclo de palabras iniciado');
   }
 
   startCycle() {
@@ -79,6 +82,6 @@ export class AboutController {
     // Limpiar referencia
     this.element = null;
 
-    console.log('[AboutController] ✅ Cleanup completado');
+    log('[AboutController] ✅ Cleanup completado');
   }
 }

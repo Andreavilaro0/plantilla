@@ -1,4 +1,5 @@
 import VanillaTilt from '@/lib/vanilla-tilt.js';
+import { log } from '@/utils/logger.js';
 
 const ServicesView = () => {
   // Initialize VanillaTilt after DOM is ready
@@ -11,7 +12,7 @@ const ServicesView = () => {
         glare: true,
         'max-glare': 1,
       });
-      console.log('✨ VanillaTilt initialized on', cards.length, 'cards');
+      log('✨ VanillaTilt initialized on', cards.length, 'cards');
     }
   }, 100);
 

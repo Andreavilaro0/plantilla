@@ -1,6 +1,8 @@
 // ContactModal.js
 // Modal de contacto con estilo azul inspirado en ContactView
 
+import { log } from '@/utils/logger.js';
+
 export class ContactModal {
   constructor() {
     this.isOpen = false;
@@ -83,7 +85,7 @@ export class ContactModal {
     if (form) {
       form.addEventListener('submit', (e) => {
         e.preventDefault();
-        console.log('Form submitted:', {
+        log('Form submitted:', {
           name: form.name.value,
           email: form.email.value,
           message: form.message.value

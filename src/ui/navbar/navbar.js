@@ -1,12 +1,25 @@
 import { log } from '@/utils/logger.js';
+import { ERROR_MESSAGES, SCROLL_CONFIG, CSS_CLASSES } from '@/core/constants.js';
 
 /**
  * Navbar - Minimal White Design
  * Adapted from FutureNav with smooth scroll, mobile menu, and active section highlighting
  */
 
+// AbortController para cleanup de event listeners
+let navbarAbortController = null;
+
 export function initNavbar() {
   log('🎯 Initializing minimal navbar');
+  
+  // Cleanup previo si existe
+  if (navbarAbortController) {
+    navbarAbortController.abort();
+  }
+  
+  // Crear nuevo AbortController
+  navbarAbortController = new AbortController();
+  const signal = navbarAbortController.signal;
   
   // DOM Elements
   const navbar = document.getElementById('navbar');
@@ -14,7 +27,7 @@ export function initNavbar() {
   const mobileMenu = document.getElementById('mobile-menu');
   
   if (!navbar || !mobileMenuButton || !mobileMenu) {
-    console.warn('⚠️ Navbar elements not found');
+    console.warn(ERROR_MESSAGES.NAVBAR_NOT_FOUND);
     return;
   }
   
@@ -24,49 +37,48 @@ export function initNavbar() {
 
   // Mobile Menu Toggle
   mobileMenuButton.addEventListener('click', () => {
-    mobileMenuButton.classList.toggle('active');
+    mobileMenuButton.classList.toggle(CSS_CLASSES.ACTIVE);
     
-    if (mobileMenu.classList.contains('open')) {
+    if (mobileMenu.classList.contains(CSS_CLASSES.OPEN)) {
       mobileMenu.style.height = '0';
-      mobileMenu.classList.remove('open');
+      mobileMenu.classList.remove(CSS_CLASSES.OPEN);
     } else {
-      mobileMenu.classList.add('open');
+      mobileMenu.classList.add(CSS_CLASSES.OPEN);
       // Calculate proper height for fixed positioned menu
       const linksHeight = mobileNavLinks.length * 80; // Approximate height per link
       mobileMenu.style.height = `${Math.max(linksHeight, 400)}px`;
     }
-  });
+  }, { signal });
 
   // Close mobile menu when a link is clicked
   mobileNavLinks.forEach(link => {
     link.addEventListener('click', () => {
-      mobileMenuButton.classList.remove('active');
+      mobileMenuButton.classList.remove(CSS_CLASSES.ACTIVE);
       mobileMenu.style.height = '0';
-      mobileMenu.classList.remove('open');
-    });
+      mobileMenu.classList.remove(CSS_CLASSES.OPEN);
+    }, { signal });
   });
 
   // Navbar scroll effect  
   window.addEventListener('scroll', () => {
-    if (window.scrollY > 50) {
-      navbar.classList.add('scrolled');
+    if (window.scrollY > SCROLL_CONFIG.NAVBAR_SHOW_THRESHOLD) {
+      navbar.classList.add(CSS_CLASSES.SCROLLED);
     } else {
-      navbar.classList.remove('scrolled');
+      navbar.classList.remove(CSS_CLASSES.SCROLLED);
     }
     
     // Ocultar navbar al final de la página
     const scrollPosition = window.scrollY + window.innerHeight;
     const documentHeight = document.documentElement.scrollHeight;
-    const threshold = 100; // Píxeles antes del final para ocultar
     
-    if (scrollPosition >= documentHeight - threshold) {
+    if (scrollPosition >= documentHeight - SCROLL_CONFIG.NAVBAR_HIDE_BOTTOM_THRESHOLD) {
       navbar.classList.add('hide-at-bottom');
     } else {
       navbar.classList.remove('hide-at-bottom');
     }
     
     highlightCurrentSection();
-  });
+  }, { signal });
 
   // Smooth scroll for nav links
   const allNavLinks = [...navLinks, ...mobileNavLinks];
@@ -79,35 +91,24 @@ export function initNavbar() {
       if (!targetId || targetId === '#') return;
       
       // Close mobile menu first
-      if (mobileMenuButton.classList.contains('active')) {
-        mobileMenuButton.classList.remove('active');
+      if (mobileMenuButton.classList.contains(CSS_CLASSES.ACTIVE)) {
+        mobileMenuButton.classList.remove(CSS_CLASSES.ACTIVE);
         mobileMenu.style.height = '0';
-        mobileMenu.classList.remove('open');
+        mobileMenu.classList.remove(CSS_CLASSES.OPEN);
       }
 
-      // Use GSAP ScrollToPlugin for accurate scrolling even with pinned sections
-      const targetSection = document.querySelector(targetId);
-      if (targetSection) {
-        gsap.to(window, {
-          duration: 1,
-          scrollTo: {
-            y: targetId,
-            offsetY: 70 // Navbar height offset
-          },
-          ease: "power2.inOut"
-        });
+      const targetElement = document.querySelector(targetId);
+      if (targetElement) {
+        targetElement.scrollIntoView({ behavior: 'smooth' });
       }
-    });
+    }, { signal });
   });
 
-  // Highlight active section in navbar
+  // Función para highlight de sección activa
   function highlightCurrentSection() {
-    let current = '';
+    let currentSection = '';
     
     sections.forEach(section => {
-      const sectionTop = section.offsetTop - 100;
-      const sectionHeight = section.offsetHeight;
-      
       if (window.scrollY >= sectionTop && window.scrollY < sectionTop + sectionHeight) {
         current = section.getAttribute('id');
       }
