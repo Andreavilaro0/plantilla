@@ -1,6 +1,7 @@
 import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
+import { log } from '@/utils/logger.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -39,7 +40,7 @@ export default class SmoothScroll {
 
     gsap.ticker.lagSmoothing(0);
 
-    console.log('🎯 SmoothScroll initialized');
+    log('🎯 SmoothScroll initialized');
   }
 
   /**

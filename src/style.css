@@ -18,16 +18,13 @@
 @import url("./styles/cta.css");
 @import url("./styles/footer.css");
 @import url("./ui/modals/contact-modal.css");
+@import url("./styles/utilities/helpers.css");
 
 /* ============================================
    TAILWIND CSS
    ============================================ */
 @import "tailwindcss";
 
-/* ============================================
-   UTILITIES
-   ============================================ */
-@import url("./styles/utilities/helpers.css");
 @theme {
   /* Typography - Light and restrained */
   --font-serif: "Playfair Display", "Times New Roman", serif;

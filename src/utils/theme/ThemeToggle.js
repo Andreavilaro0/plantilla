@@ -1,4 +1,5 @@
 import gsap from 'gsap';
+import { log } from '@/utils/logger.js';
 
 /**
  * ThemeToggle - Sistema de modo día/noche
@@ -33,7 +34,7 @@ export default class ThemeToggle {
       }
     });
 
-    console.log(`🌓 ThemeToggle initialized (${this.currentTheme} mode)`);
+    log(`🌓 ThemeToggle initialized (${this.currentTheme} mode)`);
   }
 
   /**

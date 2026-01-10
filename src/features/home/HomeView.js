@@ -12,6 +12,7 @@ import { TestimonialsView } from '@/features/shared/TestimonialsView.js';
 import { FooterView } from '@/features/shared/FooterView.js';
 import { ContactModal } from '@/ui/modals/ContactModal.js';
 import { initHandwritingEffect } from '@/features/home/AboutHandwriting.js';
+import { log } from '@/utils/logger.js';
 
 
 
@@ -233,23 +234,7 @@ export default function HomeView() {
     </div>
   `;
   
-  // ============================================
-  // SYNCHRONOUS INITIALIZATION (Before DOM mount)
-  // ============================================
-  
-  // Initialize Bad Handwriting Effect immediately against the disconnected DOM
-  try {
-    const hwTarget = container.querySelector('#handwriting-target p');
-    if (hwTarget) {
-       console.log('[HomeView] Initializing handwriting synchronously');
-       // Clean initialization
-       initHandwritingEffect(hwTarget, null);
-       hwTarget.style.opacity = '1';
-       hwTarget.classList.remove('hidden');
-    }
-  } catch (e) {
-    console.error('[HomeView] Sync init failed:', e);
-  }
+  // Handwriting effect will be initialized after DOM mount in setTimeout below
 
   // ============================================
   // ASYNCHRONOUS INITIALIZATION (After DOM mount)
@@ -276,7 +261,7 @@ export default function HomeView() {
           glare: true,
           'max-glare': 1,
         });
-        console.log('✨ VanillaTilt initialized on', cards.length, 'cards (HomeView)');
+        log('✨ VanillaTilt initialized on', cards.length, 'cards (HomeView)');
       }
       
       // Initialize Portfolio Controller with Hannah Miles style
@@ -303,12 +288,21 @@ export default function HomeView() {
         window.portfolioController = portfolioController;
         // window.portfolioBgText = bgText;
         
-        console.log('[HomeView] ✅ Portfolio initialized with Hannah Miles style');
+        log('[HomeView] ✅ Portfolio initialized with Hannah Miles style');
       }
 
       
       // About section - Blob effect is purely CSS/SVG, no JS needed
-      console.log('[HomeView] ✅ About blob effect initialized');
+      log('[HomeView] ✅ About blob effect initialized');
+      
+      // Initialize handwriting effect
+      const hwTarget = document.querySelector('#handwriting-target p');
+      if (hwTarget) {
+        log('[HomeView] Initializing handwriting effect');
+        initHandwritingEffect(hwTarget, null);
+        hwTarget.style.opacity = '1';
+        hwTarget.classList.remove('hidden');
+      }
       
       // Initialize Bounce Entrance animations for new sections
       initBounceEntrance();
@@ -316,7 +310,7 @@ export default function HomeView() {
       // Initialize Testimonial Carousel
       const carousel = new TestimonialCarousel('.testimonials-carousel');
       if (carousel) {
-        console.log('🎠 Testimonial carousel initialized');
+        log('🎠 Testimonial carousel initialized');
         // Store reference for cleanup if needed
         window.testimonialCarousel = carousel;
       }

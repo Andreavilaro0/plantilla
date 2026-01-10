@@ -139,4 +139,4 @@ Maneja toda la lógica interactiva:
 
 ---
 
-Creado con 💜 por Andrea Vilaró
+Creado  por Andrea Avila
