@@ -39,6 +39,7 @@ export class PortfolioController {
     this.handleKeydown = this.onKeydown.bind(this)
     this.handleOverlayClick = this.onOverlayClick.bind(this)
     this.handleThumbnailClick = this.onThumbnailClick.bind(this)
+    this.handlePhotoClick = this.onPhotoClick.bind(this)
   }
 
   /**
@@ -63,14 +64,17 @@ export class PortfolioController {
     
     // 1. Renderizar batch inicial de fotos
     this.renderInitialPhotos()
-    
+
     // 2. Setup animación de entrada
     this.setupEntranceAnimation()
-    
-    // 3. Setup scroll infinito
+
+    // 3. Setup scroll stage con pinning (efecto Hannah Miles)
+    this.setupScrollStage()
+
+    // 4. Setup scroll infinito
     this.setupInfiniteScroll()
-    
-    // 4. Setup click handlers para focus mode
+
+    // 5. Setup event delegation para focus mode
     this.setupFocusMode()
     
     console.log('[PortfolioController] Inicializado ✓')
@@ -110,10 +114,21 @@ export class PortfolioController {
       this.closeFocusMode(false)
     }
     
-    // 5. Limpiar thumbnails
+    // 5. Limpiar thumbnails y sus listeners
+    const thumbnails = document.querySelectorAll('.thumbnail')
+    thumbnails.forEach(thumb => {
+      thumb.removeEventListener('click', this.handleThumbnailClick)
+    })
+    
     const thumbnailsContainer = document.querySelector('.thumbnails-container')
     if (thumbnailsContainer) {
       thumbnailsContainer.innerHTML = ''
+    }
+    
+    // 6. Remover event delegation del grid
+    const grid = document.querySelector('.photos-grid')
+    if (grid) {
+      grid.removeEventListener('click', this.handlePhotoClick)
     }
     
     console.log('[PortfolioController] Limpiado ✓')
@@ -147,6 +162,7 @@ export class PortfolioController {
     figure.className = 'photo-item'
     figure.dataset.id = photo.id
     figure.dataset.index = index
+    figure.dataset.animated = 'false'
     
     const img = document.createElement('img')
     img.src = photo.src
@@ -161,20 +177,43 @@ export class PortfolioController {
     figure.appendChild(img)
     figure.appendChild(figcaption)
     
-    // Click handler para abrir focus mode
-    figure.addEventListener('click', () => this.openFocusMode(figure, index))
+    // No agregar listener individual - usamos event delegation
     
     return figure
   }
 
   /**
-   * Setup animación de entrada (Timeline GSAP)
-   * 1. Título aparece (1s)
-   * 2. Fotos aparecen en cascada (0.5s después)
+   * Setup animación de entrada (ScrollTrigger)
+   * La animación se dispara cuando el grid entra en viewport
    */
   setupEntranceAnimation() {
     console.log('[PortfolioController] Setup animación de entrada...')
 
+    const portfolioSection = document.querySelector('.portfolio-section')
+    if (!portfolioSection) {
+      console.warn('[PortfolioController] Sección de portfolio no encontrada')
+      return
+    }
+
+    // Crear ScrollTrigger que dispara la animación al entrar en viewport
+    const entranceTrigger = ScrollTrigger.create({
+      trigger: portfolioSection,
+      start: 'top 80%',
+      once: true,
+      onEnter: () => {
+        console.log('[PortfolioController] Portfolio entra en viewport, iniciando animación...')
+        this.playEntranceTimeline()
+      }
+    })
+
+    this.scrollTriggers.push(entranceTrigger)
+    console.log('[PortfolioController] Animación de entrada configurada ✓')
+  }
+
+  /**
+   * Ejecutar timeline de animación de entrada
+   */
+  playEntranceTimeline() {
     const title = document.querySelector('.bg-title')
     const photos = document.querySelectorAll('.photo-item')
 
@@ -188,20 +227,102 @@ export class PortfolioController {
       defaults: { ease: 'power3.out' }
     })
 
-    // Paso 1: Fade in del título (usando fromTo para control total)
+    // Paso 1: Fade in del título (opacity muy baja para efecto tenue)
     this.timeline.fromTo(title,
       { opacity: 0, scale: 0.95 },
-      { opacity: 1, scale: 1, duration: 1 }
+      { opacity: 0.08, scale: 1, duration: 1.2, ease: 'power3.out' }
     )
 
-    // Paso 2: Fotos en cascada (empieza 0.5s antes del final del título)
+    // Paso 2: Fotos en cascada
     this.timeline.fromTo(photos,
       { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, stagger: 0.08, duration: 0.8 },
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.05,
+        duration: 0.8,
+        ease: 'power3.out',
+        onComplete: () => {
+          // Marcar fotos iniciales como animadas
+          photos.forEach(photo => {
+            photo.dataset.animated = 'true'
+          })
+        }
+      },
       '-=0.5'
     )
 
-    console.log('[PortfolioController] Animación de entrada configurada ✓')
+    console.log('[PortfolioController] Animación de entrada ejecutada ✓')
+  }
+
+  /**
+   * Setup scroll stage con pinning (efecto Hannah Miles)
+   * Crea momento dramático donde la sección se ancla durante el scroll
+   */
+  setupScrollStage() {
+    console.log('[PortfolioController] Setup scroll stage con pinning...')
+
+    const section = document.querySelector('.portfolio-section')
+    const title = document.querySelector('.bg-title')
+    const grid = document.querySelector('.photos-grid')
+
+    if (!section || !title || !grid) {
+      console.warn('[PortfolioController] Elementos para stage no encontrados')
+      return
+    }
+
+    // 1. PIN: Anclar la sección durante 100vh de scroll
+    const pinTrigger = ScrollTrigger.create({
+      trigger: section,
+      start: 'top top',
+      end: '+=100vh',
+      pin: true,
+      pinSpacing: true,
+      anticipatePin: 1,
+      markers: false,
+      id: 'portfolio-pin'
+    })
+
+    this.scrollTriggers.push(pinTrigger)
+
+    // 2. SCROLL-LINKED ANIMATION: Animación vinculada al scroll
+    const scrollTimeline = gsap.timeline({
+      scrollTrigger: {
+        trigger: section,
+        start: 'top 80%',
+        end: 'top 20%',
+        scrub: 1,
+        markers: false,
+        id: 'portfolio-scroll-anim'
+      }
+    })
+
+    // Fase 1: Título aparece con fade + scale
+    scrollTimeline.fromTo(title,
+      { opacity: 0, scale: 0.95 },
+      {
+        opacity: 0.08,
+        scale: 1,
+        duration: 1,
+        ease: 'power2.out'
+      }
+    )
+
+    // Fase 2: Grid aparece con fade + translateY
+    scrollTimeline.fromTo(grid,
+      { opacity: 0, y: 40 },
+      {
+        opacity: 1,
+        y: 0,
+        duration: 1,
+        ease: 'power2.out'
+      },
+      '-=0.5'
+    )
+
+    this.scrollTriggers.push(scrollTimeline.scrollTrigger)
+
+    console.log('[PortfolioController] Scroll stage configurado ✓')
   }
 
   /**
@@ -218,8 +339,10 @@ export class PortfolioController {
         console.log('[PortfolioController] Scroll trigger activado')
         this.loadMorePhotos()
       },
-      // Si usas Lenis, descomenta esto:
-      // scroller: '[data-scroll-container]'
+      onLeave: () => {
+        // Refresh ScrollTriggers después de cargar contenido
+        ScrollTrigger.refresh()
+      }
     })
     
     this.scrollTriggers.push(scrollTrigger)
@@ -241,17 +364,50 @@ export class PortfolioController {
     if (totalLoaded >= this.allPhotos.length) {
       console.log('[PortfolioController] Todas las fotos cargadas')
       this.allPhotosLoaded = true
+      this.showEndMessage()
       return
     }
     
     this.isLoading = true
+    this.showLoadingIndicator()
     console.log('[PortfolioController] Cargando más fotos...')
     
     // Simular delay de carga (opcional, mejora UX)
     setTimeout(() => {
       this.renderNextBatch()
       this.isLoading = false
+      this.hideLoadingIndicator()
     }, 300)
+  }
+
+  /**
+   * Mostrar loading indicator
+   */
+  showLoadingIndicator() {
+    const indicator = document.querySelector('.loading-indicator')
+    if (indicator) {
+      indicator.classList.add('active')
+    }
+  }
+
+  /**
+   * Ocultar loading indicator
+   */
+  hideLoadingIndicator() {
+    const indicator = document.querySelector('.loading-indicator')
+    if (indicator) {
+      indicator.classList.remove('active')
+    }
+  }
+
+  /**
+   * Mostrar mensaje de fin de contenido
+   */
+  showEndMessage() {
+    const endMsg = document.querySelector('.end-message')
+    if (endMsg) {
+      endMsg.classList.add('visible')
+    }
   }
 
   /**
@@ -288,13 +444,29 @@ export class PortfolioController {
    * Animar nuevas fotos cargadas
    */
   animateNewPhotos(count) {
-    const allPhotos = Array.from(document.querySelectorAll('.photo-item'))
-    const newPhotos = allPhotos.slice(-count) // Últimas 'count' fotos
+    // Seleccionar solo las fotos que no han sido animadas
+    const newPhotos = document.querySelectorAll('.photo-item[data-animated="false"]')
+
+    if (newPhotos.length === 0) return
 
     gsap.fromTo(newPhotos,
       { opacity: 0, y: 50 },
-      { opacity: 1, y: 0, stagger: 0.08, duration: 0.8, ease: 'power3.out' }
+      {
+        opacity: 1,
+        y: 0,
+        stagger: 0.05,
+        duration: 0.8,
+        ease: 'power3.out',
+        onComplete: () => {
+          // Marcar como animadas
+          newPhotos.forEach(photo => {
+            photo.dataset.animated = 'true'
+          })
+        }
+      }
     )
+
+    console.log(`[PortfolioController] Animadas ${count} fotos nuevas`)
   }
 
   /**
@@ -302,6 +474,12 @@ export class PortfolioController {
    */
   setupFocusMode() {
     console.log('[PortfolioController] Setup focus mode...')
+    
+    // Event delegation: un solo listener en el grid
+    const grid = document.querySelector('.photos-grid')
+    if (grid) {
+      grid.addEventListener('click', this.handlePhotoClick)
+    }
     
     // Click en overlay cierra focus mode
     const overlay = document.querySelector('.focus-overlay')
@@ -317,6 +495,7 @@ export class PortfolioController {
 
   /**
    * Abrir focus mode (foto expande, otras → thumbnails)
+   * Usando GSAP timeline (NO Flip, causa jitter con position:fixed)
    */
   openFocusMode(photoElement, index) {
     console.log(`[PortfolioController] Abriendo focus mode para foto ${index}`)
@@ -324,35 +503,44 @@ export class PortfolioController {
     // Prevenir múltiples aperturas
     if (this.focusState.isOpen) return
     
-    // Guardar estado con GSAP Flip
-    const state = Flip.getState('.photo-item')
+    const overlay = document.querySelector('.focus-overlay')
+    const allPhotos = document.querySelectorAll('.photo-item')
+    const otherPhotos = Array.from(allPhotos).filter(p => p !== photoElement)
     
     // Aplicar clase 'focused' a la foto clicada
     photoElement.classList.add('focused')
     
     // Mostrar overlay
-    const overlay = document.querySelector('.focus-overlay')
     overlay.classList.add('active')
+    overlay.setAttribute('aria-hidden', 'false')
     
     // Crear thumbnails
     this.createThumbnails(index)
     
-    // Animar transición con Flip
-    Flip.from(state, {
-      duration: 0.6,
-      ease: 'power3.inOut',
-      absolute: true,
-      scale: true,
-      onComplete: () => {
-        console.log('[PortfolioController] Focus mode abierto ✓')
-      }
+    // Animación con timeline (NO Flip)
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.inOut' }
     })
     
-    // Fade in del overlay
-    gsap.to(overlay, {
+    // Fade out otras fotos
+    tl.to(otherPhotos, {
+      opacity: 0,
+      duration: 0.3
+    }, 0)
+    
+    // Fade in overlay
+    tl.to(overlay, {
       opacity: 1,
       duration: 0.4
-    })
+    }, 0)
+    
+    // La foto focused ya tiene position:fixed aplicado por CSS
+    // Solo necesitamos animar su opacidad si es necesario
+    tl.fromTo(photoElement,
+      { opacity: 0.8 },
+      { opacity: 1, duration: 0.4 },
+      0.2
+    )
     
     // Update estado
     this.focusState = {
@@ -360,6 +548,8 @@ export class PortfolioController {
       currentIndex: index,
       focusedElement: photoElement
     }
+    
+    console.log('[PortfolioController] Focus mode abierto ✓')
   }
 
   /**
@@ -368,6 +558,8 @@ export class PortfolioController {
   createThumbnails(activeIndex) {
     const container = document.querySelector('.thumbnails-container')
     container.innerHTML = '' // Limpiar
+    container.setAttribute('role', 'navigation')
+    container.setAttribute('aria-label', 'Photo thumbnails')
     
     // Obtener todas las fotos renderizadas
     const allPhotos = document.querySelectorAll('.photo-item')
@@ -380,6 +572,9 @@ export class PortfolioController {
       }
       
       thumbnail.dataset.index = i
+      thumbnail.setAttribute('role', 'button')
+      thumbnail.setAttribute('tabindex', '0')
+      thumbnail.setAttribute('aria-label', `View photo ${i + 1}`)
       
       const img = document.createElement('img')
       img.src = photo.querySelector('img').src
@@ -415,54 +610,55 @@ export class PortfolioController {
     
     const overlay = document.querySelector('.focus-overlay')
     const thumbnailsContainer = document.querySelector('.thumbnails-container')
+    const focused = document.querySelector('.photo-item.focused')
+    const allPhotos = document.querySelectorAll('.photo-item')
+    
+    // Matar todas las animaciones en curso
+    gsap.killTweensOf([overlay, thumbnailsContainer, '.photo-item'])
     
     if (!animated) {
       // Cleanup inmediato (para navegación SPA)
-      const focused = document.querySelector('.photo-item.focused')
       if (focused) {
         focused.classList.remove('focused')
       }
       overlay.classList.remove('active')
+      overlay.setAttribute('aria-hidden', 'true')
       thumbnailsContainer.classList.remove('active')
       thumbnailsContainer.innerHTML = ''
+      // Resetear opacidad de todas las fotos
+      gsap.set(allPhotos, { opacity: 1 })
       this.focusState.isOpen = false
       return
     }
     
-    // Guardar estado actual
-    const state = Flip.getState('.photo-item')
-    
-    // Remover clases
-    const focused = document.querySelector('.photo-item.focused')
-    if (focused) {
-      focused.classList.remove('focused')
-    }
-    
-    // Animar regreso con Flip
-    Flip.from(state, {
-      duration: 0.6,
-      ease: 'power3.inOut',
-      absolute: true,
-      scale: true
-    })
-    
-    // Fade out overlay y thumbnails
-    gsap.to(overlay, {
-      opacity: 0,
-      duration: 0.4,
+    // Animación con timeline
+    const tl = gsap.timeline({
+      defaults: { ease: 'power3.inOut' },
       onComplete: () => {
         overlay.classList.remove('active')
-      }
-    })
-    
-    gsap.to(thumbnailsContainer, {
-      opacity: 0,
-      duration: 0.3,
-      onComplete: () => {
+        overlay.setAttribute('aria-hidden', 'true')
         thumbnailsContainer.classList.remove('active')
         thumbnailsContainer.innerHTML = ''
       }
     })
+    
+    // Remover clase focused primero
+    if (focused) {
+      focused.classList.remove('focused')
+    }
+    
+    // Fade out overlay y thumbnails
+    tl.to([overlay, thumbnailsContainer], {
+      opacity: 0,
+      duration: 0.3
+    }, 0)
+    
+    // Fade in todas las fotos
+    tl.to(allPhotos, {
+      opacity: 1,
+      duration: 0.4,
+      stagger: 0.02
+    }, 0.1)
     
     // Reset estado
     this.focusState = {
@@ -540,6 +736,8 @@ export class PortfolioController {
   onKeydown(e) {
     if (!this.focusState.isOpen) return
     
+    e.stopPropagation()
+    
     switch(e.key) {
       case 'Escape':
         e.preventDefault()
@@ -570,8 +768,16 @@ export class PortfolioController {
   }
 
   onOverlayClick(e) {
-    if (e.target.classList.contains('focus-overlay')) {
+    if (e.target === e.currentTarget) {
       this.closeFocusMode()
+    }
+  }
+
+  onPhotoClick(e) {
+    const photoItem = e.target.closest('.photo-item')
+    if (photoItem && !this.focusState.isOpen) {
+      const index = parseInt(photoItem.dataset.index)
+      this.openFocusMode(photoItem, index)
     }
   }
 
