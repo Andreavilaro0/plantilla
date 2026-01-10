@@ -10,9 +10,9 @@ export class ContactModal {
   render() {
     const modalHTML = `
       <div id="contact-modal" class="contact-modal" style="display: none;">
-        <div class="contact-modal-overlay" onclick="window.contactModal.close()"></div>
+        <div class="contact-modal-overlay" id="contact-modal-overlay"></div>
         <div class="contact-modal-content">
-          <button class="contact-modal-close" onclick="window.contactModal.close()" aria-label="Close">
+          <button class="contact-modal-close" id="contact-modal-close" aria-label="Close">
             <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
               <line x1="18" y1="6" x2="6" y2="18"></line>
               <line x1="6" y1="6" x2="18" y2="18"></line>
