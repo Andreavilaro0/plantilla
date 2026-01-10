@@ -324,7 +324,7 @@ export default function HomeView() {
       // Setup event listeners for buttons (no inline onclick)
       const viewPortfolioBtn = document.getElementById('view-portfolio-btn');
       if (viewPortfolioBtn) {
-        viewPortfolioBtn.addEventListener('click', () =\u003e {
+        viewPortfolioBtn.addEventListener('click', () => {
           const portfolioSection = document.getElementById('portfolio');
           if (portfolioSection) {
             portfolioSection.scrollIntoView({ behavior: 'smooth' });
@@ -334,7 +334,7 @@ export default function HomeView() {
       
       const ctaContactBtn = document.getElementById('cta-contact-btn');
       if (ctaContactBtn) {
-        ctaContactBtn.addEventListener('click', () =\u003e {
+        ctaContactBtn.addEventListener('click', () => {
           if (window.contactModal) {
             window.contactModal.open();
           }
