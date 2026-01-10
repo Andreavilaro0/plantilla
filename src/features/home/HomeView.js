@@ -69,7 +69,7 @@ export default function HomeView() {
         <div class="hero-info">
           <h3>EDITORIAL &<br>URBAN PHOTOGRAPHY</h3>
           <p>Contemporary photographer specialized in capturing moments and telling visual stories through the lens.</p>
-          <button class="discover-btn" onclick="document.getElementById('portfolio').scrollIntoView({behavior: 'smooth'})">
+          <button id="view-portfolio-btn" class="discover-btn">
             Discover Work →
           </button>
         </div>
@@ -217,7 +217,7 @@ export default function HomeView() {
             <span class="word">AWESOME</span>
             <span class="word">PROJECT?</span>
           </h2>
-          <button class="cta-button" onclick="window.contactModal.open()">
+          <button id="cta-contact-btn" class="cta-button">
             CONTACT ME
           </button>
         </div>
