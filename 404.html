@@ -1,0 +1,349 @@
+<!DOCTYPE html>
+<html lang="es">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>404 - Page Not Found | Photography Portfolio</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:opsz,wght@6..96,400&family=Inter:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --bg-light: #F4F1EB;
+        --bg-dark: #21202C;
+        --text-light: #2a2a2a;
+        --text-dark: #F7FAFC;
+        --text-muted-light: #718096;
+        --text-muted-dark: #A0AEC0;
+      }
+
+      html {
+        font-size: 16px;
+        -webkit-font-smoothing: antialiased;
+        -moz-osx-font-smoothing: grayscale;
+      }
+
+      body {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--bg-light);
+        color: var(--text-light);
+        font-family: 'Inter', ui-sans-serif, system-ui, sans-serif;
+        transition: background-color 0.3s ease, color 0.3s ease;
+        overflow: hidden;
+        padding: 2rem;
+      }
+
+      body.dark {
+        background-color: var(--bg-dark);
+        color: var(--text-dark);
+      }
+
+      .container {
+        text-align: center;
+        position: relative;
+        z-index: 2;
+      }
+
+      .error-code {
+        font-family: 'Bodoni Moda', serif;
+        font-size: clamp(100px, 25vw, 320px);
+        font-weight: 400;
+        line-height: 0.85;
+        letter-spacing: -0.02em;
+        text-transform: uppercase;
+        opacity: 0;
+        animation: revealText 1.2s cubic-bezier(0.19, 1, 0.22, 1) forwards;
+      }
+
+      .error-code span {
+        display: inline-block;
+        animation: floatLetter 3s ease-in-out infinite;
+      }
+
+      .error-code span:nth-child(1) { animation-delay: 0s; }
+      .error-code span:nth-child(2) { animation-delay: 0.15s; }
+      .error-code span:nth-child(3) { animation-delay: 0.3s; }
+
+      .subtitle {
+        font-family: 'Bodoni Moda', serif;
+        font-size: clamp(1.25rem, 3vw, 2rem);
+        font-weight: 400;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        margin-top: 1rem;
+        opacity: 0;
+        animation: fadeInUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.4s forwards;
+      }
+
+      .message {
+        font-size: clamp(0.875rem, 1.5vw, 1rem);
+        color: var(--text-muted-light);
+        max-width: 400px;
+        margin: 2rem auto;
+        line-height: 1.6;
+        opacity: 0;
+        animation: fadeInUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.6s forwards;
+      }
+
+      body.dark .message {
+        color: var(--text-muted-dark);
+      }
+
+      .back-link {
+        display: inline-flex;
+        align-items: center;
+        gap: 0.5rem;
+        font-size: 0.75rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.15em;
+        color: inherit;
+        text-decoration: none;
+        padding: 0.75rem 1.5rem;
+        border: 1px solid currentColor;
+        border-radius: 50px;
+        transition: all 0.3s cubic-bezier(0.19, 1, 0.22, 1);
+        opacity: 0;
+        animation: fadeInUp 0.8s cubic-bezier(0.19, 1, 0.22, 1) 0.8s forwards;
+      }
+
+      .back-link:hover {
+        background-color: var(--text-light);
+        color: var(--bg-light);
+        transform: translateY(-2px);
+      }
+
+      body.dark .back-link:hover {
+        background-color: var(--text-dark);
+        color: var(--bg-dark);
+      }
+
+      .back-link svg {
+        width: 16px;
+        height: 16px;
+        transition: transform 0.3s ease;
+      }
+
+      .back-link:hover svg {
+        transform: translateX(-4px);
+      }
+
+      /* Decorative elements */
+      .decoration {
+        position: fixed;
+        font-family: 'Inter', sans-serif;
+        font-size: 0.65rem;
+        font-weight: 500;
+        text-transform: uppercase;
+        letter-spacing: 0.1em;
+        opacity: 0.5;
+        color: inherit;
+      }
+
+      .decoration.top-left {
+        top: 2rem;
+        left: 2rem;
+      }
+
+      .decoration.top-right {
+        top: 2rem;
+        right: 2rem;
+      }
+
+      .decoration.bottom-left {
+        bottom: 2rem;
+        left: 2rem;
+      }
+
+      .decoration.bottom-right {
+        bottom: 2rem;
+        right: 2rem;
+        text-align: right;
+      }
+
+      /* Theme toggle */
+      .theme-toggle {
+        position: fixed;
+        top: 2rem;
+        right: 50%;
+        transform: translateX(50%);
+        width: 44px;
+        height: 44px;
+        border: 1px solid currentColor;
+        border-radius: 50%;
+        background: transparent;
+        color: inherit;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        transition: all 0.3s ease;
+        opacity: 0.6;
+      }
+
+      .theme-toggle:hover {
+        opacity: 1;
+        transform: translateX(50%) scale(1.05);
+      }
+
+      .theme-toggle svg {
+        width: 20px;
+        height: 20px;
+      }
+
+      .theme-toggle .sun { display: none; }
+      .theme-toggle .moon { display: block; }
+
+      body.dark .theme-toggle .sun { display: block; }
+      body.dark .theme-toggle .moon { display: none; }
+
+      /* Animations */
+      @keyframes revealText {
+        from {
+          opacity: 0;
+          transform: translateY(40px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes fadeInUp {
+        from {
+          opacity: 0;
+          transform: translateY(20px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      @keyframes floatLetter {
+        0%, 100% {
+          transform: translateY(0);
+        }
+        50% {
+          transform: translateY(-8px);
+        }
+      }
+
+      /* Responsive */
+      @media (max-width: 768px) {
+        .decoration {
+          display: none;
+        }
+
+        .theme-toggle {
+          top: 1.5rem;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          padding: 1.5rem;
+        }
+
+        .error-code {
+          font-size: clamp(80px, 22vw, 120px);
+        }
+      }
+
+      /* Reduced motion */
+      @media (prefers-reduced-motion: reduce) {
+        .error-code,
+        .subtitle,
+        .message,
+        .back-link {
+          animation: none;
+          opacity: 1;
+        }
+
+        .error-code span {
+          animation: none;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Theme Toggle -->
+    <button class="theme-toggle" aria-label="Toggle dark mode" onclick="toggleTheme()">
+      <svg class="moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/>
+      </svg>
+      <svg class="sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+        <circle cx="12" cy="12" r="5"/>
+        <path d="M12 1v2M12 21v2M4.22 4.22l1.42 1.42M18.36 18.36l1.42 1.42M1 12h2M21 12h2M4.22 19.78l1.42-1.42M18.36 5.64l1.42-1.42"/>
+      </svg>
+    </button>
+
+    <!-- Decorative corners -->
+    <span class="decoration top-left">Portfolio</span>
+    <span class="decoration top-right">Error</span>
+    <span class="decoration bottom-left">2025</span>
+    <span class="decoration bottom-right">Page<br>Not Found</span>
+
+    <!-- Main content -->
+    <div class="container">
+      <h1 class="error-code">
+        <span>4</span><span>0</span><span>4</span>
+      </h1>
+      <p class="subtitle">Lost in the Frame</p>
+      <p class="message">
+        The page you're looking for has wandered outside the viewfinder.
+        Let's get you back to capturing moments.
+      </p>
+      <a href="/plantilla/" class="back-link">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M19 12H5M12 19l-7-7 7-7"/>
+        </svg>
+        Back to Portfolio
+      </a>
+    </div>
+
+    <script>
+      // Check for saved theme preference or system preference
+      function getThemePreference() {
+        const saved = localStorage.getItem('theme');
+        if (saved) return saved;
+        return window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
+      }
+
+      function applyTheme(theme) {
+        document.body.classList.toggle('dark', theme === 'dark');
+        localStorage.setItem('theme', theme);
+      }
+
+      function toggleTheme() {
+        const current = document.body.classList.contains('dark') ? 'dark' : 'light';
+        applyTheme(current === 'dark' ? 'light' : 'dark');
+      }
+
+      // Apply theme on load
+      applyTheme(getThemePreference());
+
+      // Listen for system theme changes
+      window.matchMedia('(prefers-color-scheme: dark)').addEventListener('change', (e) => {
+        if (!localStorage.getItem('theme')) {
+          applyTheme(e.matches ? 'dark' : 'light');
+        }
+      });
+    </script>
+  </body>
+</html>
