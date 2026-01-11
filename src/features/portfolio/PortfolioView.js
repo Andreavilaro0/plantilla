@@ -18,11 +18,16 @@ export default function PortfolioView() {
         <!-- Las fotos se insertan aquí dinámicamente por PortfolioController -->
       </div>
       
-      <!-- Overlay para focus mode (inicialmente oculto) -->
-      <div class="focus-overlay"></div>
+      <!-- Loading indicator para scroll infinito -->
+      <div class="loading-indicator">
+        <div class="spinner"></div>
+        <span>Loading more photos...</span>
+      </div>
       
-      <!-- Contenedor de thumbnails (inicialmente vacío) -->
-      <div class="thumbnails-container"></div>
+      <!-- Mensaje de fin de contenido -->
+      <div class="end-message">
+        ✨ You've reached the end of the portfolio
+      </div>
     </section>
   `
 }

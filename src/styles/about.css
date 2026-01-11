@@ -22,9 +22,7 @@
   align-items: center;
 }
 
-/* ===========================
-   BLOB SVG WRAPPER
-   =========================== */
+
 
 .about-blob-wrapper {
   display: flex;
@@ -54,22 +52,6 @@
   transform: scale(1.15) translate(0%, 0%);
 }
 
-/* Texto que gira alrededor */
-.blob-text-content {
-  font: 700 10px/1.2 system-ui, -apple-system, Segoe UI, Roboto, Arial, sans-serif;
-  letter-spacing: 1.5px;
-  text-transform: uppercase;
-  fill: black;
-  mix-blend-mode: normal;
-  transition: fill 0.5s ease, mix-blend-mode 0.5s ease;
-}
-
-/* Hover - texto se vuelve blanco con overlay blend */
-.about-blob-svg:hover .blob-text-content {
-  fill: white;
-  mix-blend-mode: overlay;
-}
-
 /* ===========================
    TEXT CONTENT
    =========================== */
@@ -80,40 +62,44 @@
   gap: 1.5rem;
 }
 
-.about-title {
+.about-subtitle {
   font-family: var(--font-sans);
-  font-size: clamp(2.5rem, 5vw, 4rem);
-  font-weight: var(--weight-bold);
-  color: var(--color-text-dark);
+  font-size: var(--text-sm);
+  text-transform: uppercase;
+  letter-spacing: 0.2em;
+  color: var(--color-text-secondary);
+  opacity: 0.7;
+  display: block;
+}
+
+.about-title {
+  font-family: var(--font-serif);
+  font-size: clamp(3rem, 6vw, 5rem);
+  font-weight: 300;
+  color: var(--color-text-primary);
   line-height: 1.1;
   margin: 0;
 }
 
+.about-description-group {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+}
+
 .about-description {
   font-family: var(--font-sans);
-  font-size: clamp(1.125rem, 2.5vw, 1.5rem);
+  font-size: clamp(1rem, 2vw, 1.125rem);
   line-height: var(--leading-relaxed);
-  color: var(--color-text-dark);
+  color: var(--color-text-secondary);
   margin: 0;
-  opacity: 0.9;
+  font-weight: 300;
 }
 
-.about-description .highlight {
-  font-weight: var(--weight-bold);
-  color: var(--color-text-dark);
-  position: relative;
+/* Animations Support */
+.word {
   display: inline-block;
-}
-
-.about-description .highlight::after {
-  content: '';
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  width: 100%;
-  height: 3px;
-  background: currentColor;
-  opacity: 0.3;
+  white-space: pre;
 }
 
 /* ===========================
@@ -144,104 +130,6 @@
   .about-blob-svg {
     max-width: 85vw;
   }
-  
-  .blob-text-content {
-    font-size: 8px;
-    letter-spacing: 1px;
-  }
-  
-  .about-title {
-    font-size: clamp(2rem, 8vw, 3rem);
-  }
-  
-  .about-description {
-    font-size: clamp(1rem, 4vw, 1.25rem);
-  }
-}
-
-@media (max-width: 480px) {
-  .blob-text-content {
-    font-size: 6px;
-    letter-spacing: 0.5px;
-  }
-}
-
-/* ===========================
-   REDUCED MOTION
-   =========================== */
-
-@media (prefers-reduced-motion: reduce) {
-  .about-blob-svg #blobClip {
-    transition: none;
-  }
-  
-  .blob-text-content {
-    transition: none;
-  }
-  
-  /* Disable SVG animations */
-  .about-blob-svg animate {
-    animation-play-state: paused;
-  }
-}
-
-/* ===========================
-   BAD HANDWRITING EFFECT
-   Based on CodePen: joshwerner/JoGqRwY
-   =========================== */
-
-.handwriting-container p {
-  font-size: clamp(1.5rem, 5vw, 2.5rem);
-  line-height: 1.3;
-  color: var(--color-text-primary); /* Adapted color */
-  margin: 0;
-}
-
-/* Font Classes */
-.caveat {
-  font-family: "Caveat", cursive;
-  font-weight: 400;
-}
-
-.shadows-into-light {
-  font-family: "Shadows Into Light", cursive;
-  font-weight: 400;
-}
-
-.indie-flower {
-  font-family: "Indie Flower", cursive;
-  font-weight: 400;
-}
-
-.nothing-you-could-do {
-  font-family: "Nothing You Could Do", cursive;
-  font-weight: 400;
-}
-
-.oooh-baby {
-  font-family: "Oooh Baby", cursive;
-  font-weight: 400;
-}
-
-.reenie-beanie {
-  font-family: "Reenie Beanie", cursive;
-  font-weight: 400;
-}
-
-.cedarville-cursive {
-  font-family: "Cedarville Cursive", cursive;
-  font-weight: 400;
-}
-
-/* Character spacing for natural feel */
-.handwriting-container span {
-  display: inline-block;
-  transition: transform 0.2s ease;
-}
-
-.handwriting-container span:hover {
-  transform: translateY(-2px) rotate(2deg);
-  color: #667eea; /* Paul Factory accent */
 }
 
 /* ===========================
@@ -249,27 +137,15 @@
    =========================== */
 
 [data-theme="dark"] #about {
-  background-color: #21202C;
+  background-color: var(--color-bg-primary);
 }
 
-[data-theme="dark"] .about-title,
+[data-theme="dark"] .about-title {
+  color: #FFFFFF;
+}
+
+[data-theme="dark"] .about-subtitle,
 [data-theme="dark"] .about-description {
-  color: rgba(255, 255, 255, 0.95);
-}
-
-[data-theme="dark"] .about-description .highlight {
-  color: #FFFFFF;
-}
-
-[data-theme="dark"] .blob-text-content {
-  fill: rgba(255, 255, 255, 0.8);
-}
-
-[data-theme="dark"] .handwriting-container p {
-  color: rgba(255, 255, 255, 0.9);
-}
-
-[data-theme="dark"] .handwriting-container span:hover {
-  color: #FFFFFF;
+  color: rgba(255, 255, 255, 0.8);
 }
 

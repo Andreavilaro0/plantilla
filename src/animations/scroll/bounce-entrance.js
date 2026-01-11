@@ -1,6 +1,6 @@
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
-import { log } from '@/utils/logger.js';
+import { log, warn } from '@/utils/logger.js';
 
 gsap.registerPlugin(ScrollTrigger);
 
@@ -18,7 +18,7 @@ export function initBounceEntrance() {
   const sections = document.querySelectorAll('[data-bounce-section]');
   
   if (sections.length === 0) {
-    console.warn('⚠️ No [data-bounce-section] elements found');
+    warn('⚠️ No [data-bounce-section] elements found');
     return;
   }
   
@@ -26,7 +26,7 @@ export function initBounceEntrance() {
     const words = section.querySelectorAll('.word');
     
     if (words.length === 0) {
-      console.warn('⚠️ No .word elements found in', section);
+      warn('⚠️ No .word elements found in', section);
       return;
     }
     

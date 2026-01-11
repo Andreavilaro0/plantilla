@@ -3,7 +3,7 @@
 // Replaces window.* global functions with a clean, testable API
 
 import { SELECTORS, TIMING } from '@/core/constants.js';
-import { AboutController } from '@/features/about/AboutController.js';
+import { initBounceEntrance, destroyBounceEntrance } from '@/animations/scroll/bounce-entrance.js';
 import { log } from '@/utils/logger.js';
 
 /**
@@ -125,11 +125,13 @@ class LifecycleManager {
   async initAbout() {
     return this.mountView('about', {
       init: async () => {
-        // New About section is purely HTML/CSS/SVG-based, no controller needed
-        log('🎨 About section initialized (blob effect)');
+        // Initialize bounce entrance animation
+        initBounceEntrance();
+        log('🎨 About section initialized (bounce effect)');
       },
       cleanup: async () => {
-        // No cleanup needed for static About section
+        // Cleanup bounce animation
+        destroyBounceEntrance();
       }
     });
   }
@@ -174,7 +176,11 @@ class LifecycleManager {
   async initContact() {
     return this.mountView('contact', {
       init: async () => {
+        initBounceEntrance();
         log('📧 Contact view loaded');
+      },
+      cleanup: async () => {
+        destroyBounceEntrance();
       }
     });
   }

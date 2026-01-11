@@ -2,7 +2,7 @@ import gsap from 'gsap';
 
 /**
  * ContactCTA - CTA Card para el hero section
- * Tarjeta gigante estilo paul-factory con "DO YOU HAVE AN AWESOME PROJECT?"
+ * 
  */
 export default class ContactCTA {
   constructor(container) {

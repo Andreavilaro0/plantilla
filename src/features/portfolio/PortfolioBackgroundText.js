@@ -23,14 +23,14 @@ export class PortfolioBackgroundText {
     // Insert at the beginning of the container (behind grid)
     this.container.insertBefore(this.element, this.container.firstChild);
     
-    log(`[PortfolioBgText] ✅ Mounted: "${this.word}"`);
+    log(`[PortfolioBgText]  Mounted: "${this.word}"`);
   }
 
   destroy() {
     if (this.element) {
       this.element.remove();
       this.element = null;
-      log("[PortfolioBgText] 🧹 Destroyed");
+      log("[PortfolioBgText]  Destroyed");
     }
   }
 

@@ -23,7 +23,7 @@ window.Flip = Flip;
 // INICIALIZACIÓN TEMPRANA - DOMContentLoaded
 // ============================================
 document.addEventListener('DOMContentLoaded', () => {
-  log('🚀 DOM Content Loaded - Starting initialization');
+  log(' DOM Content Loaded - Starting initialization');
   
   // Inicializar theme toggle lo antes posible para evitar flash
   const themeToggle = new ThemeToggle();
@@ -41,7 +41,7 @@ document.addEventListener('DOMContentLoaded', () => {
   // Exponer setActiveLink globalmente para el router
   window.setNavbarActiveLink = setActiveLink;
   
-  log('✅ Componentes core inicializados');
+  log('Componentes core inicializados');
 });
 
 // ============================================
@@ -49,9 +49,9 @@ document.addEventListener('DOMContentLoaded', () => {
 // ============================================
 window.addEventListener('load', () => {
   ScrollTrigger.refresh();
-  log('✅ ScrollTrigger refreshed on window load');
+  log(' ScrollTrigger refreshed on window load');
 });
 
-log('✅ Portfolio - Arquitectura modular cargada');
+log(' Portfolio - Arquitectura modular cargada');
 
 

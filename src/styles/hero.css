@@ -35,7 +35,7 @@
   letter-spacing: var(--tracking-wide);
   text-transform: uppercase;
   color: var(--color-text-dark);
-  opacity: 0.6;
+  opacity: 0.8; /* Increased from 0.6 for better legibility */
   line-height: 1.4;
 }
 
@@ -161,6 +161,15 @@
 
 [data-theme="dark"] .hero-title {
   color: #FFFFFF;
+}
+
+[data-theme="dark"] .hud-year,
+[data-theme="dark"] .hud-tag,
+[data-theme="dark"] .hud-projects,
+[data-theme="dark"] .hero-socials a,
+[data-theme="dark"] .hud-status {
+  color: rgba(255, 255, 255, 0.9);
+  opacity: 0.9;
 }
 
 .hero-info h3 {

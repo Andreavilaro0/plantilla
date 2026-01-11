@@ -139,4 +139,4 @@ Maneja toda la lógica interactiva:
 
 ---
 
-Creado  por Andrea Avila
+Creado por Andrea Avila

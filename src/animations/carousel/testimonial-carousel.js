@@ -1,5 +1,5 @@
 import gsap from 'gsap';
-import { log } from '@/utils/logger.js';
+import { log, warn } from '@/utils/logger.js';
 import { Draggable } from 'gsap/Draggable';
 
 gsap.registerPlugin(Draggable);
@@ -15,7 +15,7 @@ export class TestimonialCarousel {
     this.container = document.querySelector(containerSelector);
     
     if (!this.container) {
-      console.warn(`⚠️ Carousel container "${containerSelector}" not found`);
+      warn(`⚠️ Carousel container "${containerSelector}" not found`);
       return;
     }
     
@@ -33,7 +33,7 @@ export class TestimonialCarousel {
   
   init() {
     if (!this.track || this.cards.length === 0) {
-      console.warn('⚠️ Carousel track or cards not found');
+      warn('⚠️ Carousel track or cards not found');
       return;
     }
     

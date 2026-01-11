@@ -1,6 +1,5 @@
 import { initTitleAnimations } from '@/animations/text/hero-scroll-title.js';
 import { initPixelRevealEffect } from '@/animations/scroll/pixel-reveal.js';
-import { initAboutAnimations } from '@/animations/scroll/about-scroll.js';
 import { initBounceEntrance } from '@/animations/scroll/bounce-entrance.js';
 import { TestimonialCarousel } from '@/animations/carousel/testimonial-carousel.js';
 import VanillaTilt from '@/lib/vanilla-tilt.js';
@@ -150,12 +149,6 @@ export default function HomeView() {
         
         <!-- Grid de fotografías (z-index: 2, encima del título) -->
         <div class="photos-grid" role="list"></div>
-        
-        <!-- Overlay para focus mode (oculto por defecto) -->
-        <div class="focus-overlay" role="dialog" aria-modal="true" aria-hidden="true"></div>
-        
-        <!-- Contenedor de thumbnails (oculto por defecto) -->
-        <div class="thumbnails-container" role="navigation" aria-label="Photo thumbnails"></div>
       </section>
 
       <!-- ========================================== -->
@@ -252,7 +245,6 @@ export default function HomeView() {
           glare: true,
           'max-glare': 1,
         });
-        log('✨ VanillaTilt initialized on', cards.length, 'cards (HomeView)');
       }
       
       // Initialize Portfolio Controller with Hannah Miles style
@@ -264,18 +256,14 @@ export default function HomeView() {
         
         // Store reference for cleanup (LifecycleManager lo llamará)
         window.portfolioController = portfolioController;
-        
-        log('[HomeView] ✅ Portfolio initialized with Hannah Miles style');
       }
 
       
       // About section - Blob effect is purely CSS/SVG, no JS needed
-      log('[HomeView] ✅ About blob effect initialized');
       
       // Initialize handwriting effect
       const hwTarget = document.querySelector('#handwriting-target p');
       if (hwTarget) {
-        log('[HomeView] Initializing handwriting effect');
         initHandwritingEffect(hwTarget, null);
         hwTarget.style.opacity = '1';
         hwTarget.classList.remove('hidden');
@@ -287,7 +275,6 @@ export default function HomeView() {
       // Initialize Testimonial Carousel
       const carousel = new TestimonialCarousel('.testimonials-carousel');
       if (carousel) {
-        log('🎠 Testimonial carousel initialized');
         // Store reference for cleanup if needed
         window.testimonialCarousel = carousel;
       }
@@ -296,7 +283,6 @@ export default function HomeView() {
       const contactModal = new ContactModal();
       contactModal.render();
       window.contactModal = contactModal;
-      log('📧 Contact modal initialized');
       
       // Setup event listeners for buttons (no inline onclick)
       const viewPortfolioBtn = document.getElementById('view-portfolio-btn');

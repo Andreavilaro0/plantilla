@@ -1,4 +1,4 @@
-import { log } from '@/utils/logger.js';
+import { log, warn } from '@/utils/logger.js';
 import { ERROR_MESSAGES, SCROLL_CONFIG, CSS_CLASSES } from '@/core/constants.js';
 
 /**
@@ -27,7 +27,7 @@ export function initNavbar() {
   const mobileMenu = document.getElementById('mobile-menu');
   
   if (!navbar || !mobileMenuButton || !mobileMenu) {
-    console.warn(ERROR_MESSAGES.NAVBAR_NOT_FOUND);
+    warn(ERROR_MESSAGES.NAVBAR_NOT_FOUND);
     return;
   }
   

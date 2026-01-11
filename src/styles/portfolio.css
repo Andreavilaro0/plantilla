@@ -21,23 +21,22 @@
   --z-focused-photo: 1000;
   --z-thumbnails: 1001;
   
-  /* Colors Light Mode */
+  /* Colors - Now using unified light beige */
   --portfolio-bg: #F4F1EB;
-  --portfolio-text: #000000;
-  --portfolio-overlay: rgba(244, 241, 235, 0.97);
+  --portfolio-text: var(--color-text-primary);
+  --portfolio-overlay: rgba(244, 241, 235, 0.85); 
   --accent-color: #ff6b35;
-  
-  /* Spacing */
-  --grid-gap-desktop: 12px;
-  --grid-gap-tablet: 10px;
-  --grid-gap-mobile: 8px;
+
+  /* Spacing - gaps más apretados */
+  --grid-gap-desktop: 10px;
+  --grid-gap-tablet: 8px;
+  --grid-gap-mobile: 6px;
 }
 
 [data-theme="dark"] {
-  /* Colors Dark Mode */
-  --portfolio-bg: #21202C;
-  --portfolio-text: #F7FAFC;
-  --portfolio-overlay: rgba(33, 32, 44, 0.97);
+  /* Unified with Light Mode */
+  --portfolio-bg: #F4F1EB;
+  --portfolio-overlay: rgba(244, 241, 235, 0.85); 
 }
 
 
@@ -46,10 +45,10 @@
    ============================================ */
 .portfolio-section {
   position: relative;
-  min-height: 150vh;
+  min-height: 100vh;  /* Altura mínima del viewport */
   background-color: var(--portfolio-bg);
   padding: 80px 32px 80px 32px;
-  overflow: hidden;
+  overflow: visible;  /* Permitir que el contenido fluya */
   max-width: 2000px;
   margin: 0 auto;
 }
@@ -62,66 +61,116 @@
 
 
 /* ============================================
-   TÍTULO GIGANTE DE FONDO (FIJO)
+   TÍTULO GIGANTE DE FONDO (ESTILO HANNAH MILES)
+   Fixed en el centro - siempre visible
    ============================================ */
 .bg-title {
-  position: absolute;
+  position: fixed;
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
+  width: 100%;
+  text-align: center;
 
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(80px, 20vw, 300px);
-  font-weight: 700;
+  font-family: 'Bodoni Moda', serif;  /* Similar a Ayer Poster de Hannah Miles */
+  font-size: clamp(80px, 18vw, 280px);
+  font-weight: 400;  /* Normal weight como Hannah Miles */
   color: var(--portfolio-text);
-  letter-spacing: -0.02em;
-  line-height: 1;
+  letter-spacing: normal;
+  line-height: 0.9;
   white-space: nowrap;
+  text-transform: uppercase;
 
-  z-index: var(--z-bg-title);
+  z-index: var(--z-bg-title);  /* z-index: 1 - DETRÁS de las fotos */
   pointer-events: none;
   user-select: none;
-  /* opacity controlado por GSAP */
+  opacity: 0;  /* Oculto por defecto, JS lo muestra */
+  transition: opacity 0.8s cubic-bezier(0.19, 1, 0.22, 1);
+}
+
+/* Mostrar el título cuando la sección portfolio está activa */
+.portfolio-section.in-view .bg-title,
+.bg-title.visible {
+  opacity: 1;
+}
+
+[data-theme="dark"] .bg-title {
+  color: var(--portfolio-text);  /* Automatically follows global text color */
 }
 
 @media (max-width: 768px) {
   .bg-title {
-    font-size: clamp(60px, 25vw, 200px);
-    /* Título horizontal en mobile */
+    font-size: clamp(40px, 15vw, 100px);
   }
 }
 
 
 /* ============================================
-   GRID DE FOTOGRAFÍAS
+   GRID DE FOTOGRAFÍAS (ESTILO HANNAH MILES)
    ============================================ */
 .photos-grid {
   position: relative;
-  z-index: var(--z-photos-grid);
+  z-index: var(--z-photos-grid);  /* z-index: 2 - ENCIMA del texto */
   display: grid;
   grid-template-columns: repeat(4, 1fr);
-  gap: var(--grid-gap-desktop);
+  grid-auto-rows: minmax(70px, 120px);  /* Fotos más pequeñas */
+  gap: 90px 50px;  /* Gap más grande para ver mejor el texto */
+  padding: 60px 80px;
+  max-width: 1600px;
+  margin: 0 auto;
+  background: transparent;  /* Fondo transparente para ver el título */
+}
+
+/* Variedad de tamaños para efecto orgánico */
+.photo-item:nth-child(4n+1) {
+  grid-row: span 2;  /* Foto alta */
+}
+
+.photo-item:nth-child(4n+3) {
+  grid-row: span 2;  /* Foto alta */
+}
+
+.photo-item:nth-child(8n+2) {
+  grid-column: span 1;
+  grid-row: span 1;  /* Foto pequeña */
+}
+
+.photo-item:nth-child(8n+4) {
+  grid-row: span 1;  /* Foto pequeña */
 }
 
 @media (max-width: 1024px) {
   .photos-grid {
     grid-template-columns: repeat(3, 1fr);
-    gap: var(--grid-gap-tablet);
+    grid-auto-rows: minmax(100px, 150px);
+    gap: 60px 30px;
+    padding: 40px 40px;
   }
-  
-  .photo-item {
-    aspect-ratio: 1/1;
+
+  .photo-item:nth-child(3n+1) {
+    grid-row: span 2;
+  }
+
+  .photo-item:nth-child(3n+2),
+  .photo-item:nth-child(3n+3) {
+    grid-row: span 1;
   }
 }
 
 @media (max-width: 768px) {
   .photos-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: var(--grid-gap-mobile);
+    grid-auto-rows: minmax(80px, 120px);
+    gap: 40px 20px;
+    padding: 30px 20px;
   }
-  
-  .photo-item {
-    aspect-ratio: 4/5;
+
+  .photo-item:nth-child(2n+1) {
+    grid-row: span 2;
+  }
+
+  .photo-item:nth-child(2n+2) {
+    grid-row: span 1;
   }
 }
 
@@ -131,40 +180,21 @@
    ============================================ */
 .photo-item {
   position: relative;
-  cursor: pointer;
+  cursor: default;
   overflow: hidden;
-  border-radius: 2px;
+  border-radius: 0;  /* Sin bordes redondeados - estilo limpio */
   background-color: transparent;
-  aspect-ratio: 3/4;
+  box-shadow: none;  /* Sin sombras */
+  /* Sin aspect-ratio fijo - el grid controla el tamaño */
   /* opacity controlado por GSAP */
-  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
-}
-
-.photo-item:not(.focused):hover {
-  opacity: 0.9;
-  transform: scale(1.01);
+  transition: transform 0.3s cubic-bezier(0.19, 1, 0.22, 1);
 }
 
 .photo-item img {
   width: 100%;
-  height: auto;
-  display: block;
+  height: 100%;
   object-fit: cover;
-}
-
-.photo-item figcaption {
-  position: absolute;
-  bottom: 0;
-  left: 0;
-  right: 0;
-  padding: 12px 16px;
-  background: linear-gradient(to top, rgba(0, 0, 0, 0.8), transparent);
-  color: white;
-  font-size: 14px;
-  font-weight: 500;
-  opacity: 0;
-  transform: translateY(10px);
-  transition: opacity 0.3s ease, transform 0.3s ease;
+  display: block;
 }
 
 .photo-item:hover figcaption {
@@ -172,158 +202,12 @@
   transform: translateY(0);
 }
 
-.photo-item.focused figcaption {
-  display: none;
-}
-
-
-/* ============================================
-   FOCUS MODE - OVERLAY
-   ============================================ */
-.focus-overlay {
-  position: fixed;
-  inset: 0;
-  background: var(--portfolio-overlay);
-  backdrop-filter: blur(10px);
-  z-index: var(--z-overlay);
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.4s ease;
-}
-
-.focus-overlay.active {
-  opacity: 1;
-  pointer-events: all;
-  cursor: pointer;
-}
-
-
-/* ============================================
-   FOCUS MODE - FOTO EXPANDIDA
-   ============================================ */
-.photo-item.focused {
-  position: fixed !important;
-  top: 50% !important;
-  left: 50% !important;
-  transform: translate(-50%, -50%) !important;
-  width: 60vw !important;
-  max-width: 1200px !important;
-  height: auto !important;
-  max-height: 80vh !important;
-  z-index: var(--z-focused-photo) !important;
-  box-shadow: 0 20px 60px rgba(0, 0, 0, 0.4);
-  border-radius: 8px;
-  cursor: default;
-  opacity: 1 !important;
-}
-
-.photo-item.focused img {
-  width: 100%;
-  height: auto;
-  object-fit: contain;
-  max-height: 80vh;
-  border-radius: 8px;
-}
-
-@media (max-width: 1024px) {
-  .photo-item.focused {
-    width: 75vw !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .photo-item.focused {
-    width: 90vw !important;
-    max-height: 70vh !important;
-  }
-}
-
-
-/* ============================================
-   THUMBNAILS
-   ============================================ */
-.thumbnails-container {
-  position: fixed;
-  top: 20px;
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 90vw;
-  height: 110px;
-  display: flex;
-  gap: 8px;
-  overflow-x: auto;
-  overflow-y: hidden;
-  padding: 10px;
-  background: rgba(0, 0, 0, 0.1);
-  backdrop-filter: blur(10px);
-  border-radius: 8px;
-  z-index: var(--z-thumbnails);
-  scroll-behavior: smooth;
-  scroll-snap-type: x mandatory;
-  scrollbar-width: none;
-  opacity: 0;
-  pointer-events: none;
-  transition: opacity 0.3s ease;
-}
-
-.thumbnails-container::-webkit-scrollbar {
-  display: none;
-}
-
-.thumbnails-container.active {
-  opacity: 1;
-  pointer-events: all;
-}
-
-.thumbnail {
-  flex-shrink: 0;
-  width: 90px;
-  height: 90px;
-  cursor: pointer;
-  border-radius: 4px;
-  overflow: hidden;
-  opacity: 0.6;
-  border: 3px solid transparent;
-  scroll-snap-align: center;
-  transition: opacity 0.3s ease, border-color 0.3s ease, transform 0.2s ease;
-}
-
-.thumbnail:hover {
-  opacity: 0.9;
-  transform: scale(1.05);
-}
-
-.thumbnail.active {
-  opacity: 1;
-  border-color: var(--accent-color);
-  transform: scale(1.05);
-}
-
-.thumbnail img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  display: block;
-}
-
-@media (max-width: 768px) {
-  .thumbnails-container {
-    height: 90px;
-  }
-  .thumbnail {
-    width: 70px;
-    height: 70px;
-  }
-}
-
 
 /* ============================================
    ACCESIBILIDAD
    ============================================ */
 @media (prefers-reduced-motion: reduce) {
-  .photo-item,
-  .thumbnail,
-  .focus-overlay {
+  .photo-item {
     transition: none !important;
   }
   .photo-item:hover {
@@ -331,8 +215,7 @@
   }
 }
 
-.photo-item:focus-visible,
-.thumbnail:focus-visible {
+.photo-item:focus-visible {
   outline: 3px solid var(--accent-color);
   outline-offset: 2px;
 }

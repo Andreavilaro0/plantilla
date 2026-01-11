@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://andreavilaro0.github.io/plantilla/sitemap.xml

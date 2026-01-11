@@ -1,75 +1,72 @@
 /**
- * Bad Handwriting Effect
- * Based on CodePen: https://codepen.io/joshwerner/pen/JoGqRwY
+ * AboutHandwriting.js
+ * Implements a "bad handwriting" effect by wrapping each character in a span
+ * and applying a random font from a predefined list.
  */
 
-const FONTS = [
-  'caveat',
-  'cedarville-cursive',
-  'indie-flower',
-  'nothing-you-could-do',
-  'oooh-baby',
-  'reenie-beanie',
-  'shadows-into-light'
+const HANDWRITING_FONTS = [
+  'Caveat',
+  'Cedarville Cursive',
+  'Indie Flower',
+  'Nothing You Could Do',
+  'Oooh Baby',
+  'Reenie Beanie',
+  'Shadows Into Light'
 ];
 
-// Certain fonts might not look good with specific letters (optional blacklist logic)
-const BLACKLIST = {
-  l: ['cedarville-cursive', 'oooh-baby', 'nothing-you-could-do']
-};
-
-function seededRandom(seed) {
-  let x = Math.sin(seed++) * 10000;
-  return x - Math.floor(x);
+/**
+ * Seeded random for consistent font assignment
+ * @param {string} str 
+ * @returns {number}
+ */
+function getSeed(str) {
+  let hash = 0;
+  for (let i = 0; i < str.length; i++) {
+    hash = ((hash << 5) - hash) + str.charCodeAt(i);
+    hash |= 0;
+  }
+  return Math.abs(hash);
 }
 
 /**
- * Wraps each letter of the element's text content in a span with a random handwriting font.
- * @param {HTMLElement} element - The target element containing the text.
- * @param {string} textContent - The text to render (optional, uses element text if null).
- * @param {number} seed - Random seed for consistent font distribution.
+ * Initializes the handwriting effect on a target element
+ * @param {HTMLElement} element 
+ * @param {Object} options 
  */
-export function initHandwritingEffect(element, textContent = null, seed = 12) {
+export function initHandwritingEffect(element, options = {}) {
   if (!element) return;
+
+  const text = element.textContent;
+  const seed = getSeed(text);
   
-  const text = textContent || element.textContent.trim();
   element.innerHTML = '';
   
-  const lastUsed = {};
-  let currentSeed = seed;
-
-  // Split by words to keep word breaks functioning, or just chars?
-  // CodePen splits by char. However, strict char splitting breaks word wrapping if spaces are treated as chars in spans.
-  // Standard way: split chars, but ensure spaces are preserved.
+  // Create a fragment for better performance
+  const fragment = document.createDocumentFragment();
   
-  // To handle line breaks correctly, we should wrap each word in a span (inline-block) or just use characters.
-  // The CodePen loops "for (const char of str)".
-  
-  for (const char of text) {
-    // Logic to pick a font
-    const lowerChar = char.toLowerCase();
-    let availableFonts = [...FONTS];
-
-    if (BLACKLIST[lowerChar]) {
-      availableFonts = availableFonts.filter(f => !BLACKLIST[lowerChar].includes(f));
-    }
-
-    if (lastUsed[lowerChar]) {
-      availableFonts = availableFonts.filter(f => f !== lastUsed[lowerChar]);
+  [...text].forEach((char, index) => {
+    const span = document.createElement('span');
+    span.textContent = char;
+    
+    if (char !== ' ') {
+      // Pick a random font based on index and seed
+      const fontIndex = (seed + index) % HANDWRITING_FONTS.length;
+      span.style.fontFamily = `"${HANDWRITING_FONTS[fontIndex]}", cursive`;
+      
+      // Random subtle rotation
+      const rotation = ((seed + index) % 7) - 3; // -3 to 3 degrees
+      span.style.display = 'inline-block';
+      span.style.transform = `rotate(${rotation}deg)`;
+      
+      // Random subtle font size variation
+      const sizeOffset = ((seed + index) % 4) - 2; // -2 to 2 px
+      span.style.fontSize = `calc(1em + ${sizeOffset}px)`;
+    } else {
+      span.style.marginRight = '0.25em';
     }
     
-    // Safety check if runs out
-    if (availableFonts.length === 0) availableFonts = [...FONTS];
-
-    const fontIndex = Math.floor(seededRandom(currentSeed) * availableFonts.length);
-    const font = availableFonts[fontIndex] || FONTS[0];
-    lastUsed[lowerChar] = font;
-
-    const span = document.createElement('span');
-    span.className = font;
-    span.textContent = char;
-    element.appendChild(span);
-
-    currentSeed++;
-  }
+    fragment.appendChild(span);
+  });
+  
+  element.appendChild(fragment);
 }

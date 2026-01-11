@@ -8,19 +8,11 @@
  * @param {...any} args - Arguments to log
  */
 export const log = (...args) => {
-  if (import.meta.env.DEV) {
-    console.log(...args);
-  }
+  // Logs silenciados
 };
 
-/**
- * Log warnings (only in development)
- * @param {...any} args - Arguments to warn
- */
 export const warn = (...args) => {
-  if (import.meta.env.DEV) {
-    console.warn(...args);
-  }
+  // Advertencias silenciadas
 };
 
 /**
