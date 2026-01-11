@@ -186,6 +186,21 @@ class LifecycleManager {
   }
 
   /**
+   * Initialize Testimonials view
+   */
+  async initTestimonials() {
+    return this.mountView('testimonials', {
+      init: async () => {
+        initBounceEntrance();
+        log('💬 Testimonials view loaded');
+      },
+      cleanup: async () => {
+        destroyBounceEntrance();
+      }
+    });
+  }
+
+  /**
    * Initialize Services view
    */
   async initServices() {

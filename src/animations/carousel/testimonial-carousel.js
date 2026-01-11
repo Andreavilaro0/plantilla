@@ -27,6 +27,9 @@ export class TestimonialCarousel {
     this.currentIndex = 0;
     this.cardGap = 32; // 2rem gap (must match CSS)
     this.draggableInstance = null;
+    this.resizeHandler = null;
+    this.prevHandler = null;
+    this.nextHandler = null;
     
     this.init();
   }
@@ -94,11 +97,13 @@ export class TestimonialCarousel {
   
   initNavigation() {
     if (this.prevBtn) {
-      this.prevBtn.addEventListener('click', () => this.prev());
+      this.prevHandler = () => this.prev();
+      this.prevBtn.addEventListener('click', this.prevHandler);
     }
     
     if (this.nextBtn) {
-      this.nextBtn.addEventListener('click', () => this.next());
+      this.nextHandler = () => this.next();
+      this.nextBtn.addEventListener('click', this.nextHandler);
     }
   }
   
@@ -177,9 +182,19 @@ export class TestimonialCarousel {
     if (this.draggableInstance) {
       this.draggableInstance.kill();
     }
-    
-    window.removeEventListener('resize', this.resizeHandler);
-    
+
+    if (this.resizeHandler) {
+      window.removeEventListener('resize', this.resizeHandler);
+    }
+
+    if (this.prevBtn && this.prevHandler) {
+      this.prevBtn.removeEventListener('click', this.prevHandler);
+    }
+
+    if (this.nextBtn && this.nextHandler) {
+      this.nextBtn.removeEventListener('click', this.nextHandler);
+    }
+
     log('🧹 Carousel destroyed');
   }
 }

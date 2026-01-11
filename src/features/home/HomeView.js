@@ -4,34 +4,10 @@ import { initBounceEntrance } from '@/animations/scroll/bounce-entrance.js';
 import { TestimonialCarousel } from '@/animations/carousel/testimonial-carousel.js';
 import VanillaTilt from '@/lib/vanilla-tilt.js';
 import { PortfolioController } from '@/features/portfolio/PortfolioController.js';
-import { InlineIcons } from '@/ui/icons/InlineIcons.js';
 import { TestimonialsView } from '@/features/shared/TestimonialsView.js';
 import { FooterView } from '@/features/shared/FooterView.js';
 import { ContactModal } from '@/ui/modals/ContactModal.js';
 import { initHandwritingEffect } from '@/features/home/AboutHandwriting.js';
-import { log } from '@/utils/logger.js';
-
-
-
-/**
- * Generate descriptive ALT text for artwork images
- * @param {Object} obra - Artwork object with titulo, categoria, year
- * @returns {string} Descriptive ALT text
- */
-function generateAltText(obra) {
-  const categoryDescriptions = {
-    'Paisaje': 'Fotografía de paisaje',
-    'Abstracto': 'Composición abstracta',
-    'Urbano': 'Fotografía urbana',
-    'Interior': 'Fotografía de interior',
-    'Retrato': 'Retrato fotográfico',
-    'Costero': 'Fotografía costera',
-    'Arquitectura': 'Fotografía de arquitectura'
-  };
-  
-  const baseDesc = categoryDescriptions[obra.categoria] || 'Fotografía';
-  return `${baseDesc} titulada "${obra.titulo}" del año ${obra.year}`;
-}
 
 export default function HomeView() {
   // ============================================
@@ -132,6 +108,7 @@ export default function HomeView() {
           <!-- Texto de descripción -->
           <!-- Texto de descripción (BAD HANDWRITING EFFECT) -->
           <div class="about-text-content">
+            <h2 class="about-title">Behind the Lens</h2>
             <div id="handwriting-target" class="handwriting-container">
               <p>Life is full of small moments that shape who we are. Each day brings new chances to learn, connect, and grow. Even simple things like a quiet morning, a kind word, or a shared smile can leave a lasting mark. By paying attention to these moments, we find meaning in the ordinary.</p>
             </div>
@@ -191,7 +168,7 @@ export default function HomeView() {
       <!-- ========================================== -->
       <!-- CTA SECTION - Dark Card -->
       <!-- ========================================== -->
-      <section id="cta" class="cta-section" data-bounce-section>
+      <section id="contact" class="cta-section" data-bounce-section>
         <div class="cta-card">
           <h2 class="cta-title">
             <span class="word">DO</span>

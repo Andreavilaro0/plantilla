@@ -22,7 +22,7 @@ export function initBounceEntrance() {
     return;
   }
   
-  sections.forEach((section) => {
+  sections.forEach((section, index) => {
     const words = section.querySelectorAll('.word');
     
     if (words.length === 0) {
@@ -76,9 +76,7 @@ export function initBounceEntrance() {
       onEnter: () => {
         tl.play();
       },
-      // Debug markers (remove in production)
-      // markers: true,
-      // id: section.id || 'bounce-section'
+      id: `bounce-${section.id || index}`
     });
   });
   

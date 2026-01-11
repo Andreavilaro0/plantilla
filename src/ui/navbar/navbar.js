@@ -87,20 +87,16 @@ export function initNavbar() {
     link.addEventListener('click', (e) => {
       e.preventDefault();
       const targetId = link.getAttribute('href');
-      
+
       if (!targetId || targetId === '#') return;
-      
-      // Close mobile menu first
+
       if (mobileMenuButton.classList.contains(CSS_CLASSES.ACTIVE)) {
         mobileMenuButton.classList.remove(CSS_CLASSES.ACTIVE);
         mobileMenu.style.height = '0';
         mobileMenu.classList.remove(CSS_CLASSES.OPEN);
       }
 
-      const targetElement = document.querySelector(targetId);
-      if (targetElement) {
-        targetElement.scrollIntoView({ behavior: 'smooth' });
-      }
+      window.location.hash = targetId;
     }, { signal });
   });
 
@@ -111,25 +107,21 @@ export function initNavbar() {
     sections.forEach(section => {
       const sectionTop = section.offsetTop;
       const sectionHeight = section.offsetHeight;
-      // Offset de 100px para activar antes de llegar exactamente
       if (window.scrollY >= sectionTop - 100 && window.scrollY < sectionTop + sectionHeight) {
         currentSection = section.getAttribute('id');
       }
     });
 
-    navLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${currentSection}`) {
-        link.classList.add('active');
+    if (window.location.hash === '#contact') {
+      const contactSection = document.querySelector('#contact');
+      if (contactSection && window.scrollY >= contactSection.offsetTop - 200) {
+        currentSection = 'contact';
       }
-    });
+    }
 
-    mobileNavLinks.forEach(link => {
-      link.classList.remove('active');
-      if (link.getAttribute('href') === `#${currentSection}`) {
-        link.classList.add('active');
-      }
-    });
+    if (currentSection) {
+      setActiveLink(`#${currentSection}`);
+    }
   }
 
   // Initialize active section on page load
@@ -139,7 +131,22 @@ export function initNavbar() {
 }
 
 // For backwards compatibility
-export function setActiveLink(path) {
-  // Not needed for single page navigation, but keeping for compatibility
-  log('setActiveLink called with:', path);
+export function setActiveLink(path = window.location.hash || '#home') {
+  let target = path;
+
+  if (target === '#hero') {
+    target = '#home';
+  }
+
+
+  const links = document.querySelectorAll('.nav-link, .mobile-nav-link');
+
+  links.forEach(link => {
+    link.classList.remove('active');
+    link.removeAttribute('aria-current');
+    if (link.getAttribute('href') === target) {
+      link.classList.add('active');
+      link.setAttribute('aria-current', 'page');
+    }
+  });
 }

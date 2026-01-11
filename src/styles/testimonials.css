@@ -41,7 +41,7 @@
   position: relative;
   overflow: visible; /* Changed from hidden to show peek */
   padding-bottom: 4rem;
-  max-width: 1250px; /* Match Paul Factory container width */
+  max-width: 1400px;
   margin: 0 auto;
 }
 
@@ -58,13 +58,12 @@
    =========================== */
 
 .testimonial-card {
-  /* Paul Factory card dimensions */
-  min-width: 610px;
-  width: 610px;
+  min-width: clamp(320px, 30vw, 420px);
+  width: clamp(320px, 30vw, 420px);
   flex-shrink: 0;
   background: white;
-  border-radius: 64px; /* Large border-radius for "squircle" effect */
-  padding: 64px; /* Paul Factory padding */
+  border-radius: 48px;
+  padding: clamp(2.5rem, 4vw, 3.25rem);
   box-shadow: 
     0 20px 40px rgba(0, 0, 0, 0.06),
     0 8px 16px rgba(0, 0, 0, 0.04);

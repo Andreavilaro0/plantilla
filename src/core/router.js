@@ -1,17 +1,13 @@
 import HomeView from '@/features/home/HomeView.js'
-import AboutView from '@/features/about/AboutView.js'
-import ContactView from '@/features/contact/ContactView.js'
-import ServicesView from '@/features/services/ServicesView.js'
-import PortfolioView from '@/features/portfolio/PortfolioView.js'
 import { lifecycle } from '@/core/lifecycle.js'
-import { ROUTES } from '@/core/constants.js'
 
 const routes = {
-  '/': HomeView,
-  '/about': AboutView,
-  '/contact': ContactView,
-  '/services': ServicesView,
-  '/portfolio': PortfolioView
+  '#home': { section: '#hero', init: () => lifecycle.initHome() },
+  '#about': { section: '#about', init: () => lifecycle.initAbout() },
+  '#portfolio': { section: '#portfolio', init: () => lifecycle.initPortfolio() },
+  '#testimonials': { section: '#testimonials', init: () => lifecycle.initTestimonials() },
+  '#services': { section: '#services', init: () => lifecycle.initServices() },
+  '#contact': { section: '#contact', init: () => lifecycle.initContact() }
 }
 
 class Router {
@@ -21,52 +17,49 @@ class Router {
   }
 
   init() {
-    window.addEventListener('popstate', () => this.loadRoute())
-    document.addEventListener('click', (e) => {
-      if (e.target.matches('[data-link]')) {
-        e.preventDefault()
-        this.navigateTo(e.target.getAttribute('href'))
-      }
-    })
+    window.addEventListener('hashchange', () => this.loadRoute())
     this.loadRoute()
   }
 
-  navigateTo(path) {
-    window.history.pushState(null, null, path)
-    this.loadRoute()
+  getRoute() {
+    const hash = window.location.hash || '#home'
+    if (hash === '#hero') {
+      return '#home'
+    }
+    return routes[hash] ? hash : '#home'
   }
 
   async loadRoute() {
-    const path = window.location.pathname.replace('/plantilla', '') || '/'
-    const route = routes[path] || routes['/']
+    const routeKey = this.getRoute()
+    const route = routes[routeKey]
 
-    this.currentRoute = path
-    this.render(route)
+    if (!this.currentRoute) {
+      this.render(HomeView)
+    }
+
+    this.currentRoute = routeKey
     this.updateActiveLinks()
-    
-    // Initialize view with lifecycle manager
+
+    if (route?.section) {
+      this.scrollToSection(route.section)
+    }
+
     setTimeout(async () => {
-      if (path === ROUTES.HOME) {
-        await lifecycle.initHome();
+      if (route?.init) {
+        await route.init()
       }
-      else if (path === ROUTES.ABOUT) {
-        await lifecycle.initAbout();
-      }
-      else if (path === ROUTES.PORTFOLIO) {
-        await lifecycle.initPortfolio();
-      }
-      else if (path === ROUTES.CONTACT) {
-        await lifecycle.initContact();
-      }
-      else if (path === ROUTES.SERVICES) {
-        await lifecycle.initServices();
-      }
-      
-      // Update ScrollTrigger for any new content
+
       if (window.gsap && window.gsap.ScrollTrigger) {
-        window.gsap.ScrollTrigger.refresh();
+        window.gsap.ScrollTrigger.refresh()
       }
-    }, 150)
+    }, 200)
+  }
+
+  scrollToSection(sectionSelector) {
+    const target = document.querySelector(sectionSelector)
+    if (!target) return
+
+    window.scrollTo({ top: target.offsetTop, behavior: 'smooth' })
   }
 
   render(view) {
@@ -77,9 +70,10 @@ class Router {
   }
 
   updateActiveLinks() {
-    document.querySelectorAll('[data-link]').forEach(link => {
-      const href = link.getAttribute('href').replace('/plantilla', '')
-      if (href === this.currentRoute) {
+    const currentHash = this.currentRoute
+    document.querySelectorAll('a[href^="#"]').forEach(link => {
+      const href = link.getAttribute('href')
+      if (href === currentHash) {
         link.classList.add('active')
         link.setAttribute('aria-current', 'page')
       } else {
@@ -87,10 +81,9 @@ class Router {
         link.removeAttribute('aria-current')
       }
     })
-    
-    // Update navbar links if setActiveLink is available
+
     if (window.setNavbarActiveLink) {
-      window.setNavbarActiveLink()
+      window.setNavbarActiveLink(this.currentRoute)
     }
   }
 }

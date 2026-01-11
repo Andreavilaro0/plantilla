@@ -18,7 +18,6 @@
 @import url("./styles/cta.css");
 @import url("./styles/footer.css");
 @import url("./ui/modals/contact-modal.css");
-@import url("./styles/utilities/helpers.css");
 
 /* ============================================
    TAILWIND CSS
@@ -64,11 +63,17 @@
 
 /* Dark Mode Colors - Unified background with Light Mode */
 [data-theme="dark"] {
-  --color-bg-primary: #F4F1EB; /* Same as light mode */
-  --color-bg-secondary: #CAC6BE; /* Same as light mode */
-  --color-text-primary: #2a2a2a; /* Keep dark text for contrast on light bg */
-  --color-text-secondary: #6B6B7B; 
-  --color-border: rgba(0, 0, 0, 0.1); 
+  --color-bg-primary: #21202C;
+  --color-bg-secondary: #2C2B3A;
+  --color-text-primary: #F7FAFC;
+  --color-text-secondary: #CBD5E0;
+  --color-border: rgba(255, 255, 255, 0.1);
+  --color-bg-lavender: #21202C;
+  --color-text-dark: #F7FAFC;
+  --color-text-muted: rgba(255, 255, 255, 0.65);
+  --color-portfolio-bg: #21202C;
+  --color-portfolio-text: #F7FAFC;
+  --color-portfolio-text-rgb: 247, 250, 252;
 }
 
 /* Smooth Theme Transitions */
@@ -1258,17 +1263,7 @@ body:has(#hero) .global-nav {
   gap: 1rem;
 }
 
-.hero-title {
-  font-family: "Playfair Display", serif;
-  font-size: clamp(4rem, 10vw, 10rem);
-  font-weight: 400;
-  line-height: 0.9;
-  letter-spacing: -0.03em;
-  color: white;
-  text-align: center;
-  will-change: transform;
-  perspective: 1000px;
-}
+/* .hero-title moved to hero.css - this was causing responsive conflicts */
 
 .title-mask {
   display: block;

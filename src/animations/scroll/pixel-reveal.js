@@ -7,24 +7,36 @@ import { log } from '@/utils/logger.js';
  * Using GSAP for performance and elegance
  */
 
+const activeWordHandlers = new Map();
+
 export function initPixelRevealEffect() {
   const titleWords = document.querySelectorAll('.hero-title .word');
-  
+
   titleWords.forEach((word) => {
+    if (activeWordHandlers.has(word)) {
+      return;
+    }
+
     // Split text into individual letters
     const letters = splitTextIntoLetters(word);
-    
-    // Add magnetic hover effect
-    word.addEventListener('mousemove', (e) => {
-      handleMagneticMove(e, word, letters);
-    });
-    
-    // Reset on mouse leave with elastic bounce
-    word.addEventListener('mouseleave', () => {
+
+    const handleMove = (event) => {
+      handleMagneticMove(event, word, letters);
+    };
+
+    const handleLeave = () => {
       resetLetters(letters);
-    });
+    };
+
+    // Add magnetic hover effect
+    word.addEventListener('mousemove', handleMove);
+
+    // Reset on mouse leave with elastic bounce
+    word.addEventListener('mouseleave', handleLeave);
+
+    activeWordHandlers.set(word, { handleMove, handleLeave, letters });
   });
-  
+
   log('✨ Magnetic Letter Effect initialized');
 }
 
@@ -114,9 +126,14 @@ function resetLetters(letters) {
  * Cleanup function
  */
 export function destroyPixelRevealEffect() {
-  const letters = document.querySelectorAll('.magnetic-letter');
-  letters.forEach(letter => {
-    gsap.killTweensOf(letter);
+  activeWordHandlers.forEach(({ handleMove, handleLeave, letters }, word) => {
+    word.removeEventListener('mousemove', handleMove);
+    word.removeEventListener('mouseleave', handleLeave);
+    letters.forEach(letter => {
+      gsap.killTweensOf(letter);
+    });
   });
+
+  activeWordHandlers.clear();
   log('🧹 Magnetic Letter Effect cleaned up');
 }
